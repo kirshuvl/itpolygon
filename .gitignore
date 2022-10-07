@@ -1,0 +1,10 @@
+__pycache__/
+static/
+!django_project/static/
+media/*
+!media/main/
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
+settings_local.py
+db.sqlite3
