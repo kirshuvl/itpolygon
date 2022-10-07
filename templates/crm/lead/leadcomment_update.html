@@ -1,0 +1,128 @@
+{% extends 'crm/dashboard.html' %}
+{% block breadcrumb %}
+<div class="card shadow mb-2">
+    <div class="card-body small">
+        <nav aria-label="breadcrumb ">
+            <ol class="breadcrumb m-0 ">
+                <li class="breadcrumb-item "><a href="{% url 'HomePage' %}" class="text-decoration-none">Главная</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'CRMDashboard' %}" class="text-decoration-none">CRM</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'LeadAllList' %}" class="text-decoration-none">Все записи на курсы</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'LeadDetail' lead.pk %}" class="text-decoration-none">Просмотр заявки</a></li>
+                <li class="breadcrumb-item active">Добавление тикета</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+{% endblock %}
+{% block main_content %}
+<div class="card shadow mb-2">
+    <div class="card-header bg-transparent p-3">
+        <div class="row">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h4 class="m-0">
+                        <i class="bi bi-airplane me-3"></i>Заявка № {{ lead.pk }}
+                    </h4>
+                </div>
+                <div>
+                    <span class="badge bg-secondary opacity-50 p-2">{{ lead.status }}</span>
+                    <a href="{% url 'LeadUpdate' lead.pk %}" class="text-decoration-none">
+                        <span class="badge bg-secondary opacity-50 p-2"><i class="bi bi-pencil me-2"></i>Редактировать заявку</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <label class="form-label">Родитель</label>
+        <div class="input-group mb-2">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <div class="form-control">{{ lead.parent_last_name }}</div>
+            <div class="form-control">{{ lead.parent_first_name }}</div>
+            <div class="form-control">{{ lead.parent_middle_name }}</div>
+        </div>
+        <label class="form-label">Ребенок</label>
+        <div class="input-group mb-2">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <div class="form-control">{{ lead.child_last_name }}</div>
+            <div class="form-control">{{ lead.child_first_name }}</div>
+            <div class="form-control">{{ lead.child_middle_name }}</div>
+        </div>
+        <div class="row gx-2 align-items-bottom">
+            <div class="col-4">
+                <label class="form-label">Контактные данные</label>
+                <div class="input-group mb-2">
+                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                    <div class="form-control">{{ lead.phone }}</div>
+                </div>
+            </div>
+            <div class="col-4">
+                <label class="form-label">Email</label>
+                <div class="input-group mb-2">
+                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                    <div class="form-control">{{ lead.email }}</div>
+                </div>
+            </div>
+            {% if lead.promocode %}
+            <div class="col-4">
+                <label class="form-label">Промокод</label>
+                <div class="input-group mb-2">
+                    <div class="form-control is-valid">{{ lead.promocode }}</div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        <label class="form-label">Дополнительная информация</label>
+        <div class="input-group mb-2">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <div class="form-control">{{ lead.info }}</div>
+        </div>
+        <label class="form-label">Курс</label>
+        <div class="input-group mb-2">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <div class="form-control"><a href="" class="text-decoration-none">{{ lead.course }}</a></div>
+            <div class="form-control"><span class="text-primary">Класс:</span> {{ lead.child_class }}</div>
+        </div>
+    </div>
+</div>
+<div class="card shadow">
+    <div class="card-header bg-transparent p-3">
+        <div class="row">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h4 class="m-0">
+                        <i class="bi bi-airplane me-3"></i>Тикеты
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <label class="form-label">Текст комментария</label>
+            <div class="input-group mb-2">
+                {{ form.text }}
+            </div>
+            {% for error in form.text.errors %}
+            <div class="text-danger small mb-2">
+                {{ error }}
+            </div>
+            {% endfor %}
+            <label class="form-label">Статус комментария</label>
+            <div class="input-group mb-2">
+                <span class="input-group-text"><i class="bi bi-person"></i></span>{{ form.status }}
+            </div>
+            {% for error in form.status.errors %}
+            <div class="text-danger small mb-2">
+                {{ error }}
+            </div>
+            {% endfor %}
+            <div class="btn-group col-12">
+                <a href="{% url 'LeadDetail' lead.pk %}" class="btn btn-secondary col-12">Отмена</a>
+                <button type="submit" class="btn btn-primary col-12">Сохранить</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

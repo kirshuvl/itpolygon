@@ -1,0 +1,7 @@
+{% extends 'lms/steps/step_base.html' %}
+{% block page_title %}{{ page_title }}{% endblock %}
+{% block step_body %}
+<div class="ratio ratio-16x9">
+    <iframe src="{{ step.video_url }}" title="YouTube video" class="rounded" allowfullscreen></iframe>
+</div>
+{% endblock %}

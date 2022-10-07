@@ -1,0 +1,66 @@
+{% extends 'lms/dashboard.html' %}
+{% block page_title %}{{ page_title }}{% endblock %}
+{% block breadcrumb %}
+<div class="card shadow mb-2">
+    <div class="card-body small">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb m-0">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'UserProfile' %}" class="text-decoration-none">Аккаунт</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    Мои достижения
+                </li>
+            </ol>
+        </nav>
+    </div>
+</div>
+{% endblock %}
+{% block main_content %}
+<div class="col-lg-9">
+    <div class="card shadow">
+        <div class="card-header bg-transparent p-3">
+            <div class="row">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="m-0">
+                            <i class="bi bi-gem me-3"></i>{{ page_title }}
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if achievements %}
+        <div class="card-body">
+            <div class="card mb-2">
+                <div class="card-body p-2">
+                    <div class="row align-items-center">
+                        <div class="col-11 offset-1 border-start">
+                            Описание достижения
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% for achieve in achievements %}
+            <div class="card {% if not forloop.last %}mb-2{% else %}mb-0{% endif %}">
+                <div class="card-body p-2">
+                    <div class="row align-items-center">
+                        <div class="col-1 border-end pe-2 text-center">
+                            <span class="badge bg-secondary p-2 rounded"><i class="bi bi-gem me-1"></i>{{ achieve.points }}</span>
+                        </div>
+                        <div class="col-11">
+                            Достижение за окончание <a href="{{ achieve.for_what.get_absolute_url }}" class="text-decoration-none">{{ achieve.for_what }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="card-body text-center text-danger">
+            У вас пока что нет достижений. Проходите уроки, выполняйте задания и достижения обязательно появятся!
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

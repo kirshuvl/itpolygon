@@ -1,0 +1,147 @@
+{% extends 'crm/dashboard.html' %}
+{% block breadcrumb %}
+<div class="card shadow mb-2">
+    <div class="card-body small">
+        <nav aria-label="breadcrumb ">
+            <ol class="breadcrumb m-0 ">
+                <li class="breadcrumb-item "><a href="{% url 'HomePage' %}" class="text-decoration-none">Главная</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'CRMDashboard' %}" class="text-decoration-none">CRM</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'LeadAllList' %}" class="text-decoration-none">Все записи на курсы</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'LeadDetail' lead.pk %}" class="text-decoration-none">Просмотр заявки</a></li>
+                <li class="breadcrumb-item active">Редактирование заявки</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+{% endblock %}
+{% block main_content %}
+<div class="card shadow mb-2">
+    <form method="post">
+        {% csrf_token %}
+        <div class="card-header bg-transparent p-3">
+            <div class="row">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="m-0">
+                            <i class="bi bi-airplane me-3"></i>Заявка № {{ lead.pk }}
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <label class="form-label">Родитель</label>
+            <div class="input-group mb-2">
+                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                {{ form.parent_last_name }}
+                {{ form.parent_first_name }}
+                {{ form.parent_middle_name }}
+            </div>
+            {% for error in form.parent_first_name.errors %}
+            <div class="text-danger small mb-2">
+                {{ error }}
+            </div>
+            {% endfor %}
+            {% for error in form.parent_last_name.errors %}
+            <div class="text-danger small mb-2">
+                {{ error }}
+            </div>
+            {% endfor %}
+            <label class="form-label">Ребенок</label>
+            <div class="input-group mb-2">
+                <span class="input-group-text"><i class="bi bi-person-bounding-box"></i></span>
+                {{ form.child_last_name }}
+                {{ form.child_first_name }}
+                {{ form.child_middle_name }}
+            </div>
+            {% for error in form.child_first_name.errors %}
+            <div class="text-danger small mb-2">
+                {{ error }}
+            </div>
+            {% endfor %}
+            {% for error in form.child_last_name.errors %}
+            <div class="text-danger small mb-2">
+                {{ error }}
+            </div>
+            {% endfor %}
+            <div class="row gx-2 align-items-bottom">
+                <div class="col-4">
+                    <label class="form-label">Номер телефона</label>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                        {{ form.phone }}
+                    </div>
+                    {% for error in form.phone.errors %}
+                    <div class="text-danger small mb-2">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="col-4">
+                    <label class="form-label">Email</label>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                        {{ form.email }}
+                    </div>
+                    {% for error in form.email.errors %}
+                    <div class="text-danger small mb-2">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="col-4">
+                    <label class="form-label">Промокод</label>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text"><i class="bi bi-wallet-fill"></i></span>
+                        {{ form.promocode }}
+                    </div>
+                </div>
+            </div>
+            <label class="form-label">Дополнительная информация</label>
+            <div class="input-group mb-2">
+                {{ form.info }}
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <label class="form-label">Курс</label>
+                    <div class="input-group mb-2">
+                        {{ form.course }}
+                    </div>
+                    {% for error in form.course.errors %}
+                    <div class="text-danger small mb-2">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="col-4">
+                    <label class="form-label">Класс</label>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                        {{ form.child_class }}
+                    </div>
+                    {% for error in form.child_class.errors %}
+                    <div class="text-danger small mb-2">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="col-4">
+                    <label class="form-label">Статус заявки</label>
+                    <div class="input-group mb-2">
+                        {{ form.status }}
+                    </div>
+                    {% for error in form.status.errors %}
+                    <div class="text-danger small mb-2">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="btn-group col-12">
+                <a href="{% url 'LeadDetail' lead.pk %}" class="btn btn-secondary col-12">Отмена</a>
+                <button type="submit" class="btn btn-primary col-12">Сохранить</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

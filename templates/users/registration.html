@@ -1,0 +1,76 @@
+{% extends 'include/base.html' %}
+{% block page_title %}Регистрация - IT Полигон{% endblock %}
+{% block body %}
+<form method="post">
+    {% csrf_token %}
+    <div class="container">
+        <div class="col-lg-6 mx-auto">
+            <div class="card shadow mb-2">
+                <div class="card-header bg-transparent p-3">
+                    <h4 class="m-0">Регистрация аккаунта</h4>
+                </div>
+                <div class="card-body">
+                    <div class="input-group mb-2">
+                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                        {{form.last_name}}{{form.first_name}}{{form.middle_name}}
+                    </div>
+                    {% for error in form.last_name.errors %}
+                    <div class="text-danger small mb-2">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                    {% for error in form.first_name.errors %}
+                    <div class="text-danger small mb-2">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                    <div class="input-group mb-2">
+                        <span class="input-group-text">@</span>{{form.nickname}}
+                    </div>
+                    {% for error in form.nickname.errors %}
+                    <div class="text-danger small mb-2">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                    <div class="input-group mb-2">
+                        <span class="input-group-text"><i class="bi bi-telephone"></i></span>{{ form.phone }}
+                    </div>
+                    {% for error in form.phone.errors %}
+                    <div class="text-danger small mb-2">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                    <div class="input-group mb-2">
+                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>{{form.email}}
+                    </div>
+                    {% for error in form.email.errors %}
+                    <div class="text-danger small mb-2">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                    <div class="input-group mb-2">
+                        <span class="input-group-text"><i class="bi bi-person-bounding-box"></i></span>{{form.status}}
+                    </div>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text"><i class="bi bi-key"></i></span>{{form.password1}}
+                    </div>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text"><i class="bi bi-key-fill"></i></span>{{form.password2}}
+                    </div>
+                    {% for error in form.password2.errors %}
+                    <div class="text-danger small mb-2">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-outline-primary col-12">Зарегистрироваться</button>
+                </div>
+            </div>
+            <div class="card shadow">
+                <div class="card-body text-center">
+                    Есть аккаунт? <a href="{% url 'UserLogin' %}" class="text-decoration-none">Войдите!</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

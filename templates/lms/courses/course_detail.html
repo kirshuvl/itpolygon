@@ -1,0 +1,93 @@
+{% extends 'lms/dashboard.html' %}
+{% block page_title %}{{ page_title }}{% endblock %}
+{% block breadcrumb %}
+<div class="card shadow mb-2">
+    <div class="card-body small">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb m-0">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'UserProfile' %}" class="text-decoration-none">Аккаунт</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{% url 'UserCoursesList' %}" class="text-decoration-none">Мои курсы</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    {{ course.title }}
+                </li>
+            </ol>
+        </nav>
+    </div>
+</div>
+{% endblock %}
+{% load courses_tags %}
+{% block left_sidebar %}
+<div class="d-none d-md-block col-3">
+    <div class="card shadow">
+        <div class="card-body">
+            <img src="{{ course.icon.url }}" class="col-12 rounded bg-light" alt="">
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block main_content %}
+<div class="col-12 col-md-9">
+    <div class="card shadow">
+        <div class="card-header bg-transparent p-3">
+            <div class="row">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="m-0">
+                            <i class="bi bi-ui-checks-grid me-3"></i>{{ course.title.capitalize }}
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            {% for topic in course.topics.all|dictsort:"number" %}
+            <div class="card mb-2" data-bs-toggle="collapse" href="#collapse{{ topic.slug }}" role="button" aria-expanded="false" aria-controls="collapse{{ topic.slug }}">
+                <div class="card-body p-2">
+                    <div class="row">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <span class="badge bg-secondary p-2 me-2"><i class="bi bi-{{ forloop.counter }}-square"></i></span>{{ topic.title }}
+                            </div>
+                            <div>
+                                <span class="small text-secondary me-2">Уроков: {{ topic.lessons.count }}</span>
+                                <span class="badge  {% topic_get_color topic user %} p-2"><i class="bi bi-check-square"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="collapse show" id="collapse{{ topic.slug }}">{% comment %}{% if not topic|is_user_enroll_topic:user %}show{% endif %}{% endcomment %}
+                {% for lesson in topic.lessons.all|dictsort:"number" %}
+                <div class="card offset-1 mb-2">
+                    <div class="card-body p-2">
+                        <div class="row">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <a href="{{ lesson.get_absolute_url }}" class="stretched-link text-decoration-none">
+                                        <span class="badge bg-secondary p-2 me-2"><i class="bi bi-{{ forloop.counter }}-square"></i></span>{{ lesson.title }}
+                                    </a>
+                                </div>
+                                <div>
+                                    <span class="badge {% lesson_get_color lesson user %} p-2"><i class="bi bi-check-square"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="card offset-1 mb-2">
+                    <div class="card-body p-2 text-danger">
+                        К сожалению, уроков в этой теме нет :(
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

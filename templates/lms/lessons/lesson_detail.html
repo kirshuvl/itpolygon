@@ -1,0 +1,61 @@
+{% extends 'include/base.html' %}
+{% block page_title %}{{ page_title }}{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="card shadow mb-2">
+        <div class="card-body small">
+            <div class="row">
+                <div class="d-flex justify-content-between">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'UserProfile' %}" class="text-decoration-none">Аккаунт</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'UserCoursesList' %}" class="text-decoration-none">Мои курсы</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'CourseDetail' lesson.topic.course.slug %}" class="text-decoration-none">{{ lesson.topic.course.title }}</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                {{ lesson.topic.title }}
+                            </li>
+                            <li class="breadcrumb-item active">
+                                {{ lesson.title }}
+                            </li>
+                        </ol>
+                    </nav>
+                    <div>
+                        <a class="text-decoration-none" data-bs-toggle="collapse" href="#StepCollapse" role="button" aria-expanded="false" aria-controls="StepCollapse">Шаги урока</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card shadow mb-2 collapse" id="StepCollapse">
+        <div class="card-body">
+            asdasd
+        </div>
+    </div>
+    <div class="card shadow mb-2">
+        <div class="card-header bg-transparent p-3">
+            <div class="row">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="m-0">
+                            <i class="bi bi-ui-checks-grid me-3"></i>{{ lesson.title }}
+                        </h4>
+                    </div>
+                    <div>
+                        {% get_steps steps user %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            {{ lesson.description }}
+        </div>
+    </div>
+    {% lesson_next_step lesson steps user %}
+</div>
+{% endblock %}

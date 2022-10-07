@@ -1,0 +1,54 @@
+{% extends 'include/base.html' %}
+{% block body %}
+<div class="container">
+    {% block breadcrumb %}
+    {% endblock %}
+    {% block user_info %}
+    <div class="col-12 mb-2">
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="row gx-2">
+                    <div class="col-1 d-none d-lg-block">
+                        <img src="{{ user.icon.url }}" class="img-fluid rounded float-start" alt="..." />
+                    </div>
+                    <div class="col-11">
+                        <h3>
+                            Привет, {{ user.first_name }}!
+                            <div class="me-3">{% block user_type %}{% endblock %}</div>
+                        </h3>
+                        <div class="row">
+                            <div class="col"><i class="bi bi-gem me-2"></i>{{ user.coin }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    <div class="row g-2">
+        {% block left_sidebar %}
+        <div class="col-lg-3">
+            <div class="card shadow">
+                <div class="card-body">
+                    {% with request.resolver_match.url_name as url_name %}
+                    <ul class="nav nav-pills flex-column">
+                        <li class="nav-item mb-1">
+                            <a href="{% url 'UserProfile' %}" class="nav-link {% if url_name == 'UserProfile' or url_name == 'UserProfileUpdate' %}active{% endif %}"><i class="bi bi-person me-3"></i>Мой профиль</a>
+                        </li>
+                        <li class="nav-item mb-1">
+                            <a href="{% url 'UserCoursesList' %}" class="nav-link {% if url_name == 'UserCoursesList'%}active{% endif %}"><i class="bi bi-ui-checks-grid me-3"></i>Мои курсы</a>
+                        </li>
+                        <li class="nav-item mb-1">
+                            <a href="{% url 'UserAchievementsList' %}" class="nav-link {% if url_name == 'UserAchievementsList'%}active{% endif %}"><i class="bi bi-gem me-3"></i>Мои достижения</a>
+                        </li>
+                    </ul>
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+        {% endblock %} {% block main_content %}
+        <div class="col-lg-9">Вы не заполнили шаблон</div>
+        {% endblock %}
+    </div>
+</div>
+{% endblock %}

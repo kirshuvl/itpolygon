@@ -1,0 +1,114 @@
+{% extends 'lms/dashboard.html' %}
+{% block page_title %}{{ page_title }}{% endblock %}
+{% block breadcrumb %}
+<div class="card shadow mb-2">
+    <div class="card-body small">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb m-0">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'UserProfile' %}" class="text-decoration-none">Аккаунт</a>
+                </li>
+                <li class="breadcrumb-item ">
+                    <a href="{% url 'UserProfile' %}" class="text-decoration-none">Мой профиль</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    Редактировать
+                </li>
+            </ol>
+        </nav>
+    </div>
+</div>
+{% endblock %}
+{% block main_content %}
+<div class="col-lg-9">
+    <div class="card">
+        <div class="card-header bg-transparent p-3">
+            <div class="row">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="m-0"><i class="bi bi-person me-3"></i><a href="{% url 'UserProfile' %}" class="text-decoration-none">Мой профиль</a> / Редактировать</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label class="form-label">Фамилия Имя Отчество</label>
+                <div class="input-group mb-2">
+                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                    {{ form.last_name }}
+                    {{ form.first_name }}
+                    {{ form.middle_name }}
+                </div>
+                {% for error in form.last_name.errors %}
+                <div class="text-danger small mb-2">
+                    {{ error }}
+                </div>
+                {% endfor %}
+                {% for error in form.first_name.errors %}
+                <div class="text-danger small mb-2">
+                    {{ error }}
+                </div>
+                {% endfor %}
+                <label class="form-label">Никнейм</label>
+                <div class="input-group mb-2">
+                    <span class="input-group-text">@</span>{{ form.nickname }}
+                </div>
+                {% for error in form.nickname.errors %}
+                <div class="text-danger small mb-2">
+                    {{ error }}
+                </div>
+                {% endfor %}
+                <label class="form-label">Номер школы</label>
+                <div class="input-group mb-2">
+                    <span class="input-group-text"><i class="bi bi-building"></i></span>
+                    {{ form.school }}
+                </div>
+                <label class="form-label">Телефон</label>
+                <div class="input-group mb-2">
+                    <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                    {{ form.phone }}
+                </div>
+                {% for error in form.phone.errors %}
+                <div class="text-danger small mb-2">
+                    {{ error }}
+                </div>
+                {% endfor %}
+                <label class="form-label">Электронная почта</label>
+                <div class="input-group mb-2">
+                    <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                    {{ form.email }}
+                </div>
+                {% for error in form.email.errors %}
+                <div class="text-danger small mb-2">
+                    {{ error }}
+                </div>
+                {% endfor %}
+                <label class="form-label">Биография</label>
+                <div class="input-group mb-2">
+                    {{ form.bio }}
+                </div>
+                {% for error in form.bio.errors %}
+                <div class="text-danger small mb-2">
+                    {{ error }}
+                </div>
+                {% endfor %}
+                <label class="form-label">Иконка</label>
+                <div class="input-group mb-2">
+                    {{ form.icon }}
+                </div>
+                {% for error in form.icon.errors %}
+                <div class="text-danger small mb-2">
+                    {{ error }}
+                </div>
+                {% endfor %}
+                <div class="btn-group col-12">
+                    <a href="{% url 'UserProfile' %}" class="btn btn-secondary col-12">Отмена</a>
+                    <button type="submit" class="btn btn-primary col-12">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'lms/steps/step_base.html' %}
+{% block page_title %}{{ page_title }}{% endblock %}
+{% block step_body %}
+
+<div class="card mb-4">
+    <div class="card-header bg-transparent px-3">
+        Доступно попыток: {{ step.num_attempts }}
+    </div>
+    <div class="card-body">
+        {{ step.description }}
+    </div>
+</div>
+
+
+{% if user|user_has_right_answer:attempts %}
+<div class="card">
+    <div class="card-body text-success">
+        Ты уже ответил верно на этот вопрос!
+    </div>
+</div>
+{% elif attempts.count < step.num_attempts %} <form method="post">
+    {% csrf_token %}
+    <div class="input-group">
+        <span class="input-group-text p-2">Ответ:</span>
+        {{ form.user_answer }}
+        <button type="submit" class="btn btn-outline-secondary p-2">Отправить</button>
+    </div>
+    </form>
+
+    {% else %}
+
+    <div class="card">
+        <div class="card-body text-danger">
+            К сожалению, попытки закончились :(
+        </div>
+    </div>
+
+    {% endif %}
+
+    {% if attempts %}
+
+    <div class="card my-2">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-3 offset-1 text-center border-start border-end">
+                    Ваш ответ
+                </div>
+                <div class="col-3 border-end text-center">
+                    Дата ответа
+                </div>
+            </div>
+        </div>
+    </div>
+    {% for attempt in attempts %}
+    <div class="card mb-1">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-1 text-center border-end">
+                    {% if attempt.is_correct %}
+                    <span class="badge bg-success opacity-50 p-2 rounded"><i class="bi bi-check-square"></i></span>
+                    {% else %}
+                    <span class="badge bg-danger opacity-50 p-2 rounded"><i class="bi bi-x-square"></i></span>
+                    {% endif %}
+                </div>
+                <div class="col-3 text-center border-end">
+                    {{ attempt.user_answer }}
+                </div>
+                <div class="col-3 text-center border-end">
+                    {{ attempt.date|date:'d.m.Y' }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endblock %}

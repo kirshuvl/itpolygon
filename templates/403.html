@@ -1,0 +1,16 @@
+{% extends 'include/base.html' %}
+{% load static %}
+{% block page_title %}Страница не найдена{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row gx-4 align-items-center">
+        <div class="col-12 col-md-7">
+            <h1 class="mb-4">Упс. 403 ошибка</h1>
+            Вам запрещен доступ на эту страницу. Просто перейдите на <a href="{% url 'HomePage' %}" class="text-decoration-none">главную</a>
+        </div>
+        <div class="col-12 col-md-5">
+            <img src="{% static 'main/403.png' %}" alt="" class="rounded col-12 img-fluid">
+        </div>
+    </div>
+</div>
+{% endblock %}

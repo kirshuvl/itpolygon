@@ -1,0 +1,132 @@
+{% extends 'crm/dashboard.html' %}
+{% block breadcrumb %}
+<div class="card shadow mb-2">
+    <div class="card-body small">
+        <nav aria-label="breadcrumb ">
+            <ol class="breadcrumb m-0 ">
+                <li class="breadcrumb-item "><a href="{% url 'HomePage' %}" class="text-decoration-none">Главная</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'CRMDashboard' %}" class="text-decoration-none">CRM</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'LeadAllList' %}" class="text-decoration-none">Все записи на курсы</a></li>
+                <li class="breadcrumb-item active">Просмотр заявки</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+{% endblock %}
+{% block main_content %}
+<div class="card shadow mb-2">
+    <div class="card-header bg-transparent p-3">
+        <div class="row">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h4 class="m-0">
+                        <i class="bi bi-airplane me-3"></i>Заявка № {{ lead.pk }}
+                    </h4>
+                </div>
+                <div>
+                    <span class="badge bg-secondary opacity-50 p-2">{{ lead.status }}</span>
+                    <a href="{% url 'LeadUpdate' lead.pk %}" class="text-decoration-none">
+                        <span class="badge bg-secondary opacity-50 p-2"><i class="bi bi-pencil me-2"></i>Редактировать заявку</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <label class="form-label">Родитель</label>
+        <div class="input-group mb-2">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <div class="form-control">{{ lead.parent_last_name }}</div>
+            <div class="form-control">{{ lead.parent_first_name }}</div>
+            <div class="form-control">{{ lead.parent_middle_name }}</div>
+        </div>
+        <label class="form-label">Ребенок</label>
+        <div class="input-group mb-2">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <div class="form-control">{{ lead.child_last_name }}</div>
+            <div class="form-control">{{ lead.child_first_name }}</div>
+            <div class="form-control">{{ lead.child_middle_name }}</div>
+        </div>
+        <div class="row gx-2 align-items-bottom">
+            <div class="col-4">
+                <label class="form-label">Контактные данные</label>
+                <div class="input-group mb-2">
+                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                    <div class="form-control">{{ lead.phone }}</div>
+                </div>
+            </div>
+            <div class="col-4">
+                <label class="form-label">Email</label>
+                <div class="input-group mb-2">
+                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                    <div class="form-control">{{ lead.email }}</div>
+                </div>
+            </div>
+            {% if lead.promocode %}
+            <div class="col-4">
+                <label class="form-label">Промокод</label>
+                <div class="input-group mb-2">
+                    <div class="form-control is-valid">{{ lead.promocode }}</div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        <label class="form-label">Дополнительная информация</label>
+        <div class="input-group mb-2">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <div class="form-control">{{ lead.info }}</div>
+        </div>
+        <label class="form-label">Курс</label>
+        <div class="input-group mb-2">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <div class="form-control"><a href="{% url 'LandingPage' lead.course.slug %}" class="text-decoration-none">{{ lead.course }}</a></div>
+            <div class="form-control"><span class="text-primary">Класс:</span> {{ lead.child_class }}</div>
+        </div>
+    </div>
+</div>
+<div class="card shadow">
+    <div class="card-header bg-transparent p-3">
+        <div class="row">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h4 class="m-0">
+                        <i class="bi bi-airplane me-3"></i>Тикеты
+                    </h4>
+                </div>
+                <div>
+                    <a href="{% url 'LeadCommentCreate' lead.pk %}">
+                        <span class="badge bg-success opacity-50 p-2"><i class="bi bi-plus-square me-2"></i>Добавить тикет</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        {% for comment in lead.leadcomments.all|dictsortreversed:'date_create'%}
+        <div class="card shadow {% if not forloop.last %}mb-2{% endif %}">
+            <div class="card-header bg-transparent p-2">
+                <div class="row">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <span class="badge bg-secondary opacity-50 p-2 me-1">{{ comment.date_create|date:'d.m.Y H:i' }}</span><span class="badge bg-secondary opacity-50 p-2 me-2"><i class="bi bi-person"></i></span>{{ comment.author.first_name }} {{ comment.author.last_name }}
+                        </div>
+                        <div>
+                            <span class="badge bg-secondary opacity-50 p-2">{{ comment.status }}</span>
+                            <a href="{% url 'LeadCommentUpdate' lead.pk comment.pk %}" class="text-decoration-none">
+                                <span class="badge bg-secondary opacity-50 p-2"><i class="bi bi-pencil"></i></span>
+                            </a>
+                            <a href="{% url 'LeadCommentDelete' lead.pk comment.pk %}" class="text-decoration-none">
+                                <span class="badge bg-danger opacity-50 p-2"><i class="bi bi-trash"></i></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                {{ comment.text }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'include/base.html' %}
+{% block page_title %}Вход - IT Полигон{% endblock %}
+{% block body %}
+<form method="post">
+  {% csrf_token %}
+  <div class="container">
+    <div class="col-lg-6 mx-auto">
+      <div class="card shadow mb-2">
+        <div class="card-header bg-transparent p-3">
+          <h4 class="m-0">Войти на сайт</h4>
+        </div>
+        <div class="card-body">
+          <div class="input-group mb-2">
+            <span class="input-group-text"><i class="bi bi-envelope"></i></span>{{ form.username }}
+          </div>
+          {% for error in form.username.errors %}
+          <div class="text-danger small mb-2">
+            {{ error }}
+          </div>
+          {% endfor %}
+          <div class="input-group mb-2">
+            <span class="input-group-text"><i class="bi bi-key"></i></span>{{ form.password }}
+          </div>
+          {% for error in form.password.errors %}
+          <div class="text-danger small mb-2">
+            {{ error }}
+          </div>
+          {% endfor %}
+          {% if form.errors %}
+          <div class="mb-2 small text-end">
+            <a href="{% url 'UserResetPassword' %}" class="text-decoration-none">Не помню пароль</a>
+          </div>
+          {% endif %}
+          <button type="submit" class="btn btn-outline-primary col-12">Войти</button>
+        </div>
+      </div>
+      <div class="card shadow">
+        <div class="card-body text-center">
+          Нет аккаунта? <a href="{% url 'UserRegistration' %}" class="text-decoration-none">Зарегистрируйтесь!</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}

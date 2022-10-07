@@ -1,0 +1,57 @@
+{% extends 'crm/dashboard.html' %}
+{% block breadcrumb %}
+<div class="card shadow mb-2">
+    <div class="card-body small">
+        <nav aria-label="breadcrumb ">
+            <ol class="breadcrumb m-0 ">
+                <li class="breadcrumb-item "><a href="{% url 'HomePage' %}" class="text-decoration-none">Главная</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'CRMDashboard' %}" class="text-decoration-none">CRM</a></li>
+                <li class="breadcrumb-item active">{{ page_title }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+{% endblock %}
+{% block main_content %}
+<div class="card shadow">
+    <div class="card-header bg-transparent p-3">
+        <div class="row">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h4 class="m-0">
+                        <i class="bi bi-airplane me-3"></i>{{ page_title }}
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="card mb-2">
+            <div class="card-body py-1">
+                <div class="row">
+                    <div class="col-1 border-end text-center">#</div>
+                    <div class="col-2 border-end text-center">Дата</div>
+                    <div class="col-3 border-end text-center">ФИО Родителя</div>
+                    <div class="col-2 border-end text-center">Телефон</div>
+                    <div class="col-2 border-end text-center">Email</div>
+                    <div class="col-2 text-center">Статус</div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            {% for feedback in feedbacks %}
+            <div class="card-body {% if not forloop.last %}border-bottom{% endif %}">
+                <div class="row align-items-center text-center">
+                    <div class="col-1 border-end">{{ forloop.counter }}</div>
+                    <div class="col-2 border-end">{{ feedback.date_create|date:'d.m.Y H:i'}}</div>
+                    <div class="col-3 border-end">{{ feedback.parent_last_name }} {{ feedback.parent_first_name }} {{ feedback.parent_middle_name }}</div>
+                    <div class="col-2 border-end">{{ feedback.phone }}</div>
+                    <div class="col-2 border-end">{{ feedback.email }}</div>
+                    <div class="col-2"><span class="badge bg-success p-2"><i class="bi bi-check-square me-2"></i>{{ feedback.status }}</span></div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

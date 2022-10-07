@@ -1,0 +1,29 @@
+<!doctype html>
+{% load static %}
+{% block overflow %}<html lang="en" style="overflow-y: scroll;">{% endblock %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block page_title %}Вы не указали заголовок страницы{% endblock %}</title>
+    <link href="{% static 'bootstrap/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="shortcut icon" type="image/png" href="{% static 'main/favicon.ico' %}" />
+</head>
+
+<body>
+    {% include 'include/_navbar.html' %}
+    {% block body %}
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                Вы не заполнили страницу контентом :( Новым пользователям не пугаться
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    {% include 'include/_footer.html' %}
+    <script src="{% static 'bootstrap/bootstrap.bundle.min.js' %}"></script>
+</body>
+
+</html>

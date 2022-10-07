@@ -1,0 +1,22 @@
+{% extends 'include/base.html' %}
+{% block page_title %}{{ page_title }}{% endblock %}
+{% block body %}
+<div class="container">
+  <div class="col-lg-6 mx-auto">
+    <div class="card shadow mb-2">
+      <div class="card-header bg-transparent p-3">
+        <h4 class="m-0">Забыли пароль?</h4>
+      </div>
+      <div class="card-body">
+        Напишите преподавателю, он создаст вам новый пароль. Восстановление пароля на данный момент не работает. Ремонтирую :(
+      </div>
+    </div>
+    <div class="card shadow">
+      <div class="card-body text-center">
+        Нет аккаунта? <a href="{% url 'UserRegistration' %}" class="text-decoration-none">Зарегистрируйтесь!</a>
+        Есть аккаунт? <a href="{% url 'UserLogin' %}" class="text-decoration-none">Войдите!</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
