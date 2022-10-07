@@ -6,4 +6,5 @@ media/*
 **/migrations/**
 !**/migrations
 !**/migrations/__init__.py
+settings_local.py
 db.sqlite3
