@@ -2,7 +2,15 @@ from atexit import register
 from django.contrib import admin
 from polymorphic.admin import PolymorphicParentModelAdmin, PolymorphicChildModelFilter, PolymorphicChildModelAdmin
 from lms.steps.models import Step, TextStep, VideoStep, QuestionStep, UserAnswerForQuestionStep, StepEnroll
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
+from django import forms
 
+class TextStepAdminForm(forms.ModelForm):
+    text = forms.CharField(widget=CKEditorUploadingWidget())
+
+    class Meta:
+        model = TextStep
+        fields = '__all__'
 
 class StepAdmin(PolymorphicParentModelAdmin):
     base_model = Step
@@ -14,6 +22,7 @@ class StepAdmin(PolymorphicParentModelAdmin):
 
 
 class TextStepAdmin(PolymorphicChildModelAdmin):
+    form = TextStepAdminForm
     base_model = TextStep
     list_display = ('id', 'title', 'slug', 'is_published', 'lesson')
     list_display_links = ('id', 'title', 'slug', 'is_published', 'lesson')
