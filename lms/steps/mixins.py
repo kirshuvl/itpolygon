@@ -35,9 +35,9 @@ class BaseStepMixin(DetailView):
         if step_enroll.status == 'PR' or step_enroll.status == 'RP':
             step_enroll.status = 'OK'
             StepAchievement.objects.get_or_create(user=request.user,
-            points=step_enroll.step.points,
-            for_what=step_enroll.step,
-            )
+                                                  points=step_enroll.step.points,
+                                                  for_what=step_enroll.step,
+                                                  )
             request.user.coin += step_enroll.step.points
             request.user.save()
             step_enroll.save()

@@ -78,6 +78,24 @@ class Lesson(models.Model):
             },
         )
 
+    def get_statistics(self):
+        return reverse(
+            'LessonStatistics',
+            kwargs={
+                'lesson_slug': self.slug,
+            },
+        )
+
+    def end_lesson(self):
+        return reverse(
+            'UserEndLesson',
+            kwargs={
+                'course_slug': self.topic.course.slug,
+                'topic_slug': self.topic.slug,
+                'lesson_slug': self.slug,
+            },
+        )
+
 
 class LessonEnroll(models.Model):
     lesson = models.ForeignKey(

@@ -1,0 +1,84 @@
+{% extends 'include/base.html' %}
+{% block page_title %}{{ page_title }}{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="card shadow mb-2">
+        <div class="card-body small">
+            <div class="row">
+                <div class="d-flex justify-content-between">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'UserProfile' %}" class="text-decoration-none">Аккаунт</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'UserCoursesList' %}" class="text-decoration-none">Мои курсы</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'CourseDetail' lesson.topic.course.slug %}" class="text-decoration-none">{{ lesson.topic.course.title }}</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                {{ lesson.topic.title }}
+                            </li>
+                            <li class="breadcrumb-item active">
+                                {{ lesson.title }}
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card shadow mb-2">
+        <div class="card-header bg-transparent p-3">
+            <div class="row">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="m-0">
+                            <i class="bi bi-ui-checks-grid me-3"></i>Статистика урока: {{ lesson.title }}
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="card mb-1">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-3 border-end">
+                            <span class="badge bg-secondary p-2 rounded me-2"><i class="bi bi-people"></i></span>Фамилия Имя
+                        </div>
+                        <div class="col-1 border-end text-center">
+                            <span class="badge bg-secondary p-2"><i class="bi bi-check-square"></i></span>
+                        </div>
+                        <div class="col-8">
+                            {% for step in steps %}
+                            <span class="badge bg-secondary p-2 rounded"><i class="bi {{ step.step_icon_class }}"></i></span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% for user in all_users %}
+            <div class="card mb-1">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-3 border-end">
+                            <span class="badge bg-secondary p-2 rounded me-2"><i class="bi bi-person"></i></span>{{ user.last_name }} {{ user.first_name }}
+                        </div>
+                        <div class="col-1 border-end text-center">
+                            <span class="badge bg-{% lesson_get_color lesson user %} p-2"><i class="bi bi-check-square"></i></span>
+                        </div>
+                        <div class="col-8">
+                            {% for step in steps %}
+                            <span class="badge bg-{% step_color step user %} p-2 rounded"><i class="bi {{ step.step_icon_class }}"></i></span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

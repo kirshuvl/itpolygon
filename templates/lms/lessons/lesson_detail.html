@@ -25,16 +25,8 @@
                             </li>
                         </ol>
                     </nav>
-                    <div>
-                        <a class="text-decoration-none" data-bs-toggle="collapse" href="#StepCollapse" role="button" aria-expanded="false" aria-controls="StepCollapse">Шаги урока</a>
-                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="card shadow mb-2 collapse" id="StepCollapse">
-        <div class="card-body">
-            asdasd
         </div>
     </div>
     <div class="card shadow mb-2">
@@ -47,6 +39,11 @@
                         </h4>
                     </div>
                     <div>
+                        {% if user.is_superuser %}
+                        <a href="{{ lesson.get_statistics }}" class="text-decoration-none" target="_blank">
+                            <span class="badge bg-secondary p-2 rounded"><i class="bi bi bi-percent"></i></span>
+                        </a>
+                        {% endif %}
                         {% get_steps steps user %}
                     </div>
                 </div>
@@ -56,6 +53,9 @@
             {{ lesson.description }}
         </div>
     </div>
-    {% lesson_next_step lesson steps user %}
+    <div class="row gx-2">
+        {% lesson_next_step lesson steps user %}
+        {% is_user_end_lesson lesson steps user %}
+    </div>
 </div>
 {% endblock %}

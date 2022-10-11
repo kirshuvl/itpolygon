@@ -51,9 +51,9 @@ class QuestionStepDetail(BaseStepMixin, CreateView):
             form.instance.is_correct = True
             step_enroll.status = 'OK'
             StepAchievement.objects.get_or_create(user=self.request.user,
-            points=step_enroll.step.points,
-            for_what=step_enroll.step,
-            )
+                                                  points=step_enroll.step.points,
+                                                  for_what=step_enroll.step,
+                                                  )
             self.request.user.coin += step_enroll.step.points
             self.request.user.save()
         else:
