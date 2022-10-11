@@ -36,9 +36,7 @@ def lesson_next_step(lesson, steps, user):
         text = 'Начать урок'
     elif lesson.type == 'QZ':
         text = 'Начать тест'
-    button = '<a href="{}" class="btn btn-outline-secondary shadow col-12">{}</a>'.format(
-        steps.first().get_absolute_url(), text)
-    return mark_safe(button)
+    return mark_safe(button(steps.first().get_absolute_url(), 'secondary', text))
 
 
 @register.simple_tag
@@ -145,12 +143,12 @@ def topic_get_color(topic, user):
     for enroll in topic.topics_enrolls.all():
         if enroll.user == user:
             if enroll.status == 'OK':
-                return 'bg-success'
+                return 'success'
             if enroll.status == 'PR':
-                return 'bg-primary'
+                return 'primary'
             elif enroll.status == 'RP':
-                return 'bg-warning'
-    return 'bg-secondary'
+                return 'warning'
+    return 'secondary'
 
 
 @register.simple_tag
@@ -158,11 +156,28 @@ def lesson_get_color(lesson, user):
     for enroll in lesson.lessons_enrolls.all():
         if enroll.user == user:
             if enroll.status == 'OK':
-                return 'bg-success'
+                return 'success'
             if enroll.status == 'PR':
-                return 'bg-primary'
+                return 'primary'
             elif enroll.status == 'RP':
-                return 'bg-warning'
+                return 'warning'
             elif enroll.status == 'WA':
-                return 'bg-danger'
-    return 'bg-secondary'
+                return 'danger'
+    return 'secondary'
+
+
+@register.simple_tag
+def is_user_end_lesson(lesson, steps, user):
+    for enroll in lesson.lessons_enrolls.all():
+        if enroll.user == user:
+            if enroll.status == 'OK':
+                return mark_safe('')
+    ok = True
+    for step in steps:
+        for enroll in step.steps_enrolls.all():
+            if enroll.user == user and enroll.status != 'OK':
+                ok = False
+                break
+    if ok:
+        return button(lesson.end_lesson(), 'success', 'Закончить урок!')
+    return button('', 'secondary', 'Есть ошибки или непройденные шаги')

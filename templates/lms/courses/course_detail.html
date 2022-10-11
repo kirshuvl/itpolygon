@@ -54,7 +54,7 @@
                             </div>
                             <div>
                                 <span class="small text-secondary me-2">Уроков: {{ topic.lessons.count }}</span>
-                                <span class="badge  {% topic_get_color topic user %} p-2"><i class="bi bi-check-square"></i></span>
+                                <span class="badge bg-{% topic_get_color topic user %} p-2"><i class="bi bi-check-square"></i></span>
                             </div>
                         </div>
                     </div>
@@ -72,7 +72,7 @@
                                     </a>
                                 </div>
                                 <div>
-                                    <span class="badge {% lesson_get_color lesson user %} p-2"><i class="bi bi-check-square"></i></span>
+                                    <span class="badge bg-{% lesson_get_color lesson user %} p-2"><i class="bi bi-check-square"></i></span>
                                 </div>
                             </div>
                         </div>
