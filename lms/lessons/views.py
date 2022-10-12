@@ -1,3 +1,4 @@
+import imp
 from django.shortcuts import render
 from django.views.generic import DetailView
 from django.db.models import Q
@@ -5,6 +6,7 @@ from lms.achievements.models import LessonAchievement
 from lms.lessons.models import Lesson, LessonEnroll
 from lms.steps.models import Step
 from django.http import HttpResponseRedirect
+from lms.topics.models import TopicEnroll
 
 
 class LessonDetail(DetailView):
@@ -18,6 +20,7 @@ class LessonDetail(DetailView):
         context['page_title'] = self.object.title
         context = self.get_steps(context)
         self.user_start_lesson()
+        self.user_start_topic()
 
         return context
 
@@ -40,6 +43,10 @@ class LessonDetail(DetailView):
             lesson=self.object,
             user=self.request.user
         )
+
+    def user_start_topic(self):
+        topic_enroll = TopicEnroll.objects.get_or_create(topic=self.object.topic,
+                                                         user=self.request.user)
 
     def user_end_lesson(request, course_slug, topic_slug, lesson_slug):
         lesson_enroll = LessonEnroll.objects.get(
