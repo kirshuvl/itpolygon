@@ -16,31 +16,31 @@ class StepAdmin(PolymorphicParentModelAdmin):
     base_model = Step
     child_models = (TextStep, VideoStep)
     list_filter = (PolymorphicChildModelFilter,)
-    list_display = ('id', 'title', 'slug', 'is_published')
-    list_display_links = ('id', 'title', 'slug', 'is_published')
-    search_fields = ('id', 'title', 'slug', 'is_published')
+    list_display = ('id', 'title', 'slug', 'is_published', 'points')
+    list_display_links = ('id', 'title', 'slug', 'is_published', 'points')
+    search_fields = ('id', 'title', 'slug', 'is_published', 'points')
 
 
 class TextStepAdmin(PolymorphicChildModelAdmin):
     form = TextStepAdminForm
     base_model = TextStep
-    list_display = ('id', 'title', 'slug', 'is_published', 'lesson')
-    list_display_links = ('id', 'title', 'slug', 'is_published', 'lesson')
-    search_fields = ('id', 'title', 'slug', 'is_published', 'lesson')
+    list_display = ('id', 'title', 'slug', 'is_published', 'lesson', 'points')
+    list_display_links = ('id', 'title', 'slug', 'is_published', 'lesson', 'points')
+    search_fields = ('id', 'title', 'slug', 'is_published', 'lesson', 'points')
 
 
 class VideoStepAdmin(PolymorphicChildModelAdmin):
     base_model = VideoStep
-    list_display = ('id', 'title', 'slug', 'is_published')
-    list_display_links = ('id', 'title', 'slug', 'is_published')
-    search_fields = ('id', 'title', 'slug', 'is_published')
+    list_display = ('id', 'title', 'slug', 'is_published', 'points')
+    list_display_links = ('id', 'title', 'slug', 'is_published', 'points')
+    search_fields = ('id', 'title', 'slug', 'is_published', 'points')
 
 
 class QuestionStepAdmin(PolymorphicChildModelAdmin):
     base_model = QuestionStep
-    list_display = ('id', 'title', 'slug', 'is_published')
-    list_display_links = ('id', 'title', 'slug', 'is_published')
-    search_fields = ('id', 'title', 'slug', 'is_published')
+    list_display = ('id', 'title', 'slug', 'is_published', 'points')
+    list_display_links = ('id', 'title', 'slug', 'is_published', 'points')
+    search_fields = ('id', 'title', 'slug', 'is_published', 'points')
 
 
 class UserAnswerForQuestionStepAdmin(admin.ModelAdmin):

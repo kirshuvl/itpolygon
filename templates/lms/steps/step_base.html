@@ -87,11 +87,11 @@
                 </div>
             </div>
         </div>
+        {% block step_body %}
         <div class="card-body">
-            {% block step_body %}
-            Вы не заполнили
-            {% endblock %}
+            Вы не заполнили блок
         </div>
+        {% endblock %}
     </div>
     {% block buttons %}
     <div class="row gx-2">
