@@ -15,5 +15,5 @@ class UserAchievements(ListView):
         return context
 
     def get_queryset(self):
-        return StepAchievement.objects.select_related('for_what').filter(user=self.request.user).order_by('-date_create')
+        return Achievement.objects.filter(user=self.request.user).order_by('-date_create')
 
