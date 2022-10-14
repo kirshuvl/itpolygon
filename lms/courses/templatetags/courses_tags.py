@@ -31,6 +31,21 @@ def get_steps(steps, user):
 
 
 @register.simple_tag
+def get_steps_in_step(steps, user, cur_step):
+    string = ''
+    for step in steps:
+        if step == cur_step:
+            string += '<a href="{}" class="text-decoration-none"><span class="badge bg-{} p-2 rounded border border-5"><i class="bi {}"></i></span></a> '.\
+                format(step.get_absolute_url(), step_color(
+                    step, user), step.step_icon_class())
+        else:
+            string += '<a href="{}" class="text-decoration-none"><span class="badge bg-{} p-2 rounded"><i class="bi {}"></i></span></a> '.\
+                format(step.get_absolute_url(), step_color(
+                    step, user), step.step_icon_class())
+    return mark_safe(string)
+
+
+@register.simple_tag
 def lesson_next_step(lesson, steps, user):
     if lesson.type == 'ST':
         text = 'Начать урок'
