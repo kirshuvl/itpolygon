@@ -45,8 +45,8 @@ class QuestionStepDetail(BaseStepMixin, CreateView):
         form.instance.user_answer = form.cleaned_data['user_answer']
         form.instance.question = QuestionStep.objects.get(
             slug=self.kwargs['step_slug'])
-        step_enroll = StepEnroll.objects.filter(
-            user=self.request.user, step=form.instance.question).first()
+        step_enroll = StepEnroll.objects.get(
+            user=self.request.user, step=form.instance.question)
         if form.cleaned_data['user_answer'] == form.instance.question.answer:
             form.instance.is_correct = True
             step_enroll.status = 'OK'

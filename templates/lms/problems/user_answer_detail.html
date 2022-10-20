@@ -1,0 +1,115 @@
+{% extends 'lms/steps/step_base.html' %}
+{% block page_title %}{{ page_title }}{% endblock %}
+{% block block_breadcrumb %}{% endblock %}
+{% block step_header %}
+<div class="card-header bg-transparent p-3">
+    <div class="row">
+        <div class="d-flex justify-content-between">
+            <div>
+                <h4 class="m-0">
+                    <i class="bi bi-code-square me-3"></i>Посылка ID {{ user_answer.pk }}
+                </h4>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block step_body %}
+<div class="card-body">
+    <div class="card mb-2">
+        <div class="card-body">
+            <pre class="mb-0"><code>{{ user_answer.code }}</code></pre>
+        </div>
+    </div>
+    <div class="card my-2">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-1 text-center border-end">
+                    # теста
+                </div>
+                <div class="col-1 text-center border-end">
+                    ID теста
+                </div>
+                <div class="col-2 text-center border-end">
+                    Время теста
+                </div>
+                <div class="col-2 text-center border-end">
+                    Компилятор
+                </div>
+                <div class="col-2 text-center border-end">
+                    Вердикт
+                </div>
+                <div class="col-1 text-center border-end">
+                    Время
+                </div>
+                <div class="col-1 text-center border-end">
+                    Баллы
+                </div>
+                <div class="col-2 text-center border-end">
+                    Ввод и вывод
+                </div>
+            </div>
+        </div>
+    </div>
+    {% for attempt in user_answer.attempts.all %}
+    <div class="card mb-1">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-1 text-center border-end">
+                    {{ attempt.test.number }}
+                </div>
+                <div class="col-1 text-center border-end">
+                    {{ attempt.pk }}
+                </div>
+                <div class="col-2 text-center border-end">
+                    {{ attempt.date_create|date:'d.m.Y H:i:s' }}
+                </div>
+                <div class="col-2 text-center border-end">
+                    Python
+                </div>
+                <div class="col-2 text-center border-end {% if attempt.verdict == 'OK' %}text-success{% else %}text-danger{% endif %}">
+                    {{ attempt.verdict }}
+                </div>
+                <div class="col-1 text-center border-end">
+                    {{ attempt.duration|point }}
+                </div>
+                <div class="col-1 text-center border-end">
+                    {% if attempt.verdict == 'OK' %}1{% else %}0{% endif %}
+                </div>
+                <div class="col-2 text-center">
+                    <a class="text-decoration-none" data-bs-toggle="collapse" href="#collapse{{ attempt.pk }}" role="button" aria-expanded="false" aria-controls="collapse{{ attempt.pk }}">Развернуть</a>
+                </div>
+            </div>
+        </div>
+        <div class="collapse" id="collapse{{ attempt.pk }}">
+            <div class="card-body border-top">
+                <h5>Ввод</h5>
+                <pre class="mb-0"><code>{{ attempt.test.input }}</code></pre>
+            </div>
+            <div class="card-body border-top">
+                <h5>Вывод</h5>
+                {% if attempt.output != '' %}
+                <pre class="mb-0"><code>{{ attempt.stdout }}</code></pre>
+                {% else %}
+                <pre class="mb-0"><code></code></pre>
+                {% endif %}
+            </div>
+            <div class="card-body border-top">
+                <h5>Правильный ответ</h5>
+                <pre class="mb-0"><code>{{ attempt.test.output }}</code></pre>
+            </div>
+            {% if attempt.error != '' %}
+            <div class="card-body border-top">
+                <h5>Ошибка в коде</h5>
+                <pre class="mb-0"><code>{{ attempt.stderr }}</code></pre>
+            </div>
+            {% endif %}
+            
+        </div>
+    </div>
+
+    {% endfor %}
+</div>
+{% block buttons %}
+{% endblock %}
+{% endblock %}

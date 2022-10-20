@@ -2,7 +2,7 @@
 {% block page_title %}{{ page_title }}{% endblock %}
 {% block step_body %}
 <div class="card-body">
-    <div class="card mb-4">
+    <div class="card mb-2">
         <div class="card-header bg-transparent px-3">
             Доступно попыток: {{ step.num_attempts }}
         </div>
@@ -59,7 +59,7 @@
                         {{ attempt.user_answer }}
                     </div>
                     <div class="col-3 text-center border-end">
-                        {{ attempt.date|date:'d.m.Y' }}
+                        {{ attempt.date_create|date:'d.m.Y H:i:s' }}
                     </div>
                 </div>
             </div>

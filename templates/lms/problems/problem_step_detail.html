@@ -1,0 +1,119 @@
+{% extends 'lms/steps/step_base.html' %}
+{% block page_title %}{{ page_title }}{% endblock %}
+{% block step_body %}
+<div class="card-body">
+    <div class="card mb-2">
+        <div class="card-header bg-transparent px-3">
+            Ограничение времени: {{ step.cputime }} секунда | Ограничение памяти: {{ step.memory }} Мб
+        </div>
+        <div class="card-body border-bottom">
+            <h4>Формат ввода</h4>
+            {{ step.description }}
+        </div>
+        <div class="card-body border-bottom">
+            <h4>Формат ввода</h4>
+            {{ step.input_format }}
+        </div>
+        <div class="card-body">
+            <h4>Формат вывода</h4>
+            {{ step.output_format }}
+        </div>
+    </div>
+    <div class="card my-2">
+        <div class="card-header bg-transparent px-3">
+            <h4 class="mb-0">Пример</h4>
+        </div>
+        {% for test in tests %}
+        <div class="card-body {% if not forloop.last %}border-bottom{% endif %}">
+            <div class="row">
+                <div class="col-4 h-100">
+                    <h6>Ввод</h4>
+                        <pre class="mb-0"><code>{{ test.input }}</code></pre>
+                </div>
+                <div class="col-4 ">
+                    <h6>Вывод</h4>
+                        <pre class="mb-0"><code>{{ test.output }}</code></pre>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="input-group mb-2">
+            <div class="input-group">
+                {{ form.code }}
+                <button type="submit" class="btn btn-outline-secondary">Отправить</button>
+            </div>
+        </div>
+    </form>
+    {% for error in form.user_code.errors %}
+    <div class="text-danger small mb-2">
+        {{ error }}
+    </div>
+    {% endfor %}
+    {% if attempts %}
+    <div class="card my-2">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-1 text-center border-end">
+                    ID
+                </div>
+                <div class="col-2 text-center border-end">
+                    Время посылки
+                </div>
+
+                <div class="col-2 text-center border-end">
+                    Компилятор
+                </div>
+                <div class="col-2 text-center border-end">
+                    Вердикт
+                </div>
+                <div class="col-1 text-center border-end">
+                    Время
+                </div>
+                <div class="col-1 text-center border-end">
+                    Тест
+                </div>
+                <div class="col-1 text-center border-end">
+                    Баллы
+                </div>
+            </div>
+        </div>
+    </div>
+    {% for attempt in attempts %}
+    <div class="card mb-1">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-1 text-center border-end">
+                    {{ attempt.pk }}
+                </div>
+                <div class="col-2 text-center border-end">
+                    {{ attempt.date_create|date:'d.m.Y H:i:s' }}
+                </div>
+
+                <div class="col-2 text-center border-end">
+                    Python
+                </div>
+                <div class="col-2 text-center border-end {% if attempt.verdict == 'OK' %}text-success{% elif attempt.verdict == 'PR' %}{% else %}text-danger{% endif %}">
+                    {% if attempt.verdict == 'PR' %}-{% else %}{{ attempt.verdict }}{% endif %}
+                </div>
+                <div class="col-1 text-center border-end">
+                    {% if attempt.verdict == 'PR' %}-{% else %}{{ attempt.cputime|point }}{% endif %}
+                </div>
+                <div class="col-1 text-center border-end {% if attempt.first_fail_test != 0 %}text-danger{% endif %}">
+                    {% if attempt.first_fail_test == 0 %}-{% else %}{{ attempt.first_fail_test }}{% endif %}
+                </div>
+                <div class="col-1 text-center border-end">
+                    {% if attempt.verdict == 'PR' %}-{% else %}{{ attempt.points }}{% endif %}
+                </div>
+                <div class="col-1 text-center border-end text-danger">
+                    <a href="{{ attempt.get_detail }}" class="text-decoration-none" target="_blank">отчет</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}

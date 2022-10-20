@@ -52,6 +52,7 @@ class Lesson(models.Model):
     LESSON_TYPE = [
         ('ST', 'Обычный урок'),
         ('QZ', 'Урок - тест'),
+        ('CT', 'Контест'),
     ]
     type = models.CharField(
         verbose_name='Тип урока',

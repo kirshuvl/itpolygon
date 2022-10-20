@@ -11,11 +11,9 @@ class BaseStepMixin(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['steps'] = Step.objects.prefetch_related('lesson__topic__course', 'steps_enrolls__user',).\
+        context['steps'] = Step.objects.select_related('lesson__topic__course').prefetch_related('steps_enrolls__user',).\
             filter(is_published=True).\
-            filter(Q(TextStep___lesson=self.object.lesson) |
-                   Q(VideoStep___lesson=self.object.lesson) |
-                   Q(QuestionStep___lesson=self.object.lesson)).\
+            filter(lesson=self.object.lesson).\
             order_by('number')
         context['page_title'] = self.object.title
         context['attempts'] = None

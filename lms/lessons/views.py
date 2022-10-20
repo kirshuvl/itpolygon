@@ -30,9 +30,7 @@ class LessonDetail(DetailView):
             'steps_enrolls__user',
         ).filter(
             is_published=True,
-        ).filter(Q(textstep__lesson=self.object) |
-                 Q(videostep__lesson=self.object) |
-                 Q(questionstep__lesson=self.object),
+        ).filter(lesson=self.object,
                  ).order_by(
             'number',
         )
@@ -83,9 +81,7 @@ class LessonStatistics(DetailView):
             'steps_enrolls__user',
         ).filter(
             is_published=True,
-        ).filter(Q(textstep__lesson=self.object) |
-                 Q(videostep__lesson=self.object) |
-                 Q(questionstep__lesson=self.object),
+        ).filter(lesson=self.object,
                  ).order_by(
             'number',
         )

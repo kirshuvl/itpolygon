@@ -43,6 +43,12 @@ class Step(PolymorphicModel):
         verbose_name='Баллы за пройденный шаг',
         default=0,
     )
+    lesson = models.ForeignKey(
+        Lesson,
+        related_name='steps',
+        verbose_name='Урок',
+        on_delete=models.CASCADE,
+    )
 
     def __str__(self):
         return self.title
@@ -67,12 +73,6 @@ class Step(PolymorphicModel):
 class TextStep(Step):
     text = models.TextField(
         verbose_name='Текст'
-    )
-    lesson = models.ForeignKey(
-        Lesson,
-        related_name='text_steps',
-        verbose_name='Урок',
-        on_delete=models.CASCADE,
     )
 
     class Meta:
@@ -103,12 +103,6 @@ class VideoStep(Step):
         verbose_name='Ссылка на видео',
         max_length=500,
     )
-    lesson = models.ForeignKey(
-        Lesson,
-        related_name='video_steps',
-        verbose_name='Урок',
-        on_delete=models.CASCADE,
-    )
 
     class Meta:
         verbose_name = 'Видео шаг'
@@ -137,12 +131,6 @@ class QuestionStep(Step):
     answer = models.CharField(
         verbose_name='Правильный ответ',
         max_length=250,
-    )
-    lesson = models.ForeignKey(
-        Lesson,
-        related_name='question_steps',
-        verbose_name='Урок',
-        on_delete=models.CASCADE,
     )
     num_attempts = models.IntegerField(
         verbose_name='Количество попыток',
@@ -227,7 +215,7 @@ class StepEnroll(models.Model):
         on_delete=models.CASCADE,
     )
     date_create = models.DateTimeField(
-        auto_now=True,
+        auto_now_add=True,
     )
     date_update = models.DateTimeField(
         auto_now=True,

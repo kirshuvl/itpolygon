@@ -4,6 +4,8 @@ from lms.courses.views import CoursesList, UserCoursesList, CourseDetail
 from lms.lessons.views import LessonDetail, LessonStatistics
 from lms.steps.mixins import BaseStepMixin
 from lms.steps.views import TextStepDetail, VideoStepDetail, QuestionStepDetail
+from lms.problems.views import ProblemStepDetail, UserCodeDetail
+
 
 urlpatterns = [
     path('courses/all',
@@ -26,17 +28,25 @@ urlpatterns = [
          LessonDetail.as_view(),
          name='LessonDetail'
          ),
-    path('courses/<str:course_slug>/<str:topic_slug>/<str:lesson_slug>/<str:step_slug>/text',
+    path('courses/<str:course_slug>/<str:topic_slug>/<str:lesson_slug>/<str:step_slug>/text/',
          TextStepDetail.as_view(),
          name='TextStepDetail'
          ),
-    path('courses/<str:course_slug>/<str:topic_slug>/<str:lesson_slug>/<str:step_slug>/video',
+    path('courses/<str:course_slug>/<str:topic_slug>/<str:lesson_slug>/<str:step_slug>/video/',
          VideoStepDetail.as_view(),
          name='VideoStepDetail'
          ),
-    path('courses/<str:course_slug>/<str:topic_slug>/<str:lesson_slug>/<str:step_slug>/question',
+    path('courses/<str:course_slug>/<str:topic_slug>/<str:lesson_slug>/<str:step_slug>/question/',
          QuestionStepDetail.as_view(),
          name='QuestionStepDetail'
+         ),
+    path('courses/<str:course_slug>/<str:topic_slug>/<str:lesson_slug>/<str:step_slug>/problem/',
+         ProblemStepDetail.as_view(),
+         name='ProblemStepDetail'
+         ),
+    path('submissions/<int:user_answer_pk>/',
+         UserCodeDetail.as_view(),
+         name='UserCodeDetail'
          ),
     path('lessons/statistics/<str:lesson_slug>/',
          LessonStatistics.as_view(),

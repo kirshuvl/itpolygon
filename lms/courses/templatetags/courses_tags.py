@@ -24,7 +24,7 @@ def step_color(step, user):
 def get_steps(steps, user):
     string = ''
     for step in steps:
-        string += '<a href="{}" class="text-decoration-none"><span class="badge bg-{} p-2 rounded"><i class="bi {}"></i></span></a> '.\
+        string += '<a href="{}" class="text-decoration-none"><span class="badge bg-{} p-2 rounded opacity-50"><i class="bi {}"></i></span></a> '.\
             format(step.get_absolute_url(), step_color(
                 step, user), step.step_icon_class())
     return mark_safe(string)
@@ -35,11 +35,11 @@ def get_steps_in_step(steps, user, cur_step):
     string = ''
     for step in steps:
         if step == cur_step:
-            string += '<a href="{}" class="text-decoration-none"><span class="badge bg-{} p-2 rounded border border-5"><i class="bi {}"></i></span></a> '.\
+            string += '<a href="{}" class="text-decoration-none"><span class="badge bg-{} p-2 rounded"><i class="bi {}"></i></span></a> '.\
                 format(step.get_absolute_url(), step_color(
                     step, user), step.step_icon_class())
         else:
-            string += '<a href="{}" class="text-decoration-none"><span class="badge bg-{} p-2 rounded"><i class="bi {}"></i></span></a> '.\
+            string += '<a href="{}" class="text-decoration-none"><span class="badge bg-{} p-2 rounded opacity-50"><i class="bi {}"></i></span></a> '.\
                 format(step.get_absolute_url(), step_color(
                     step, user), step.step_icon_class())
     return mark_safe(string)
@@ -193,6 +193,13 @@ def is_user_end_lesson(lesson, steps, user):
             if enroll.user == user and enroll.status != 'OK':
                 ok = False
                 break
+        else:
+            return mark_safe('')
     if ok:
         return button(lesson.end_lesson(), 'success', 'Закончить урок!')
     return button('', 'secondary', 'Есть ошибки или непройденные шаги')
+
+
+@register.filter
+def point(time):
+    return str(time).replace(',', '.')
