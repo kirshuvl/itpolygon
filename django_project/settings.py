@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'lms.steps.apps.StepsConfig',
     'lms.help.apps.OtherConfig',
     'lms.achievements.apps.AchievementsConfig',
+    'lms.problems.apps.ProblemsConfig',
     'crm.lead.apps.LeadConfig',
     'cms.other.apps.OtherConfig',
     'django_cleanup.apps.CleanupConfig',
@@ -92,6 +93,12 @@ LOGIN_REDIRECT_URL = 'HomePage'
 LOGOUT_REDIRECT_URL = 'HomePage'
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 LOGIN_URL = 'UserLogin'
+
+REDIS_HOST = '0.0.0.0'
+REDIS_PORT = '6379'
+CELERY_BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+CELERY_BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
+CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
 
 try:
     from .settings_local import *
