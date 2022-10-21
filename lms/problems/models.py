@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 from lms.steps.models import Step
 from django.urls import reverse
@@ -19,6 +20,12 @@ class ProblemStep(Step):
         verbose_name='Примечания',
         max_length=10000,
         blank=True,
+    )
+    start_code = models.TextField(
+        verbose_name='Дополнительный код',
+        max_length=10000,
+        blank=True,
+        default='',
     )
     first_sample = models.IntegerField(
         verbose_name='Первый сэмпл',

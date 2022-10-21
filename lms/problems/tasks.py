@@ -13,10 +13,16 @@ def run_user_code(user_answer_pk):
             epicbox.Profile('python', 'python:3.6.5-alpine')
         ]
     )
+   
+    if user_answer.problem.start_code != '':
+        code = user_answer.problem.start_code.replace('{{ user_code }}', user_answer.code)
+    else:
+        code = user_answer.code
+
     files = [
         {
             'name': 'main.py',
-            'content': bytes(user_answer.code, encoding='UTF-8')
+            'content': bytes(code, encoding='UTF-8')
         }
     ]
     limits = {
