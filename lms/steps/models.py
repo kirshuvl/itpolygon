@@ -91,6 +91,17 @@ class TextStep(Step):
             },
         )
 
+    def get_cms_url(self):
+        return reverse(
+            'CMS_TextStepDetail',
+            kwargs={
+                'course_slug': self.lesson.topic.course.slug,
+                'topic_slug': self.lesson.topic.slug,
+                'lesson_slug': self.lesson.slug,
+                'step_slug': self.slug,
+            },
+        )
+
     def step_icon_class(self):
         return 'bi-card-text'
 
@@ -112,6 +123,17 @@ class VideoStep(Step):
     def get_absolute_url(self):
         return reverse(
             'VideoStepDetail',
+            kwargs={
+                'course_slug': self.lesson.topic.course.slug,
+                'topic_slug': self.lesson.topic.slug,
+                'lesson_slug': self.lesson.slug,
+                'step_slug': self.slug,
+            },
+        )
+
+    def get_cms_url(self):
+        return reverse(
+            'CMS_VideoStepDetail',
             kwargs={
                 'course_slug': self.lesson.topic.course.slug,
                 'topic_slug': self.lesson.topic.slug,
@@ -145,6 +167,17 @@ class QuestionStep(Step):
     def get_absolute_url(self):
         return reverse(
             'QuestionStepDetail',
+            kwargs={
+                'course_slug': self.lesson.topic.course.slug,
+                'topic_slug': self.lesson.topic.slug,
+                'lesson_slug': self.lesson.slug,
+                'step_slug': self.slug,
+            },
+        )
+
+    def get_cms_url(self):
+        return reverse(
+            'CMS_QuestionStepDetail',
             kwargs={
                 'course_slug': self.lesson.topic.course.slug,
                 'topic_slug': self.lesson.topic.slug,

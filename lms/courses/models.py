@@ -2,7 +2,7 @@ from PIL import Image
 from django.db import models
 from django.urls import reverse
 from cms.other.models import Category, Tag
-
+from ckeditor_uploader.fields import RichTextUploadingField
 from users.models import CustomUser
 
 
@@ -115,6 +115,14 @@ class Course(models.Model):
 
     def get_object_type(self):
         return 'course'
+    
+    def get_cms_url(self):
+        return reverse(
+            'CMS_CourseDetail',
+            kwargs={
+                'course_slug': self.slug,
+            }
+        )
 
 
 class CourseEnroll(models.Model):

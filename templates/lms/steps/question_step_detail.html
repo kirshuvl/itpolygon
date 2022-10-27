@@ -6,8 +6,8 @@
         <div class="card-header bg-transparent px-3">
             Доступно попыток: {{ step.num_attempts }}
         </div>
-        <div class="card-body">
-            {{ step.description }}
+        <div class="card-body pb-0">
+            {{ step.description|safe }}
         </div>
     </div>
     {% if user|user_has_right_answer:attempts %}

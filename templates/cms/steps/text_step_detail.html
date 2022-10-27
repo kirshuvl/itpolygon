@@ -1,5 +1,5 @@
-{% extends 'lms/steps/step_base.html' %}
-{% block page_title %}{{ page_title }}{% endblock %}
+{% extends 'cms/steps/step_base.html' %}
+{% block page_title %}{{ step.title }}{% endblock %}
 {% block step_body %}
 <div class="card-body pb-0">
     {{ step.description|safe }}

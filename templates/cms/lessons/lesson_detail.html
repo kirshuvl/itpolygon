@@ -1,0 +1,123 @@
+{% extends 'cms/dashboard.html' %}
+{% block page_title %}{{ lesson.title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+    <a href="{% url 'CMS_Dashboard' %}" class="text-decoration-none">CMS</a>
+</li>
+<li class="breadcrumb-item">
+    <a href="{% url 'CMS_UserCoursesList' %}" class="text-decoration-none">Все курсы</a>
+</li>
+<li class="breadcrumb-item">
+    <a href="{% url 'CMS_CourseDetail' lesson.topic.course.slug %}" class="text-decoration-none">{{ lesson.topic.course.title }}</a>
+</li>
+<li class="breadcrumb-item">
+    {{ lesson.topic.title }}
+</li>
+<li class="breadcrumb-item active">
+    {{ lesson.title }}
+</li>
+{% endblock %}
+{% block left_sidebar %}
+<div class="d-none d-md-block mb-2">
+    <div class="card shadow">
+        <div class="card-body">
+            <img src="{{ lesson.topic.course.icon.url }}" class="col-12 rounded bg-light" alt="">
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block right_sidebar %}
+<div class="card shadow">
+    <div class="card-header bg-transparent p-3">
+        <div class="row">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h4 class="m-0"><i class="bi bi-person me-3"></i>{{ lesson.title }}</h4>
+                </div>
+                <div>
+                    <a href="{{ lesson.get_absolute_url }}" class="btn btn-secondary badge p-2 rounded opacity-50" target="_blank">
+                        <i class="bi bi-eye"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="card mb-2">
+            <div class="card-body p-2">
+                <div class="row">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <span class="badge {% if lesson.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50"><i class="bi bi-{{ lesson.number }}-square"></i></span>
+                            {{ lesson.title }}
+                        </div>
+                        <div>
+                            <span class="badge bg-secondary p-2 rounded opacity-50"><i class="bi bi-gem me-2"></i>{{ lesson.points }}</span>
+                            <div class="btn-group dropstart">
+                                <a href="" class="text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="badge bg-secondary p-2 dropdown-toggle opacity-50"><i class="ms-1 bi bi-pencil"></i></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="">Редактировать</a></li>
+                                    <li><a class="dropdown-item" href="">Удалить</a></li>
+                                    <li><a class="dropdown-item" href="">Пересчитать уроки</a></li>
+                                    <li><a class="dropdown-item" href="">Опубликовать</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% for step in lesson.steps.all|dictsort:"number" %}
+        <div class="card offset-1 mb-2">
+            <div class="card-body p-2">
+                <div class="row">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <span class="badge {% if step.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50"><i class="bi bi-{{ step.number }}-square"></i></span>
+                            <a href="{{ step.get_cms_url }}" class="text-decoration-none">
+                                {{ step.title }}
+                            </a>
+                        </div>
+                        <div>
+                            <span class="badge bg-secondary p-2 rounded opacity-50"><i class="bi bi-gem me-2"></i>{{ step.points }}</span>
+                            <div class="btn-group dropstart">
+                                <a href="" class="text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="badge bg-secondary p-2 dropdown-toggle opacity-50"><i class="ms-1 bi bi-pencil"></i></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{{ step.get_cms_url }}">Посмотреть</a></li>
+                                    <li><a class="dropdown-item" href="">Редактировать</a></li>
+                                    <li><a class="dropdown-item" href="">Удалить</a></li>
+                                    <li><a class="dropdown-item" href="">Опубликовать</a></li>
+                                    {% if step.type == 'problem' %}
+                                    <li><a class="dropdown-item" href="">Добавить тесты</a></li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="card offset-1 mb-2">
+            <div class="card-body p-2">
+                <a href="{% url 'CMS_TextStepCreate' lesson.topic.course.slug lesson.topic.slug lesson.slug %}" class="btn btn-primary badge p-2 rounded opacity-50">
+                    <i class="bi bi-plus-square me-2"></i>Текстовый шаг
+                </a>
+                <a href="{% url 'CMS_VideoStepCreate' lesson.topic.course.slug lesson.topic.slug lesson.slug %}" class="btn btn-primary badge p-2 rounded opacity-50">
+                    <i class="bi bi-plus-square me-2"></i>Видео шаг
+                </a>
+                <a href="{% url 'CMS_QuestionStepCreate' lesson.topic.course.slug lesson.topic.slug lesson.slug %}" class="btn btn-primary badge p-2 rounded opacity-50">
+                    <i class="bi bi-plus-square me-2"></i>Вопрос
+                </a>
+                <a href="{% url 'CMS_ProblemStepCreate' lesson.topic.course.slug lesson.topic.slug lesson.slug %}" class="btn btn-primary badge p-2 rounded opacity-50">
+                    <i class="bi bi-plus-square me-2"></i>Задача
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
