@@ -68,6 +68,17 @@ class ProblemStep(Step):
             },
         )
 
+    def get_cms_url(self):
+        return reverse(
+            'CMS_ProblemStepDetail',
+            kwargs={
+                'course_slug': self.lesson.topic.course.slug,
+                'topic_slug': self.lesson.topic.slug,
+                'lesson_slug': self.lesson.slug,
+                'step_slug': self.slug,
+            },
+        )
+
     def step_icon_class(self):
         return 'bi-code-square'
 
@@ -230,8 +241,6 @@ class TestUserAnswer(models.Model):
         auto_now=True,
     )
 
-
-
     exit_code = models.IntegerField(
         verbose_name='exit_code',
     )
@@ -255,9 +264,6 @@ class TestUserAnswer(models.Model):
         verbose_name='oom_killed',
         default=False,
     )
-
-    
-    
 
     class Meta:
         verbose_name = 'Результат теста'

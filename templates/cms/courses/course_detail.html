@@ -1,0 +1,123 @@
+{% extends 'cms/dashboard.html' %}
+{% block page_title %}{{ page_title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+    <a href="{% url 'CMS_Dashboard' %}" class="text-decoration-none">CMS</a>
+</li>
+<li class="breadcrumb-item">
+    <a href="{% url 'CMS_UserCoursesList' %}" class="text-decoration-none">Все курсы</a>
+</li>
+<li class="breadcrumb-item active">
+    {{ course.title }}
+</li>
+{% endblock %}
+
+{% block left_sidebar %}
+<div class="d-none d-md-block mb-2">
+    <div class="card shadow">
+        <div class="card-body">
+            <img src="{{ course.icon.url }}" class="col-12 rounded bg-light" alt="">
+        </div>
+    </div>
+</div>
+<div class="card shadow">
+    <div class="card-body">
+        <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link " id="course-info-tab" data-bs-toggle="pill" data-bs-target="#course-info" type="button" role="tab" aria-controls="course-info" aria-selected="false">О курсе</a>
+            <a class="nav-link active" id="course-content-tab" data-bs-toggle="pill" data-bs-target="#course-content" type="button" role="tab" aria-controls="course-content" aria-selected="true">Контент</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block right_sidebar %}
+<div class="card shadow">
+    <div class="card-header bg-transparent p-3">
+        <div class="row">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h4 class="m-0"><i class="bi bi-person me-3"></i>{{ course.title }}</h4>
+                </div>
+                <div>
+                    <a href="{{ course.get_absolute_url }}" class="btn btn-secondary badge p-2 rounded opacity-50" target="_blank">
+                        <i class="bi bi-eye"></i>
+                    </a>
+                    <a href="{% url 'CMS_TopicCreate' course.slug %}" class="btn btn-success badge p-2 rounded opacity-50">
+                        <i class="bi bi-plus-square me-2"></i>Добавить тему
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="tab-content" id="v-pills-tabContent">
+            <div class="tab-pane fade" id="course-info" role="tabpanel" aria-labelledby="course-info-tab" tabindex="0">111</div>
+            <div class="tab-pane fade show active" id="course-content" role="tabpanel" aria-labelledby="course-content-tab" tabindex="0">
+                {% for topic in course.topics.all|dictsort:"number" %}
+                <div class="card mb-2">
+                    <div class="card-body p-2">
+                        <div class="row">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <span class="badge {% if topic.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50"><i class="bi bi-{{ topic.number }}-square"></i></span>
+                                    {{ topic.title }}
+                                </div>
+                                <div>
+                                    <span class="badge bg-secondary p-2 rounded opacity-50"><i class="bi bi-gem me-2"></i>0</span>
+                                    <div class="btn-group dropstart">
+                                        <a href="" class="text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <span class="badge bg-secondary p-2 dropdown-toggle opacity-50"><i class="ms-1 bi bi-pencil"></i></span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="">Редактировать</a></li>
+                                            <li><a class="dropdown-item" href="">Удалить</a></li>
+                                            <li><a class="dropdown-item" href="">Пересчитать уроки</a></li>
+                                            <li><a class="dropdown-item" href="">Опубликовать</a></li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            <li><a class="dropdown-item" href="{% url 'CMS_LessonCreate' course.slug topic.slug %}">Добавить урок</a></li>
+                                            <li><a class="dropdown-item" href="{% url 'CMS_LessonQuizCreate' course.slug topic.slug %}">Добавить тест</a></li>
+                                            <li><a class="dropdown-item" href="{% url 'CMS_LessonContestCreate' course.slug topic.slug %}">Добавить контест</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% for lesson in topic.lessons.all|dictsort:"number" %}
+                <div class="card offset-1 mb-2">
+                    <div class="card-body p-2">
+                        <div class="row">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <span class="badge {% if lesson.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50"><i class="bi bi-{{ lesson.number }}-square"></i></span>
+                                    <a href="{% url 'CMS_LessonDetail' lesson.topic.course.slug lesson.topic.slug lesson.slug %}" class="text-decoration-none">
+                                        {{ lesson.title }}
+                                    </a>
+                                </div>
+                                <div>
+                                    <span class="badge bg-secondary p-2 rounded opacity-50"><i class="bi bi-gem me-2"></i>{{ lesson.points }}</span>
+                                    <div class="btn-group dropstart">
+                                        <a href="" class="text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <span class="badge bg-secondary p-2 dropdown-toggle opacity-50"><i class="ms-1 bi bi-pencil"></i></span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="">Посмотреть</a></li>
+                                            <li><a class="dropdown-item" href="">Редактировать</a></li>
+                                            <li><a class="dropdown-item" href="">Удалить</a></li>
+                                            <li><a class="dropdown-item" href="">Опубликовать</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

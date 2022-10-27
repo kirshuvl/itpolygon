@@ -2,48 +2,59 @@
 {% block page_title %}{{ page_title }}{% endblock %}
 {% block body %}
 <div class="container">
-    {% block breadcrumb %}
+    {% block block_breadcrumb %}
     <div class="card shadow mb-2">
         <div class="card-body small">
-            <nav aria-label="breadcrumb ">
-                <ol class="breadcrumb m-0 ">
-                    <li class="breadcrumb-item ">
-                        <a href="{% url 'HomePage' %}" class="text-decoration-none">Главная</a>
-                    </li>
-                    <li class="breadcrumb-item active">
-                        CMS
-                    </li>
-                </ol>
-            </nav>
-        </div>
-    </div>
-    {% endblock %}
-    <div class="card shadow mb-2">
-        <div class="card-body">
-            {% with request.resolver_match.url_name as url_name %}
-            <ul class="nav nav-pills flex-row">
-                <li class="nav-item">
-                    <a href="{% url 'CMSDashboard' %}" class="nav-link {% if url_name == 'CMSDashboard' %}active{% endif %}" aria-current="page">CMS</a>
-                </li>
-            </ul>
-            {% endwith %}
-        </div>
-    </div>
-    {% block main_content %}
-    <div class="card shadow">
-        <div class="card-header bg-transparent p-3">
             <div class="row">
                 <div class="d-flex justify-content-between">
-                    <div>
-                        <h4 class="m-0">
-                            <i class="bi bi-body-text me-3"></i>{{ page_title }}
-                        </h4>
-                    </div>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb m-0">
+                            {% block breadcrumb %}
+                            <li class="breadcrumb-item active">
+                                CMS
+                            </li>
+                            {% endblock %}
+                        </ol>
+                    </nav>
                 </div>
             </div>
         </div>
-        <div class="card-body">
-            Главная панель для управления контентом сайта. Тут можно будет строить курс, настраивать категории и многое-многое другое. Сейчас все в разработке.
+    </div>
+    {% endblock %}
+    {% block main_content %}
+    <div class="row g-2">
+        <div class="col-lg-3">
+            {% block left_sidebar %}
+            <div class="card shadow">
+                <div class="card-body">
+                    {% with request.resolver_match.url_name as url_name %}
+                    <ul class="nav nav-pills flex-column">
+                        <li class="nav-item mb-1">
+                            <a href="{% url 'CMS_Dashboard' %}" class="nav-link {% if url_name == 'CMS_Dashboard' %}active{% endif %}"><i class="bi bi-person me-3"></i>Главная</a>
+                        </li>
+                        <li class="nav-item mb-1">
+                            <a href="{% url 'CMS_UserCoursesList' %}" class="nav-link {% if url_name == 'CMS_UserCoursesList' or url_name == 'CMS_CourseCreate' or url_name == 'CMS_CourseUpdate' or url_name == 'CMS_CourseDelete' or url_name == 'CMS_CourseDetail' %}active{% endif %}"><i class="bi bi-ui-checks-grid me-3"></i>Мои курсы</a>
+                        </li>
+                    </ul>
+                    <hr>
+                    <ul class="nav nav-pills flex-column">
+                        <li class="nav-item mb-1">
+                            <a href="{% url 'CMS_CoursesList' %}" class="nav-link {% if url_name == 'CMS_CoursesList'%}active{% endif %}"><i class="bi bi-ui-checks-grid me-3"></i>Все курсы</a>
+                        </li>
+                    </ul>
+                    {% endwith %}
+                </div>
+            </div>
+            {% endblock %}
+        </div>
+        <div class="col-lg-9">
+            {% block right_sidebar %}
+            <div class="card shadow">
+                <div class="card-body">
+                    Вы не заполнили шаблон
+                </div>
+            </div>
+            {% endblock %}
         </div>
     </div>
     {% endblock %}

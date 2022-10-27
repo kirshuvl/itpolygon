@@ -1,0 +1,172 @@
+{% extends 'cms/steps/step_create_or_update.html' %}
+{% block form %}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.media }}
+    <div class="input-group mb-2">
+        {{ form.title }}
+    </div>
+    {% for error in form.title.errors %}
+    <div class="text-danger small mb-2">
+        {{ error }}
+    </div>
+    {% endfor %}
+    <div class="input-group mb-2">
+        {{ form.slug }}
+    </div>
+    {% for error in form.slug.errors %}
+    <div class="text-danger small mb-2">
+        {{ error }}
+    </div>
+    {% endfor %}
+    <div class="card mb-2">
+        <div class="card-body p-2">
+            <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="description-tab" data-bs-toggle="pill" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true">Легенда</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="input-format-tab" data-bs-toggle="pill" data-bs-target="#input-format" type="button" role="tab" aria-controls="input-format" aria-selected="false">Формат ввода</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="output-format-tab" data-bs-toggle="pill" data-bs-target="#output-format" type="button" role="tab" aria-controls="output-format" aria-selected="false">Формат вывода</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="notes-tab" data-bs-toggle="pill" data-bs-target="#notes" type="button" role="tab" aria-controls="notes" aria-selected="false">Примечания</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="start-code-tab" data-bs-toggle="pill" data-bs-target="#start-code" type="button" role="tab" aria-controls="start-code" aria-selected="false">Ваш код</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab" tabindex="0">
+            <div class="input-group mb-2">
+                {{ form.description }}
+            </div>
+        </div>
+        <div class="tab-pane fade" id="input-format" role="tabpanel" aria-labelledby="input-format-tab" tabindex="0">
+            <div class="input-group mb-2">
+                {{ form.input_format }}
+            </div>
+        </div>
+        <div class="tab-pane fade" id="output-format" role="tabpanel" aria-labelledby="output-format-tab" tabindex="0">
+            <div class="input-group mb-2">
+                {{ form.output_format }}
+            </div>
+        </div>
+        <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab" tabindex="0">
+            <div class="input-group mb-2">
+                {{ form.notes }}
+            </div>
+        </div>
+        <div class="tab-pane fade" id="start-code" role="tabpanel" aria-labelledby="start-code-tab" tabindex="0">
+            <div class="input-group mb-2">
+                {{ form.start_code }}
+            </div>
+        </div>
+    </div>
+    {% for error in form.description.errors %}
+    <div class="text-danger small mb-2">
+        {{ error }}
+    </div>
+    {% endfor %}
+    {% for error in form.input_format.errors %}
+    <div class="text-danger small mb-2">
+        {{ error }}
+    </div>
+    {% endfor %}
+    {% for error in form.output_format.errors %}
+    <div class="text-danger small mb-2">
+        {{ error }}
+    </div>
+    {% endfor %}
+    {% for error in form.notes.errors %}
+    <div class="text-danger small mb-2">
+        {{ error }}
+    </div>
+    {% endfor %}
+    <div class="input-group mb-2">
+        <div class="form-check form-switch">
+            {{ form.is_published }}
+        </div>
+        <label class="form-check-label" for="id_is_published">Опубликовать</label>
+    </div>
+    <label for="id_points" class="form-label">Баллов за шаг</label>
+    <div class="input-group mb-2">
+        {{ form.points }}
+    </div>
+    {% for error in form.points.errors %}
+    <div class="text-danger small mb-2">
+        {{ error }}
+    </div>
+    {% endfor %}
+    <label for="id_first_sample" class="form-label">Первый сэмлп,</label>
+    <label for="id_last_sample" class="form-label">последний сэмлп и</label>
+    <label for="id_first_test" class="form-label">первый тест</label>
+    <div class="input-group mb-2">
+        {{ form.first_sample }}
+        {{ form.last_sample }}
+        {{ form.first_test }}
+    </div>
+    <div class="row">
+        <div class="col">
+            {% for error in form.first_sample.errors %}
+            <div class="text-danger small mb-2">
+                {{ error }}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col">
+            {% for error in form.last_sample.errors %}
+            <div class="text-danger small mb-2">
+                {{ error }}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col">
+            {% for error in form.first_test.errors %}
+            <div class="text-danger small mb-2">
+                {{ error }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <label for="id_cputime" class="form-label">Время,</label>
+    <label for="id_memory" class="form-label">память и</label>
+    <label for="id_num_attempts" class="form-label">количество попыток</label>
+    <div class="input-group mb-2">
+        {{ form.cputime }}
+        {{ form.memory }}
+        {{ form.num_attempts }}
+    </div>
+    <div class="row">
+        <div class="col">
+            {% for error in form.cputime.errors %}
+            <div class="text-danger small mb-2">
+                {{ error }}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col">
+            {% for error in form.memory.errors %}
+            <div class="text-danger small mb-2">
+                {{ error }}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col">
+            {% for error in form.num_attempts.errors %}
+            <div class="text-danger small mb-2">
+                {{ error }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="btn-group col-12">
+        <a href="{{ lesson.get_cms_url }}" class="btn btn-secondary col-12">Отмена</a>
+        <button type="submit" class="btn btn-primary col-12">{{ page_title }}</button>
+    </div>
+</form>
+{% endblock %}

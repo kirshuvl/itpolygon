@@ -1,0 +1,9 @@
+{% extends 'cms/steps/step_base.html' %}
+{% block page_title %}{{ step.title }}{% endblock %}
+{% block step_body %}
+<div class="card-body">
+    <div class="ratio ratio-16x9">
+        <iframe src="{{ step.video_url }}" title="YouTube video" class="rounded" allowfullscreen></iframe>
+    </div>
+</div>
+{% endblock %}

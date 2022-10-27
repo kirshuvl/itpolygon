@@ -1,0 +1,62 @@
+{% extends 'cms/steps/step_base.html' %}
+{% block page_title %}{{ step.title }}{% endblock %}
+{% block step_body %}
+<div class="card-body">
+    <div class="card mb-2">
+        <div class="card-header bg-transparent px-3">
+            Ограничение времени: {{ step.cputime }} секунда | Ограничение памяти: {{ step.memory }} Мб
+        </div>
+        <div class="card-body border-bottom pb-0">
+            <h4>Легенда</h4>
+            {{ step.description|safe }}
+        </div>
+        <div class="card-body border-bottom pb-0">
+            <h4>Формат ввода</h4>
+            {{ step.input_format|safe }}
+        </div>
+        <div class="card-body pb-0">
+            <h4>Формат вывода</h4>
+            {{ step.output_format|safe }}
+        </div>
+        {% if step.notes %}
+        <div class="card-body border-top pb-0">
+            <h4>Примечания</h4>
+            {{ step.notes|safe }}
+        </div>
+        {% endif %}
+    </div>
+    <div class="card my-2">
+        <div class="card-header bg-transparent px-3">
+            <h4 class="mb-0">Пример</h4>
+        </div>
+        {% for test in tests %}
+        <div class="card-body {% if not forloop.last %}border-bottom{% endif %}">
+            <div class="row">
+                <div class="col-4 h-100">
+                    <h6>Ввод</h4>
+                        <pre class="mb-0"><code>{{ test.input }}</code></pre>
+                </div>
+                <div class="col-4 ">
+                    <h6>Вывод</h4>
+                        <pre class="mb-0"><code>{{ test.output }}</code></pre>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="input-group mb-2">
+            <div class="input-group">
+                {{ form.code }}
+                <button type="submit" class="btn btn-outline-secondary">Отправить</button>
+            </div>
+        </div>
+    </form>
+    {% for error in form.user_code.errors %}
+    <div class="text-danger small mb-2">
+        {{ error }}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

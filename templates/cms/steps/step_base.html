@@ -1,0 +1,50 @@
+{% extends 'cms/dashboard.html' %}
+{% block page_title %}{{ page_title }}{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+    <a href="{% url 'CMS_Dashboard' %}" class="text-decoration-none">CMS</a>
+</li>
+<li class="breadcrumb-item">
+    <a href="{% url 'CMS_UserCoursesList' %}" class="text-decoration-none">Мои курсы</a>
+</li>
+<li class="breadcrumb-item">
+    <a href="{{ step.lesson.topic.course.get_cms_url }}" class="text-decoration-none">{{ step.lesson.topic.course.title }}</a>
+</li>
+<li class="breadcrumb-item">
+    {{ step.lesson.topic.title }}
+</li>
+<li class="breadcrumb-item">
+    <a href="{{ step.lesson.get_cms_url }}" class="text-decoration-none">{{ step.lesson.title }}</a>
+</li>
+<li class="breadcrumb-item active">
+    {{ step.title }}
+</li>
+{% endblock %}
+{% block main_content %}
+<div class="card shadow mb-4">
+    {% block step_header %}
+    <div class="card-header bg-transparent p-3">
+        <div class="row">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h4 class="m-0">
+                        <i class="bi bi-ui-checks-grid me-3"></i>{{ step.title }}
+                    </h4>
+                </div>
+                {% if step.type == 'problem' %}
+                <a href="">
+                    <span class="btn  btn-success badge p-2 rounded opacity-50"><i class="bi bi-plus-square me-2"></i>Добавить тесты</span>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    {% block step_body %}
+    <div class="card-body">
+        Вы не заполнили блок
+    </div>
+    {% endblock %}
+</div>
+{% endblock %}

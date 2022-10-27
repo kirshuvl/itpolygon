@@ -97,6 +97,25 @@ class Lesson(models.Model):
             },
         )
 
+    def icon(self):
+        if self.type == 'ST':
+            return 'bi-card-text'
+        elif self.type == 'QZ':
+            return 'bi-question-square'
+        else:
+            return 'bi-code-square'
+    
+
+    def get_cms_url(self):
+        return reverse(
+            'CMS_LessonDetail',
+            kwargs={
+                'course_slug': self.topic.course.slug,
+                'topic_slug': self.topic.slug,
+                'lesson_slug': self.slug,
+            }
+        )
+
 
 class LessonEnroll(models.Model):
     lesson = models.ForeignKey(
