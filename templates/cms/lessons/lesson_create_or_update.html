@@ -84,7 +84,7 @@
 
             <div class="btn-group col-12">
                 <a href="{% url 'CMS_CourseDetail' topic.course.slug %}" class="btn btn-secondary col-12">Отмена</a>
-                <button type="submit" class="btn btn-primary col-12">{% if course %}Сохранить изменения{% else %}Создать курс{% endif %}</button>
+                <button type="submit" class="btn btn-primary col-12">{{ page_title }}</button>
             </div>
         </form>
     </div>

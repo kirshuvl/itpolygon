@@ -12,12 +12,12 @@ class Step(PolymorphicModel):
     )
     slug = models.SlugField(
         verbose_name='Slug',
-        max_length=25,
+        max_length=50,
         unique=True,
     )
     description = models.TextField(
         verbose_name='Описание шага',
-        max_length=1000,
+        max_length=100000,
     )
     is_published = models.BooleanField(
         verbose_name='Опубликовать?',
