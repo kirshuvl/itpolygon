@@ -282,18 +282,18 @@ class CMS_TextStepDetail(DetailView):
 
 class CMS_VideoStepDetail(DetailView):
     model = VideoStep
-    template_name = 'cms/steps/Video_step_detail.html'
+    template_name = 'cms/steps/video_step_detail.html'
     context_object_name = 'step'
     slug_url_kwarg = 'step_slug'
 
 class CMS_QuestionStepDetail(DetailView):
     model = QuestionStep
-    template_name = 'cms/steps/Question_step_detail.html'
+    template_name = 'cms/steps/question_step_detail.html'
     context_object_name = 'step'
     slug_url_kwarg = 'step_slug'
 
 class CMS_ProblemStepDetail(DetailView):
     model = ProblemStep
-    template_name = 'cms/steps/Problem_step_detail.html'
+    template_name = 'cms/steps/problem_step_detail.html'
     context_object_name = 'step'
     slug_url_kwarg = 'step_slug'

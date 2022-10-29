@@ -7,17 +7,21 @@
             Ограничение времени: {{ step.cputime }} секунда | Ограничение памяти: {{ step.memory }} Мб
         </div>
         <div class="card-body border-bottom pb-0">
-            <h4>Легенда</h4>
+            <h4>Условие задачи</h4>
             {{ step.description|safe }}
         </div>
+        {% if step.input_format %}
         <div class="card-body border-bottom pb-0">
             <h4>Формат ввода</h4>
             {{ step.input_format|safe }}
         </div>
+        {% endif %}
+        {% if output_format %}
         <div class="card-body pb-0">
             <h4>Формат вывода</h4>
             {{ step.output_format|safe }}
         </div>
+        {% endif %}
         {% if step.notes %}
         <div class="card-body border-top pb-0">
             <h4>Примечания</h4>

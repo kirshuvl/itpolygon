@@ -89,11 +89,13 @@ class ProblemStep(Step):
 class TestForProblemStep(models.Model):
     input = models.TextField(
         verbose_name='Входные данные',
-        max_length=1000,
+        max_length=100000,
+        blank=True,
     )
     output = models.TextField(
         verbose_name='Выходные данные',
-        max_length=1000,
+        max_length=100000,
+        blank=True,
     )
     problem = models.ForeignKey(
         ProblemStep,

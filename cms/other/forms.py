@@ -1,5 +1,3 @@
-from pyexpat import model
-from tkinter.messagebox import NO
 from django import forms
 from lms.courses.models import Course
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
@@ -403,9 +401,7 @@ class TextStepCreateForm(StepCreateForm):
     class Meta(StepCreateForm.Meta):
         model = TextStep
         fields = StepCreateForm.Meta.fields + ['text']
-        widgets = StepCreateForm.Meta.widgets | {
-            
-        }
+        widgets = StepCreateForm.Meta.widgets
 
 
 class VideoStepCreateForm(StepCreateForm):
