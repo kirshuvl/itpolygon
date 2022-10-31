@@ -16,6 +16,9 @@
             <a class="nav-link active" aria-current="page" href="{% url 'ShuvalovView' %}">Преподаватель</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'ShuvalovView' %}">Преподаватель</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'CoursesList' %}">Все курсы</a>
           </li>
         </ul>
@@ -24,8 +27,8 @@
           <a href="{% url 'UserAchievementsList' %}" class="btn btn-outline-secondary me-2">
             {{ user.coin }}<i class="bi bi-gem ms-1"></i>
           </a>
-          {% if user|has_group:'Менеджер' %}<a href="{% url 'CRMDashboard' %}" class="btn btn-outline-danger me-2">CRM</a>{% endif %}
-          {% if user|has_group:'Администратор' %}<a href="{% url 'CMS_Dashboard' %}" class="btn btn-outline-primary me-2">CMS</a>{% endif %}
+          {% if user.is_superuser %}<a href="{% url 'CRMDashboard' %}" class="btn btn-outline-danger me-2">CRM</a>
+          <a href="{% url 'CMS_Dashboard' %}" class="btn btn-outline-primary me-2">CMS</a>{% endif %}
           <a href="{% url 'UserProfile' %}" class="btn btn-outline-primary me-2">Аккаунт</a>
           <a href="{% url 'UserLogout' %}" class="btn btn-outline-primary">Выйти</a>
           {% else %}

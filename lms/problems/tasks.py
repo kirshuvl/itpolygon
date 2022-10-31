@@ -13,9 +13,10 @@ def run_user_code(user_answer_pk):
             epicbox.Profile('python', 'python:3.6.5-alpine')
         ]
     )
-   
+
     if user_answer.problem.start_code != '':
-        code = user_answer.problem.start_code.replace('{{ user_code }}', user_answer.code)
+        code = user_answer.problem.start_code.replace(
+            '{{ user_code }}', user_answer.code)
     else:
         code = user_answer.code
 
@@ -85,18 +86,16 @@ def run_user_code(user_answer_pk):
     user_answer.verdict = verdict
     user_answer.first_fail_test = first_fail
 
-
-    step_enroll = StepEnroll.objects.get(user=user_answer.user, step=user_answer.problem)
+    step_enroll = StepEnroll.objects.get(
+        user=user_answer.user, step=user_answer.problem)
     if step_enroll.status == 'PR':
         if verdict == 'OK':
             step_enroll.status = 'OK'
-            user_answer.user.coin += step_enroll.step.points
         else:
             step_enroll.status = 'WA'
     else:
         if verdict == 'OK':
             step_enroll.status = 'OK'
-            
 
     TestUserAnswer.objects.bulk_create(data)
     user_answer.save()

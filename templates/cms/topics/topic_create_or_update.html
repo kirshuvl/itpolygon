@@ -14,6 +14,15 @@
     {{ page_title }}
 </li>
 {% endblock %}
+{% block left_sidebar %}
+<div class="d-none d-md-block mb-2">
+    <div class="card shadow">
+        <div class="card-body">
+            <img src="{{ course.icon.url }}" class="col-12 rounded bg-light" alt="">
+        </div>
+    </div>
+</div>
+{% endblock %}
 {% block right_sidebar %}
 <div class="card shadow">
     <div class="card-header bg-transparent p-3">

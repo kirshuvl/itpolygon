@@ -55,8 +55,4 @@ urlpatterns = [
          BaseStepMixin.user_end_step,
          name='UserEndStep'
          ),
-    path('courses/<str:course_slug>/<str:topic_slug>/<str:lesson_slug>/pass',
-         LessonDetail.user_end_lesson,
-         name='UserEndLesson'
-         ),
 ]

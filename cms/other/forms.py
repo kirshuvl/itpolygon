@@ -273,6 +273,7 @@ class CourseCreateForm(MixinForm):
 
         return video_url
 
+
 class TopicCreateForm(MixinForm):
     class Meta:
         model = Topic
@@ -305,7 +306,8 @@ class TopicCreateForm(MixinForm):
                 attrs={
                     'class': 'form-check-input',
                     'placeholder': 'Опубликовать',
-                    'role': 'switch'
+                    'role': 'switch',
+                    'checked': True,
                 }
             ),
         }
@@ -318,7 +320,6 @@ class LessonCreateForm(MixinForm):
                   'slug',
                   'description',
                   'is_published',
-                  'points'
                   ]
         widgets = {
             'title': forms.TextInput(
@@ -344,14 +345,8 @@ class LessonCreateForm(MixinForm):
                 attrs={
                     'class': 'form-check-input',
                     'placeholder': 'Опубликовать',
-                    'role': 'switch'
-                }
-            ),
-            'points': forms.NumberInput(
-                attrs={
-                    'class': 'form-control',
-                    'rows': '5',
-                    'placeholder': 'Баллы за урок'
+                    'role': 'switch',
+                    'checked': True,
                 }
             ),
         }
@@ -379,8 +374,7 @@ class StepCreateForm(MixinForm):
                     'placeholder': 'Slug шага',
                 }
             ),
-            'description': CKEditorUploadingWidget()
-            ,
+            'description': CKEditorUploadingWidget(),
             'is_published': forms.CheckboxInput(
                 attrs={
                     'class': 'form-check-input',

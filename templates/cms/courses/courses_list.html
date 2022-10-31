@@ -14,11 +14,11 @@
         <div class="row">
             <div class="d-flex justify-content-between">
                 <div>
-                    <h4 class="m-0"><i class="bi bi-person me-3"></i>Все курсы</h4>
+                    <h4 class="m-0"><i class="bi bi-ui-checks-grid me-3"></i>Все курсы</h4>
                 </div>
                 <div>
-                    <a href="{% url 'CMS_CourseCreate' %}">
-                        <span class="btn  btn-success badge p-2 rounded opacity-50"><i class="bi bi-plus-square me-2"></i>Создать курс</span>
+                    <a href="{% url 'CMS_CourseCreate' %}" class="btn btn-success badge p-2 rounded opacity-50">
+                        <i class="bi bi-plus-square me-2"></i>Создать курс
                     </a>
                 </div>
             </div>
@@ -75,7 +75,7 @@
     </div>
     {% else %}
     <div class="card-body text-center text-danger">
-        Курсов на платформе еще нет :(
+        Вы еще не <a href="{% url 'CMS_CourseCreate' %}" class="text-decoration-none">создали</a> ни одного курса :( 
     </div>
     {% endif %}
 </div>

@@ -7,7 +7,6 @@ from django.shortcuts import get_object_or_404
 
 
 class ProblemStepDetail(BaseStepMixin, CreateView):
-    model = ProblemStep
     template_name = 'lms/problems/problem_step_detail.html'
     form_class = ProblemUpload
 
@@ -16,13 +15,9 @@ class ProblemStepDetail(BaseStepMixin, CreateView):
         context['attempts'] = UserAnswerForProblemStep.objects.filter(
             problem=self.object, user=self.request.user)
         context['tests'] = TestForProblemStep.objects.filter(number__lte=self.object.last_sample,
-                                                      number__gte=self.object.first_sample,
-                                                      problem=self.object).order_by('number')
+                                                             number__gte=self.object.first_sample,
+                                                             problem=self.object).order_by('number')
         return context
-
-    def get_object(self):
-        return get_object_or_404(ProblemStep.objects.select_related('lesson__topic__course'),
-                                 slug=self.kwargs['step_slug'])
 
     def form_valid(self, form):
         form.instance.user = self.request.user

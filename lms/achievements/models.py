@@ -45,34 +45,6 @@ class StepAchievement(Achievement):
         ordering = ['pk']
 
 
-class LessonAchievement(Achievement):
-    for_what = models.ForeignKey(
-        Lesson,
-        related_name='lesson_achievements',
-        verbose_name='Урок',
-        on_delete=models.CASCADE,
-    )
-
-    class Meta:
-        verbose_name = 'Достижение за урок'
-        verbose_name_plural = 'Достижения за уроки'
-        ordering = ['pk']
-
-
-class TopicAchievement(Achievement):
-    for_what = models.ForeignKey(
-        Topic,
-        related_name='topic_achievements',
-        verbose_name='Тема',
-        on_delete=models.CASCADE,
-    )
-
-    class Meta:
-        verbose_name = 'Достижение за тему'
-        verbose_name_plural = 'Достижения за темы'
-        ordering = ['pk']
-
-
 class CourseAchievement(Achievement):
     for_what = models.ForeignKey(
         Course,

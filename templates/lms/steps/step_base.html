@@ -1,5 +1,6 @@
 {% extends 'include/base.html' %}
 {% block page_title %}{{ page_title }}{% endblock %}
+{% load steps_tags %}
 {% block body %}
 <div class="container">
     {% block block_breadcrumb %}
@@ -74,7 +75,7 @@
         </div>
     </div>
     {% endblock %}
-    <div class="card shadow mb-4">
+    <div class="card shadow mb-2">
         {% block step_header %}
         <div class="card-header bg-transparent p-3">
             <div class="row">
@@ -85,7 +86,7 @@
                         </h4>
                     </div>
                     <div>
-                        {% get_steps_in_step steps user step %}
+                        {% step_get_steps steps step %}
                     </div>
                 </div>
             </div>
@@ -99,8 +100,8 @@
     </div>
     {% block buttons %}
     <div class="row gx-2">
-        {% previous_step step steps %}
-        {% next_step step steps user attempts %}
+        {% previous_step steps step %}
+        {% next_step steps step attempts %}
     </div>
     {% endblock %}
 </div>
