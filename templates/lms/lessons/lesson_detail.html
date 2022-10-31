@@ -1,5 +1,6 @@
 {% extends 'include/base.html' %}
 {% block page_title %}{{ page_title }}{% endblock %}
+{% load lessons_tags %}
 {% block body %}
 <div class="container">
     <div class="card shadow mb-2">
@@ -39,23 +40,23 @@
                         </h4>
                     </div>
                     <div>
-                        {% if user.is_superuser %}
-                        <a href="{{ lesson.get_statistics }}" class="text-decoration-none" target="_blank">
-                            <span class="badge bg-secondary p-2 rounded"><i class="bi bi bi-percent"></i></span>
-                        </a>
-                        {% endif %}
-                        {% get_steps steps user %}
+                        {% lesson_get_steps lesson %}
                     </div>
                 </div>
             </div>
         </div>
         <div class="card-body">
             {{ lesson.description }}
+            <hr>
+            <ul>
+                {% for step in lesson.steps.all %}
+                <li>{{ step }} | {{ step.steps_enrolls.all }}</li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
     <div class="row gx-2">
-        {% lesson_next_step lesson steps user %}
-        {% is_user_end_lesson lesson steps user %}
+        {% lesson_next_step lesson %}
     </div>
 </div>
 {% endblock %}

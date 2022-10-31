@@ -1,8 +1,8 @@
 from django.views.generic import ListView
-from django.db.models import Q
-from lms.achievements.models import Achievement, StepAchievement, LessonAchievement
+from lms.achievements.models import Achievement, StepAchievement
 
 # Create your views here.
+
 
 class UserAchievements(ListView):
     model = StepAchievement
@@ -16,4 +16,3 @@ class UserAchievements(ListView):
 
     def get_queryset(self):
         return Achievement.objects.filter(user=self.request.user).order_by('-date_create')
-

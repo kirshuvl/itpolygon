@@ -45,48 +45,83 @@
         </div>
         <div class="card-body">
             {% for topic in course.topics.all|dictsort:"number" %}
-            <div class="card mb-2" data-bs-toggle="collapse" href="#collapse{{ topic.slug }}" role="button" aria-expanded="false" aria-controls="collapse{{ topic.slug }}">
-                <div class="card-body p-2">
-                    <div class="row">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <span class="badge bg-secondary p-2 me-2"><i class="bi bi-{{ forloop.counter }}-square"></i></span>{{ topic.title }}
-                            </div>
-                            <div>
-                                <span class="small text-secondary me-2">Уроков: {{ topic.lessons.count }}</span>
-                                <span class="badge bg-{% topic_get_color topic user %} p-2"><i class="bi bi-check-square"></i></span>
+            <div class="row gx-2 mb-2">
+                <div class="col-10">
+                    <div class="card h-100" data-bs-toggle="collapse" href="#collapse{{ topic.slug }}" role="button" aria-expanded="false" aria-controls="collapse{{ topic.slug }}">
+                        <div class="card-body p-2">
+                            <div class="row">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <span class="badge bg-secondary p-2 opacity-50 me-2"># {{ forloop.counter }}</span>{{ topic.title }}
+                                    </div>
+                                    <div>
+                                        <span class="small text-secondary me-2">{{ topic|topic_progress }} / {{ topic|topic_steps_cnt}}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="col-2">
+                    <div class="card h-100">
+                        <div class="card-body p-2">
+                            <div class="progress h-100">
+                                <div class="progress-bar" role="progressbar" aria-label="" style="width: {{ topic|topic_progress_percent }}%;" aria-valuenow="{{topic|topic_progress_percent}}" aria-valuemin="20" aria-valuemax="100">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
-            <div class="collapse show" id="collapse{{ topic.slug }}">{% comment %}{% if not topic|is_user_enroll_topic:user %}show{% endif %}{% endcomment %}
+
+            <div class="collapse show" id="collapse{{ topic.slug }}">
                 {% for lesson in topic.lessons.all|dictsort:"number" %}
-                <div class="card offset-1 mb-2">
-                    <div class="card-body p-2">
-                        <div class="row">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <a href="{{ lesson.get_absolute_url }}" class="stretched-link text-decoration-none">
-                                        <span class="badge bg-secondary p-2 me-2"><i class="bi bi-{{ forloop.counter }}-square"></i></span>{{ lesson.title }}
-                                    </a>
+                <div class="row gx-2 mb-2 ">
+                    <div class="col-9 offset-1">
+                        <div class="card h-100">
+                            <div class="card-body p-2">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <a href="{{ lesson.get_absolute_url }}" class="stretched-link text-decoration-none">
+                                            <span class="badge bg-secondary p-2 opacity-50 me-2"># {{ forloop.counter }}</span>{{ lesson.title }}
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <span class="small text-secondary me-2">{{ lesson|steps_finished }} / {{ lesson|steps_counter }}</span>
+
+                                    </div>
                                 </div>
-                                <div>
-                                    <span class="badge bg-{% lesson_get_color lesson user %} p-2"><i class="bi bi-check-square"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2 ">
+                        <div class="card h-100">
+                            <div class="card-body p-2 h-100 ">
+                                <div class="progress h-100">
+                                    <div class="progress-bar" role="progressbar" aria-label="" style="width: {{ lesson|lesson_progress_percent }}%;" aria-valuenow="{{lesson|lesson_progress_percent}}" aria-valuemin="0" aria-valuemax="100">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                {% empty %}
-                <div class="card offset-1 mb-2">
-                    <div class="card-body p-2 text-danger">
-                        К сожалению, уроков в этой теме нет :(
-                    </div>
-                </div>
+
                 {% endfor %}
             </div>
+            {% empty %}
+            <div class="card">
+                <div class="card-body text-center text-danger">
+                    Курс пустой :( Сообщите преподавателю
+                </div>
+            </div>
             {% endfor %}
+
+
+
+
+
         </div>
     </div>
 </div>

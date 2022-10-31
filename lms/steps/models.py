@@ -41,7 +41,7 @@ class Step(PolymorphicModel):
     )
     points = models.PositiveIntegerField(
         verbose_name='Баллы за пройденный шаг',
-        default=0,
+        default=1,
     )
     lesson = models.ForeignKey(
         Lesson,

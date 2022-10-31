@@ -1,5 +1,5 @@
 from django.urls import path
-from cms.other.views import CMS_Dashboard, CMS_CoursesList, CMS_CourseCreate, CMS_ProblemStepCreate, CMS_ProblemStepDetail, CMS_QuestionStepCreate, CMS_QuestionStepDetail, CMS_TextStepCreate, CMS_TextStepDetail, CMS_TopicCreate,\
+from cms.other.views import CMS_Dashboard, CMS_CoursesList, CMS_CourseCreate, CMS_ProblemStepCreate, CMS_ProblemStepDetail, CMS_QuestionStepCreate, CMS_QuestionStepDetail, CMS_TextStepCreate, CMS_TextStepDetail, CMS_TopicCreate, CMS_TopicDetail,\
     CMS_UserCoursesList, CMS_CourseUpdate, CMS_CourseDelete, CMS_CourseDetail, CMS_LessonCreate, \
         CMS_LessonQuizCreate, CMS_LessonContestCreate, CMS_LessonDetail, CMS_VideoStepCreate, CMS_VideoStepDetail
 
@@ -20,6 +20,9 @@ urlpatterns = [
 
     path('courses/<str:course_slug>/', CMS_CourseDetail.as_view(), name='CMS_CourseDetail'),
     path('courses/<str:course_slug>/<str:topic_slug>/<str:lesson_slug>/', CMS_LessonDetail.as_view(), name='CMS_LessonDetail'),
+    path('topics/<str:topic_slug>/lessons_sort', CMS_TopicDetail.lessons_sort, name='lessons_sort'),
+    path('topics/<str:topic_slug>/check_publish', CMS_TopicDetail.check_publish, name='topic_check_publish'),
+    path('lessons/<str:lesson_slug>/check_publish', CMS_LessonDetail.check_publish, name='lesson_check_publish'),
 
 
     path('courses/<str:course_slug>/<str:topic_slug>/<str:lesson_slug>/create_text', CMS_TextStepCreate.as_view(), name='CMS_TextStepCreate'),

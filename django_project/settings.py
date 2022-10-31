@@ -53,6 +53,8 @@ TEMPLATES = [
             'builtins': [
                 'users.templatetags.users_tags',
                 'lms.courses.templatetags.courses_tags',
+                'lms.lessons.templatetags.lessons_tags',
+                'lms.steps.templatetags.steps_tags',
             ]
         },
 

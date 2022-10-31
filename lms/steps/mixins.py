@@ -1,8 +1,9 @@
 from django.views.generic import DetailView
 from lms.achievements.models import StepAchievement
 from lms.steps.models import Step, StepEnroll
-from django.db.models import Q
 from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
+from django.db.models import Prefetch
 
 
 class BaseStepMixin(DetailView):
@@ -11,15 +12,25 @@ class BaseStepMixin(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['steps'] = Step.objects.select_related('lesson__topic__course').prefetch_related('steps_enrolls__user',).\
-            filter(is_published=True).\
-            filter(lesson=self.object.lesson).\
-            order_by('number')
+        self.user_start_step()
+        context['steps'] = self.queryset
         context['page_title'] = self.object.title
         context['attempts'] = None
-        self.user_start_step()
 
         return context
+
+    def get_queryset(self):
+        self.queryset = Step.objects.select_related('lesson__topic__course').\
+            prefetch_related(
+                Prefetch('steps_enrolls', queryset=StepEnroll.objects.filter(
+                    user=self.request.user))
+        ).filter(lesson__slug=self.kwargs['lesson_slug'], is_published=True).order_by('number')
+        return self.queryset
+
+    def get_object(self):
+        self.queryset = self.get_queryset()
+
+        return self.queryset.get(slug=self.kwargs['step_slug'])
 
     def user_start_step(self):
         StepEnroll.objects.get_or_create(
@@ -29,14 +40,8 @@ class BaseStepMixin(DetailView):
 
     def user_end_step(request, course_slug, topic_slug, lesson_slug, step_slug):
         step_enroll = StepEnroll.objects.get(
-            step=Step.objects.get(slug=step_slug), user=request.user)
+            step__slug=step_slug, user=request.user)
         if step_enroll.status == 'PR' or step_enroll.status == 'RP':
             step_enroll.status = 'OK'
-            StepAchievement.objects.get_or_create(user=request.user,
-                                                  points=step_enroll.step.points,
-                                                  for_what=step_enroll.step,
-                                                  )
-            request.user.coin += step_enroll.step.points
-            request.user.save()
             step_enroll.save()
         return HttpResponseRedirect(request.META['HTTP_REFERER'])

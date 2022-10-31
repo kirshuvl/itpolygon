@@ -2,6 +2,10 @@ from itertools import tee
 from django.views.generic import ListView, DetailView
 from lms.courses.models import Course
 from django.shortcuts import get_object_or_404
+from django.db.models import Prefetch
+from lms.lessons.models import Lesson
+from lms.steps.models import Step, StepEnroll
+from lms.topics.models import Topic
 
 
 class CoursesList(ListView):
@@ -45,7 +49,17 @@ class CourseDetail(DetailView):
         return context
 
     def get_object(self):
-        return get_object_or_404(Course.objects.prefetch_related(
-            'topics__topics_enrolls__user',
-            'topics__lessons__lessons_enrolls__user'),
-            slug=self.kwargs['course_slug'])
+
+        return get_object_or_404(
+            Course.objects.prefetch_related(
+                Prefetch('topics', queryset=Topic.objects.filter(
+                    is_published=True).order_by('number')),
+                Prefetch('topics__lessons', queryset=Lesson.objects.filter(
+                    is_published=True).order_by('number')),
+                Prefetch('topics__lessons__steps', queryset=Step.objects.filter(
+                    is_published=True).order_by('number')),
+                Prefetch('topics__lessons__steps__steps_enrolls',
+                         queryset=StepEnroll.objects.filter(user=self.request.user)),
+            ),
+            slug=self.kwargs['course_slug']
+        )

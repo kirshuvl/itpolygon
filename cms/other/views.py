@@ -1,4 +1,6 @@
 from django.urls import reverse
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView, ListView, TemplateView
 from lms.courses.models import Course
 from lms.topics.models import Topic
@@ -45,7 +47,7 @@ class CMS_UserCoursesList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['page_title'] = 'Все курсы на платформе'
+        context['page_title'] = 'Мои курсы на платформе'
         return context
 
     def get_queryset(self):
@@ -58,6 +60,12 @@ class CMS_CourseDetail(DetailView):
     template_name = 'cms/courses/course_detail.html'
     slug_url_kwarg = 'course_slug'
     context_object_name = 'course'
+
+    def get_object(self):
+        return get_object_or_404(
+            Course.objects.prefetch_related('topics__lessons'),
+            slug=self.kwargs['course_slug']
+        )
 
 
 class CMS_CourseCreate(CreateView):
@@ -139,6 +147,32 @@ class CMS_TopicCreate(CreateView):  # Запросов: 3
         )
 
 
+class CMS_TopicDetail(DetailView):
+    model = Topic
+    template_name = 'cms/courses/course_detail.html'
+    slug_url_kwarg = 'topic_slug'
+    context_object_name = 'topic'
+
+    def lessons_sort(request, topic_slug):
+        lessons = Lesson.objects.filter(
+            topic__slug=topic_slug).order_by('number')
+        for num, lesson in enumerate(lessons):
+            lesson.number = num + 1
+            lesson.save()
+
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+    def check_publish(request, topic_slug):
+        topic = Topic.objects.get(slug=topic_slug)
+        if topic.is_published:
+            topic.is_published = False
+        else:
+            topic.is_published = True
+        topic.save()
+
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
 class CMS_LessonCreate(CreateView):  # Запросов: 3
     model = Lesson
     form_class = LessonCreateForm
@@ -175,7 +209,6 @@ class CMS_LessonQuizCreate(CMS_LessonCreate):  # Запросов: 3
         return context
 
     def form_valid(self, form):
-        super().form_valid(form)
         form.instance.type = 'QZ'
         return super().form_valid(form)
 
@@ -187,7 +220,6 @@ class CMS_LessonContestCreate(CMS_LessonCreate):  # Запросов: 3
         return context
 
     def form_valid(self, form):
-        super().form_valid(form)
         form.instance.type = 'CT'
         return super().form_valid(form)
 
@@ -200,6 +232,16 @@ class CMS_LessonDetail(DetailView):  # Запросов: 8
 
     def get_object(self):
         return Lesson.objects.select_related('topic__course',).prefetch_related('steps').get(slug=self.kwargs['lesson_slug'])
+
+    def check_publish(request, lesson_slug):
+        lesson = Lesson.objects.get(slug=lesson_slug)
+        if lesson.is_published:
+            lesson.is_published = False
+        else:
+            lesson.is_published = True
+        lesson.save()
+
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 class CMS_StepCreate(CreateView):  # Запросов: 3
@@ -280,17 +322,20 @@ class CMS_TextStepDetail(DetailView):
     context_object_name = 'step'
     slug_url_kwarg = 'step_slug'
 
+
 class CMS_VideoStepDetail(DetailView):
     model = VideoStep
     template_name = 'cms/steps/video_step_detail.html'
     context_object_name = 'step'
     slug_url_kwarg = 'step_slug'
 
+
 class CMS_QuestionStepDetail(DetailView):
     model = QuestionStep
     template_name = 'cms/steps/question_step_detail.html'
     context_object_name = 'step'
     slug_url_kwarg = 'step_slug'
+
 
 class CMS_ProblemStepDetail(DetailView):
     model = ProblemStep

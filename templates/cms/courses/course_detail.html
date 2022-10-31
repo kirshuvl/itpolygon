@@ -1,5 +1,5 @@
 {% extends 'cms/dashboard.html' %}
-{% block page_title %}{{ page_title }}{% endblock %}
+{% block page_title %}{{ course.title }} - Редактирование курса{% endblock %}
 {% block breadcrumb %}
 <li class="breadcrumb-item">
     <a href="{% url 'CMS_Dashboard' %}" class="text-decoration-none">CMS</a>
@@ -35,12 +35,9 @@
         <div class="row">
             <div class="d-flex justify-content-between">
                 <div>
-                    <h4 class="m-0"><i class="bi bi-person me-3"></i>{{ course.title }}</h4>
+                    <h4 class="m-0"><i class="bi bi-ui-checks-grid me-3"></i>{{ course.title }}</h4>
                 </div>
                 <div>
-                    <a href="{{ course.get_absolute_url }}" class="btn btn-secondary badge p-2 rounded opacity-50" target="_blank">
-                        <i class="bi bi-eye"></i>
-                    </a>
                     <a href="{% url 'CMS_TopicCreate' course.slug %}" class="btn btn-success badge p-2 rounded opacity-50">
                         <i class="bi bi-plus-square me-2"></i>Добавить тему
                     </a>
@@ -58,11 +55,9 @@
                         <div class="row">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <span class="badge {% if topic.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50"><i class="bi bi-{{ topic.number }}-square"></i></span>
-                                    {{ topic.title }}
+                                    <span class="badge {% if topic.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50 me-2"># {{ topic.number }}</span>{{ topic.title }}
                                 </div>
                                 <div>
-                                    <span class="badge bg-secondary p-2 rounded opacity-50"><i class="bi bi-gem me-2"></i>0</span>
                                     <div class="btn-group dropstart">
                                         <a href="" class="text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
                                             <span class="badge bg-secondary p-2 dropdown-toggle opacity-50"><i class="ms-1 bi bi-pencil"></i></span>
@@ -70,8 +65,8 @@
                                         <ul class="dropdown-menu">
                                             <li><a class="dropdown-item" href="">Редактировать</a></li>
                                             <li><a class="dropdown-item" href="">Удалить</a></li>
-                                            <li><a class="dropdown-item" href="">Пересчитать уроки</a></li>
-                                            <li><a class="dropdown-item" href="">Опубликовать</a></li>
+                                            <li><a class="dropdown-item" href="{% url 'lessons_sort' topic.slug %}">Отсортировать уроки</a></li>
+                                            <li><a class="dropdown-item" href="{% url 'topic_check_publish' topic.slug %}">{% if topic.is_published %}Снять с публикации{% else %}Опубликовать{% endif %}</a></li>
                                             <li>
                                                 <hr class="dropdown-divider">
                                             </li>
@@ -91,13 +86,12 @@
                         <div class="row">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <span class="badge {% if lesson.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50"><i class="bi bi-{{ lesson.number }}-square"></i></span>
-                                    <a href="{% url 'CMS_LessonDetail' lesson.topic.course.slug lesson.topic.slug lesson.slug %}" class="text-decoration-none">
-                                        {{ lesson.title }}
+                                    <span class="badge {% if lesson.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50 me-2"># {{ lesson.number }}</span><a href="{% url 'CMS_LessonDetail' lesson.topic.course.slug lesson.topic.slug lesson.slug %}" class="text-decoration-none">{{ lesson.title }}
                                     </a>
                                 </div>
                                 <div>
-                                    <span class="badge bg-secondary p-2 rounded opacity-50"><i class="bi bi-gem me-2"></i>{{ lesson.points }}</span>
+                                    <a href="" class="badge bg-secondary p-1 opacity-25 rounded"><i class="bi bi-arrow-down"></i></a>
+                                    <a href="" class="badge bg-secondary p-1 opacity-25"><i class="bi bi-arrow-up"></i></a>
                                     <div class="btn-group dropstart">
                                         <a href="" class="text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
                                             <span class="badge bg-secondary p-2 dropdown-toggle opacity-50"><i class="ms-1 bi bi-pencil"></i></span>
@@ -106,7 +100,7 @@
                                             <li><a class="dropdown-item" href="">Посмотреть</a></li>
                                             <li><a class="dropdown-item" href="">Редактировать</a></li>
                                             <li><a class="dropdown-item" href="">Удалить</a></li>
-                                            <li><a class="dropdown-item" href="">Опубликовать</a></li>
+                                            <li><a class="dropdown-item" href="{% url 'lesson_check_publish' lesson.slug %}">{% if lesson.is_published %}Снять с публикации{% else %}Опубликовать{% endif %}</a></li>
                                         </ul>
                                     </div>
                                 </div>
