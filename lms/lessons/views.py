@@ -37,20 +37,26 @@ class LessonStatistics(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(LessonStatistics, self).get_context_data(**kwargs)
-        context['page_title'] = 'Статистика урока:' + self.object.title
-        context = self.get_steps(context)
-        # context['all_users'] = [
-        #    enroll.user for enroll in LessonEnroll.objects.filter(lesson=self.object)]
+        context['page_title'] = 'Статистика урока: ' + self.object.title
+        
+        context['all_users'] = self.get_all_user()
         return context
 
-    def get_steps(self, context):
-        context['steps'] = Step.objects.prefetch_related(
-            'lesson__topic__course',
-            'steps_enrolls__user',
-        ).filter(
-            is_published=True,
-        ).filter(lesson=self.object,
-                 ).order_by(
-            'number',
+    def get_object(self):
+        return get_object_or_404(
+            Lesson.objects.select_related('topic__course').prefetch_related(
+                Prefetch('steps', queryset=Step.objects.filter(
+                    is_published=True).order_by('number')),
+                'steps__steps_enrolls__user',
+            ),
+            slug=self.kwargs['lesson_slug']
         )
-        return context
+
+    def get_all_user(self):
+        data = []
+        for step in self.object.steps.all():
+            for enroll in step.steps_enrolls.all():
+                if enroll.user not in data:
+                    data.append(enroll.user)
+        
+        return data

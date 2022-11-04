@@ -48,11 +48,8 @@
                         <div class="col-3 border-end">
                             <span class="badge bg-secondary p-2 rounded me-2"><i class="bi bi-people"></i></span>Фамилия Имя
                         </div>
-                        <div class="col-1 border-end text-center">
-                            <span class="badge bg-secondary p-2"><i class="bi bi-check-square"></i></span>
-                        </div>
                         <div class="col-8">
-                            {% for step in steps %}
+                            {% for step in lesson.steps.all %}
                             <span class="badge bg-secondary p-2 rounded"><i class="bi {{ step.step_icon_class }}"></i></span>
                             {% endfor %}
                         </div>
@@ -66,12 +63,9 @@
                         <div class="col-3 border-end">
                             <span class="badge bg-secondary p-2 rounded me-2"><i class="bi bi-person"></i></span>{{ user.last_name }} {{ user.first_name }}
                         </div>
-                        <div class="col-1 border-end text-center">
-                            <span class="badge bg-{% lesson_get_color lesson user %} p-2"><i class="bi bi-check-square"></i></span>
-                        </div>
                         <div class="col-8">
-                            {% for step in steps %}
-                            <span class="badge bg-{% step_color step user %} p-2 rounded"><i class="bi {{ step.step_icon_class }}"></i></span>
+                            {% for step in lesson.steps.all %}
+                            <span class="badge bg-{% step_colors step user %} p-2 rounded"><i class="bi {{ step.step_icon_class }}"></i></span>
                             {% endfor %}
                         </div>
                     </div>
