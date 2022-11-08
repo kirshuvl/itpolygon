@@ -38,6 +38,9 @@
                     <h4 class="m-0"><i class="bi bi-ui-checks-grid me-3"></i>{{ course.title }}</h4>
                 </div>
                 <div>
+                    <a href="{% url 'topics_sort' course.slug %}" class="btn btn-secondary badge p-2 rounded opacity-50">
+                        Отсортировать темы
+                    </a>
                     <a href="{% url 'CMS_TopicCreate' course.slug %}" class="btn btn-success badge p-2 rounded opacity-50">
                         <i class="bi bi-plus-square me-2"></i>Добавить тему
                     </a>
@@ -55,18 +58,28 @@
                         <div class="row">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <span class="badge {% if topic.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50 me-2"># {{ topic.number }}</span>{{ topic.title }}
+                                    <a href="{% url 'topic_check_publish' topic.slug %}">
+                                        <span class="badge {% if topic.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50 me-2"># {{ topic.number }}</span></a>{{ topic.title }}
                                 </div>
                                 <div>
+                                    <a href="{% url 'topic_down' course.slug topic.slug %}" class="btn btn-outline-secondary badge p-1 rounded opacity-50 text-primary">
+                                        <i class="bi bi-arrow-down"></i>
+                                    </a>
+                                    <a href="{% url 'topic_up' course.slug topic.slug %}" class="btn btn-outline-secondary badge p-1 rounded opacity-50 text-primary">
+                                        <i class="bi bi-arrow-up"></i>
+                                    </a>
                                     <div class="btn-group dropstart">
                                         <a href="" class="text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
                                             <span class="badge bg-secondary p-2 dropdown-toggle opacity-50"><i class="ms-1 bi bi-pencil"></i></span>
                                         </a>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="">Редактировать</a></li>
-                                            <li><a class="dropdown-item" href="">Удалить</a></li>
-                                            <li><a class="dropdown-item" href="{% url 'lessons_sort' topic.slug %}">Отсортировать уроки</a></li>
+                                            <li><a class="dropdown-item" href="{% url 'CMS_TopicUpdate' course.slug topic.slug %}">Редактировать</a></li>
+                                            <li><a class="dropdown-item" href="{% url 'CMS_TopicDelete' course.slug topic.slug %}">Удалить</a></li>
                                             <li><a class="dropdown-item" href="{% url 'topic_check_publish' topic.slug %}">{% if topic.is_published %}Снять с публикации{% else %}Опубликовать{% endif %}</a></li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            <li><a class="dropdown-item" href="{% url 'lessons_sort' topic.slug %}">Отсортировать уроки</a></li>
                                             <li>
                                                 <hr class="dropdown-divider">
                                             </li>
@@ -86,20 +99,26 @@
                         <div class="row">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <span class="badge {% if lesson.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50 me-2"># {{ lesson.number }}</span><a href="{% url 'CMS_LessonDetail' lesson.topic.course.slug lesson.topic.slug lesson.slug %}" class="text-decoration-none">{{ lesson.title }}
+                                    <a href="{% url 'lesson_check_publish' lesson.slug %}" class="text-decoration-none">
+                                        <span class="badge {% if lesson.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50 me-2"># {{ lesson.number }}</span></a>
+                                    <a href="{% url 'CMS_LessonDetail' lesson.topic.course.slug lesson.topic.slug lesson.slug %}" class="text-decoration-none">{{ lesson.title }}
                                     </a>
                                 </div>
                                 <div>
-                                    <a href="" class="badge bg-secondary p-1 opacity-25 rounded"><i class="bi bi-arrow-down"></i></a>
-                                    <a href="" class="badge bg-secondary p-1 opacity-25"><i class="bi bi-arrow-up"></i></a>
+                                    <span class="small text-secondary me-2">Шагов: {{ lesson|steps_counter }}</span>
+                                    <a href="{% url 'lesson_down' course.slug topic.slug lesson.slug %}" class="btn btn-outline-secondary badge p-1 rounded opacity-25 text-danger">
+                                        <i class="bi bi-arrow-down"></i>
+                                    </a>
+                                    <a href="{% url 'lesson_up' course.slug topic.slug lesson.slug %}" class="btn btn-outline-secondary badge p-1 rounded opacity-25 text-danger">
+                                        <i class="bi bi-arrow-up"></i>
+                                    </a>
                                     <div class="btn-group dropstart">
                                         <a href="" class="text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
                                             <span class="badge bg-secondary p-2 dropdown-toggle opacity-50"><i class="ms-1 bi bi-pencil"></i></span>
                                         </a>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="">Посмотреть</a></li>
-                                            <li><a class="dropdown-item" href="">Редактировать</a></li>
-                                            <li><a class="dropdown-item" href="">Удалить</a></li>
+                                            <li><a class="dropdown-item" href="{% url 'CMS_LessonUpdate' lesson.topic.course.slug lesson.topic.slug lesson.slug %}">Редактировать</a></li>
+                                            <li><a class="dropdown-item" href="{% url 'CMS_LessonDelete' lesson.topic.course.slug lesson.topic.slug lesson.slug %}">Удалить</a></li>
                                             <li><a class="dropdown-item" href="{% url 'lesson_check_publish' lesson.slug %}">{% if lesson.is_published %}Снять с публикации{% else %}Опубликовать{% endif %}</a></li>
                                         </ul>
                                     </div>

@@ -5,7 +5,7 @@
     <a href="{% url 'CMS_Dashboard' %}" class="text-decoration-none">CMS</a>
 </li>
 <li class="breadcrumb-item">
-    <a href="{% url 'CMS_UserCoursesList' %}" class="text-decoration-none">Все курсы</a>
+    <a href="{% url 'CMS_UserCoursesList' %}" class="text-decoration-none">Мои курсы</a>
 </li>
 <li class="breadcrumb-item">
     <a href="{% url 'CMS_CourseDetail' lesson.topic.course.slug %}" class="text-decoration-none">{{ lesson.topic.course.title }}</a>
@@ -32,7 +32,7 @@
         <div class="row">
             <div class="d-flex justify-content-between">
                 <div>
-                    <h4 class="m-0"><i class="bi bi-person me-3"></i>{{ lesson.title }}</h4>
+                    <h4 class="m-0"><i class="bi bi-ui-checks-grid me-3"></i>{{ lesson.title }}</h4>
                 </div>
                 <div>
                     <a href="{{ lesson.get_absolute_url }}" class="btn btn-secondary badge p-2 rounded opacity-50" target="_blank">
@@ -48,17 +48,17 @@
                 <div class="row">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <span class="badge {% if lesson.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50"><i class="bi bi-{{ lesson.number }}-square"></i></span>
-                            {{ lesson.title }}
+                            <a href="{% url 'lesson_check_publish' lesson.slug %}" class="text-decoration-none">
+                                <span class="badge {% if lesson.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50 me-2"># {{ lesson.number }}</span></a>{{ lesson.title }}
                         </div>
                         <div>
-                            <span class="badge bg-secondary p-2 rounded opacity-50"><i class="bi bi-gem me-2"></i>{{ lesson.points }}</span>
+                            <span class="small text-secondary me-2">Шагов: {{ lesson|steps_counter }}</span>
                             <div class="btn-group dropstart">
                                 <a href="" class="text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
                                     <span class="badge bg-secondary p-2 dropdown-toggle opacity-50"><i class="ms-1 bi bi-pencil"></i></span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="">Редактировать</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'CMS_LessonUpdate' lesson.topic.course.slug lesson.topic.slug lesson.slug %}">Редактировать</a></li>
                                     <li><a class="dropdown-item" href="">Удалить</a></li>
                                     <li><a class="dropdown-item" href="">Пересчитать уроки</a></li>
                                     <li><a class="dropdown-item" href="">Опубликовать</a></li>
@@ -75,12 +75,17 @@
                 <div class="row">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <span class="badge {% if step.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50"><i class="bi bi-{{ step.number }}-square"></i></span>
-                            <a href="{{ step.get_cms_url }}" class="text-decoration-none">
-                                {{ step.title }}
+                            <a href="{% url 'step_check_publish' step.slug %}" class="text-decoration-none">
+                                <span class="badge {% if step.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50 me-2"># {{ step.number }}</span><a href="{{ step.get_cms_url }}" class="text-decoration-none">{{ step.title }}
                             </a>
                         </div>
                         <div>
+                            <a href="{% url 'step_down' step.lesson.topic.course.slug step.lesson.topic.slug step.lesson.slug step.slug %}" class="btn btn-outline-secondary badge p-1 rounded opacity-25 text-primary">
+                                <i class="bi bi-arrow-down "></i>
+                            </a>
+                            <a href="{% url 'step_up' step.lesson.topic.course.slug step.lesson.topic.slug step.lesson.slug step.slug %}" class="btn btn-outline-secondary badge p-1 rounded opacity-25 text-primary">
+                                <i class="bi bi-arrow-up"></i>
+                            </a>
                             <span class="badge bg-secondary p-2 rounded opacity-50"><i class="bi bi-gem me-2"></i>{{ step.points }}</span>
                             <div class="btn-group dropstart">
                                 <a href="" class="text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
@@ -88,9 +93,9 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="{{ step.get_cms_url }}">Посмотреть</a></li>
-                                    <li><a class="dropdown-item" href="">Редактировать</a></li>
-                                    <li><a class="dropdown-item" href="">Удалить</a></li>
-                                    <li><a class="dropdown-item" href="">Опубликовать</a></li>
+                                    <li><a class="dropdown-item" href="{{ step.cms_update }}">Редактировать</a></li>
+                                    <li><a class="dropdown-item" href="{{ step.cms_delete }}">Удалить</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'step_check_publish' step.slug %}">{% if step.is_published %}Снять с публикации{% else %}Опубликовать{% endif %}</a></li>
                                     {% if step.type == 'problem' %}
                                     <li><a class="dropdown-item" href="">Добавить тесты</a></li>
                                     {% endif %}

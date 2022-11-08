@@ -5,7 +5,7 @@
     <a href="{% url 'CMS_Dashboard' %}" class="text-decoration-none">CMS</a>
 </li>
 <li class="breadcrumb-item">
-    <a href="{% url 'CMS_UserCoursesList' %}" class="text-decoration-none">Все курсы</a>
+    <a href="{% url 'CMS_UserCoursesList' %}" class="text-decoration-none">Мои курсы</a>
 </li>
 <li class="breadcrumb-item">
     <a href="{{ lesson.topic.course.get_cms_url }}" class="text-decoration-none">{{ lesson.topic.course.title }}</a>
@@ -35,13 +35,15 @@
         <div class="row">
             <div class="d-flex justify-content-between">
                 <div>
-                    <h4 class="m-0"><i class="bi bi-person me-3"></i>{{ page_title }}</h4>
+                    <h4 class="m-0"><i class="bi bi-ui-checks-grid me-3"></i>{{ page_title }}</h4>
                 </div>
             </div>
         </div>
     </div>
     <div class="card-body">
         {% block form %}{% endblock %}
+        
+
     </div>
 </div>
 {% endblock %}

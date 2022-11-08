@@ -62,9 +62,9 @@
                                 <span class="badge bg-secondary p-2 dropdown-toggle opacity-50"><i class="ms-1 bi bi-eye"></i></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{% url 'CMS_CourseDetail' course.slug %}">Посмотреть</a></li>
                                 <li><a class="dropdown-item" href="{% url 'CMS_CourseUpdate' course.slug %}">Редактировать</a></li>
                                 <li><a class="dropdown-item" href="{% url 'CMS_CourseDelete' course.slug %}">Удалить</a></li>
+                                <li><a class="dropdown-item" href="{% url 'course_check_publish' course.slug %}">{% if course.is_published %}Снять с публикации{% else %}Опубликовать{% endif %}</a></li>
                             </ul>
                         </div>
                     </div>
