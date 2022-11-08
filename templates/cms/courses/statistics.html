@@ -1,0 +1,75 @@
+{% extends 'cms/dashboard.html' %}
+{% block page_title %}{{ course.title }} - Редактирование курса{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+    <a href="{% url 'CMS_Dashboard' %}" class="text-decoration-none">CMS</a>
+</li>
+<li class="breadcrumb-item">
+    <a href="{% url 'CMS_UserCoursesList' %}" class="text-decoration-none">Мои курсы</a>
+</li>
+<li class="breadcrumb-item active">
+    {{ course.title }}
+</li>
+<li class="breadcrumb-item active">
+    Статистика курса
+</li>
+{% endblock %}
+{% block main_content %}
+<div class="card shadow mb-2">
+    <div class="card-header bg-transparent p-3">
+        <div class="row">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h4 class="m-0"><i class="bi bi-ui-checks-grid me-3"></i>Статистика курса: {{ course.title }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered mb-0">
+                <tbody>
+                    <tr>
+                        <td>
+                          
+                        </td>
+                        {% for topic in course.topics.all %}
+                        <td class="px-1 text-nowrap me-1" colspan="{{ topic.lessons.count }}">
+                            {{ topic.title }}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>
+                            Фамилия Имя
+                        </td>
+                        {% for topic in course.topics.all %}
+                        {% for lesson in topic.lessons.all %}
+                        <td class="px-1 text-nowrap me-1">
+                            {{ lesson.title }}
+                        </td>
+                        {% endfor %}
+                        {% endfor %}
+                    </tr>
+                    {% for user in users %}
+                    <tr>
+                        <td>
+                            {{ user.first_name }} {{ user.last_name }}
+                        </td>
+                        {% for topic in course.topics.all %}
+                        {% for lesson in topic.lessons.all %}
+                        <td class="px-1 text-nowrap me-1">
+                            {% for step in lesson.steps.all %}
+                            <span class="badge bg-{% step_colors step user %} p-2 rounded"><i class="bi {{ step.step_icon_class }}"></i></span>
+                            {% endfor %}
+                        </td>
+                        {% endfor %}
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
