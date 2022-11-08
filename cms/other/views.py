@@ -150,7 +150,7 @@ class CMS_CourseStatistics(DetailView):
                 Prefetch('topics__lessons__steps', queryset=Step.objects.filter(
                     is_published=True).order_by('number')),
                 Prefetch('topics__lessons__steps__steps_enrolls',
-                         queryset=StepEnroll.objects.select_related('user').filter(user=self.request.user)),
+                         queryset=StepEnroll.objects.select_related('user')),
             ),
             slug=self.kwargs['course_slug']
         )
