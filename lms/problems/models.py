@@ -78,6 +78,17 @@ class ProblemStep(Step):
                 'step_slug': self.slug,
             },
         )
+    
+    def cms_update(self):
+        return reverse(
+            'CMS_ProblemStepUpdate',
+            kwargs={
+                'course_slug': self.lesson.topic.course.slug,
+                'topic_slug': self.lesson.topic.slug,
+                'lesson_slug': self.lesson.slug,
+                'step_slug': self.slug,
+            },
+        )
 
     def step_icon_class(self):
         return 'bi-code-square'

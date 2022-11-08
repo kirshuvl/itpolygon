@@ -1,0 +1,61 @@
+{% extends 'cms/dashboard.html' %}
+{% block page_title %}{{ page_title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+    <a href="{% url 'CMS_Dashboard' %}" class="text-decoration-none">CMS</a>
+</li>
+<li class="breadcrumb-item">
+    <a href="{% url 'CMS_UserCoursesList' %}" class="text-decoration-none">Мои курсы</a>
+</li>
+<li class="breadcrumb-item">
+    <a href="{{ step.lesson.topic.course.get_cms_url }}" class="text-decoration-none">{{ step.lesson.topic.course.title }}</a>
+</li>
+<li class="breadcrumb-item">
+    {{ step.lesson.topic.title }}
+</li>
+<li class="breadcrumb-item">
+    <a href="{{ step.lesson.get_cms_url }}" class="text-decoration-none">{{ step.lesson.title }}</a>
+</li>
+<li class="breadcrumb-item">
+    <a href="{{ step.get_cms_url }}" class="text-decoration-none">{{ step.title }}</a>
+</li>
+<li class="breadcrumb-item active">
+    Удалить
+</li>
+{% endblock %}
+{% block left_sidebar %}
+<div class="d-none d-md-block mb-2">
+    <div class="card shadow">
+        <div class="card-body">
+            <img src="{{ step.lesson.topic.course.icon.url }}" class="col-12 rounded bg-light" alt="">
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block right_sidebar %}
+<div class="card shadow">
+    <div class="card-header bg-transparent p-3">
+        <div class="row">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h4 class="m-0"><i class="bi bi-ui-checks-grid me-3"></i>{{ step.title }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="card mb-2">
+                <div class="card-body text-center">
+                    Вы уверены, что хотите удалить шаг <a href="" class="text-decoration-none">{{ step.title }}</a>?
+                </div>
+            </div>
+            <div class="btn-group col-12">
+                <a href="{{ step.lesson.get_cms_url }}" class="btn btn-secondary col-12">Отмена</a>
+                <button type="submit" class="btn btn-danger col-12">Удалить</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -7,14 +7,24 @@
 <li class="breadcrumb-item">
     <a href="{% url 'CMS_UserCoursesList' %}" class="text-decoration-none">Все курсы</a>
 </li>
-{% if course %}
 <li class="breadcrumb-item">
-    <a href="{% url 'CMS_UserCoursesList' %}" class="text-decoration-none">{{ course.title }}</a>
+    <a href="{% url 'CMS_CourseDetail' topic.course.slug %}" class="text-decoration-none">{{ topic.course.title }}</a>
 </li>
-{% endif %}
+<li class="breadcrumb-item">
+    {{ topic.title }}
+</li>
 <li class="breadcrumb-item active">
-    {{ page_title }}
+    Удалить
 </li>
+{% endblock %}
+{% block left_sidebar %}
+<div class="d-none d-md-block mb-2">
+    <div class="card shadow">
+        <div class="card-body">
+            <img src="{{ topic.course.icon.url }}" class="col-12 rounded bg-light" alt="">
+        </div>
+    </div>
+</div>
 {% endblock %}
 {% block right_sidebar %}
 <div class="card shadow">
@@ -22,7 +32,7 @@
         <div class="row">
             <div class="d-flex justify-content-between">
                 <div>
-                    <h4 class="m-0"><i class="bi bi-ui-checks-grid me-3"></i>{{ page_title }}</h4>
+                    <h4 class="m-0"><i class="bi bi-person me-3"></i>{{ page_title }}</h4>
                 </div>
             </div>
         </div>
@@ -32,12 +42,11 @@
             {% csrf_token %}
             <div class="card mb-2">
                 <div class="card-body text-center">
-                    Вы уверены, что хотите удалить курс <a href="" class="text-decoration-none">{{ course.title }}</a>?
-                    Это удалит курс, все материалы внутри курса, все достижения пользователей. В общем - тотальная зачистка.
+                    Вы уверены, что хотите удалить тему <a href="" class="text-decoration-none">{{ topic.title }}</a>?
                 </div>
             </div>
             <div class="btn-group col-12">
-                <a href="{% url 'CMS_UserCoursesList' %}" class="btn btn-secondary col-12">Отмена</a>
+                <a href="{% url 'CMS_CourseDetail' topic.course.slug %}" class="btn btn-secondary col-12">Отмена</a>
                 <button type="submit" class="btn btn-danger col-12">Удалить</button>
             </div>
         </form>

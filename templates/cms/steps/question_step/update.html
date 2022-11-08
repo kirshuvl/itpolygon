@@ -1,4 +1,4 @@
-{% extends 'cms/steps/step_create_or_update.html' %}
+{% extends 'cms/steps/step_update.html' %}
 {% block form %}
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
@@ -28,6 +28,14 @@
     </div>
     {% endfor %}
     <div class="input-group mb-2">
+        {{ form.answer }}
+    </div>
+    {% for error in form.answer.errors %}
+    <div class="text-danger small mb-2">
+        {{ error }}
+    </div>
+    {% endfor %}
+    <div class="input-group mb-2">
         <div class="form-check form-switch">
             {{ form.is_published }}
         </div>
@@ -42,17 +50,18 @@
         {{ error }}
     </div>
     {% endfor %}
+    <label for="id_num_attempts" class="form-label">Количество попыток</label>
     <div class="input-group mb-2">
-        {{ form.video_url }}
+        {{ form.num_attempts }}
     </div>
-    {% for error in form.video_url.errors %}
+    {% for error in form.num_attempts.errors %}
     <div class="text-danger small mb-2">
         {{ error }}
     </div>
     {% endfor %}
     <div class="btn-group col-12">
-        <a href="{{ lesson.get_cms_url }}" class="btn btn-secondary col-12">Отмена</a>
-        <button type="submit" class="btn btn-primary col-12">{{ page_title }}</button>
+        <a href="{{ step.lesson.get_cms_url }}" class="btn btn-secondary col-12">Отмена</a>
+        <button type="submit" class="btn btn-primary col-12">Сохранить</button>
     </div>
 </form>
 {% endblock %}

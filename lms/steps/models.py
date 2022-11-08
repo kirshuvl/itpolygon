@@ -68,6 +68,17 @@ class Step(PolymorphicModel):
                 'step_slug': self.slug,
             },
         )
+    
+    def cms_delete(self):
+        return reverse(
+            'CMS_StepDelete',
+            kwargs={
+                'course_slug': self.lesson.topic.course.slug,
+                'topic_slug': self.lesson.topic.slug,
+                'lesson_slug': self.lesson.slug,
+                'step_slug': self.slug,
+            },
+        )
 
 
 class TextStep(Step):
@@ -94,6 +105,17 @@ class TextStep(Step):
     def get_cms_url(self):
         return reverse(
             'CMS_TextStepDetail',
+            kwargs={
+                'course_slug': self.lesson.topic.course.slug,
+                'topic_slug': self.lesson.topic.slug,
+                'lesson_slug': self.lesson.slug,
+                'step_slug': self.slug,
+            },
+        )
+    
+    def cms_update(self):
+        return reverse(
+            'CMS_TextStepUpdate',
             kwargs={
                 'course_slug': self.lesson.topic.course.slug,
                 'topic_slug': self.lesson.topic.slug,
@@ -141,7 +163,17 @@ class VideoStep(Step):
                 'step_slug': self.slug,
             },
         )
-
+        
+    def cms_update(self):
+        return reverse(
+            'CMS_VideoStepUpdate',
+            kwargs={
+                'course_slug': self.lesson.topic.course.slug,
+                'topic_slug': self.lesson.topic.slug,
+                'lesson_slug': self.lesson.slug,
+                'step_slug': self.slug,
+            },
+        )
     def step_icon_class(self):
         return 'bi-play-btn'
 
@@ -185,6 +217,19 @@ class QuestionStep(Step):
                 'step_slug': self.slug,
             },
         )
+    
+    def cms_update(self):
+        return reverse(
+            'CMS_QuestionStepUpdate',
+            kwargs={
+                'course_slug': self.lesson.topic.course.slug,
+                'topic_slug': self.lesson.topic.slug,
+                'lesson_slug': self.lesson.slug,
+                'step_slug': self.slug,
+            },
+        )
+    
+    
 
     def step_icon_class(self):
         return 'bi-question-square'
@@ -205,7 +250,7 @@ class UserAnswerForQuestionStep(models.Model):
         CustomUser,
         related_name='question_answers',
         verbose_name='Пользователь',
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
     )
     question = models.ForeignKey(
         QuestionStep,
