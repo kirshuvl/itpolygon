@@ -16,7 +16,7 @@
             {{ step.input_format|safe }}
         </div>
         {% endif %}
-        {% if output_format %}
+        {% if step.output_format %}
         <div class="card-body pb-0">
             <h4>Формат вывода</h4>
             {{ step.output_format|safe }}

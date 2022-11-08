@@ -6,7 +6,7 @@ from django.views.generic import CreateView, DetailView, UpdateView, DeleteView,
 from lms.courses.models import Course
 from lms.topics.models import Topic
 from lms.lessons.models import Lesson
-from lms.steps.models import Step, TextStep, VideoStep, QuestionStep
+from lms.steps.models import Step, StepEnroll, TextStep, VideoStep, QuestionStep
 from lms.problems.models import ProblemStep
 
 from cms.other.forms import \
@@ -14,6 +14,7 @@ from cms.other.forms import \
     TopicCreateForm, \
     LessonCreateForm, \
     TextStepCreateForm, VideoStepCreateForm, QuestionStepCreateForm, ProblemStepCreateForm
+from users.models import CustomUser
 
 
 class CMS_Dashboard(TemplateView):
@@ -125,6 +126,34 @@ class CMS_CourseDelete(DeleteView):
 
     def get_success_url(self):
         return reverse('CMS_UserCoursesList')
+
+class CMS_CourseStatistics(DetailView):
+    model = Course
+    template_name = 'cms/courses/statistics.html'
+    context_object_name = 'course'
+    slug_url_kwarg = 'course_slug'
+
+    def get_context_data(self, **kwargs):
+        context = super(CMS_CourseStatistics, self).get_context_data(**kwargs)
+        context['users'] = CustomUser.objects.filter(courses_enrolls__course=self.object)
+
+        return context
+    
+    def get_object(self):
+
+        return get_object_or_404(
+            Course.objects.prefetch_related(
+                Prefetch('topics', queryset=Topic.objects.filter(
+                    is_published=True).order_by('number')),
+                Prefetch('topics__lessons', queryset=Lesson.objects.filter(
+                    is_published=True).order_by('number')),
+                Prefetch('topics__lessons__steps', queryset=Step.objects.filter(
+                    is_published=True).order_by('number')),
+                Prefetch('topics__lessons__steps__steps_enrolls',
+                         queryset=StepEnroll.objects.select_related('user').filter(user=self.request.user)),
+            ),
+            slug=self.kwargs['course_slug']
+        )
 
 
 class CMS_TopicCreate(CreateView):  # Запросов: 3
