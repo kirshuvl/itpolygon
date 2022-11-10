@@ -25,38 +25,101 @@
         </div>
         {% endif %}
     </div>
+    <div class="card mb-2">
+        <div class="card-header bg-transparent px-3">
+            <h4 class="mb-0">Пример</h4>
+        </div>
+        <div class="card-body">
+            <ul class="nav nav-pills mb-2" id="pills-tab" role="tablist">
+                {% for sample in samples %}
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link {% if forloop.first %}active{% endif %}" id="sample-tab-{{ sample.number }}" data-bs-toggle="pill" data-bs-target="#sample-{{ sample.number }}" type="button" role="tab" aria-controls="sample-{{ sample.number }}" aria-selected="true"># {{ sample.number }}</button>
+                </li>
+                {% endfor %}
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                {% for sample in samples %}
+                <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" id="sample-{{ sample.number }}" role="tabpanel" aria-labelledby="sample-tab-{{ sample.number }}" tabindex="0">
+                    <div class="row">
+                        <div class="col-4 h-100">
+                            <h6>Ввод</h6>
+                                <pre class="mb-0"><code>{{ sample.input }}</code></pre>
+                        </div>
+                        <div class="col-4 ">
+                            <h6>Вывод</h6>
+                                <pre class="mb-0"><code>{{ sample.output }}</code></pre>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header bg-transparent px-3">
+            <h4 class="mb-0">Тесты</h4>
+        </div>
+        <div class="card-body">
+            <ul class="nav nav-pills mb-2" id="pills-tab" role="tablist">
+                {% for test in tests %}
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link {% if forloop.first %}active{% endif %}" id="test-tab-{{ test.number }}" data-bs-toggle="pill" data-bs-target="#test-{{ test.number }}" type="button" role="tab" aria-controls="test-{{ test.number }}" aria-selected="true"># {{ test.number }}</button>
+                </li>
+                {% endfor %}
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                {% for test in tests %}
+                <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" id="test-{{ test.number }}" role="tabpanel" aria-labelledby="test-tab-{{ test.number }}" tabindex="0">
+                    <div class="row">
+                        <div class="col-4 h-100">
+                            <h6>Ввод</h6>
+                                <pre class="mb-0"><code>{{ test.input }}</code></pre>
+                        </div>
+                        <div class="col-4 ">
+                            <h6>Вывод</h6>
+                                <pre class="mb-0"><code>{{ test.output }}</code></pre>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% comment %}
     <div class="card my-2">
         <div class="card-header bg-transparent px-3">
             <h4 class="mb-0">Пример</h4>
         </div>
-        {% for test in tests %}
+        {% for test in samples %}
         <div class="card-body {% if not forloop.last %}border-bottom{% endif %}">
             <div class="row">
-                <div class="col-4 h-100">
-                    <h6>Ввод</h4>
-                        <pre class="mb-0"><code>{{ test.input }}</code></pre>
+                <div class="col-4">
+                    <pre class="mb-0"><code>{{ test.input }}</code></pre>
                 </div>
-                <div class="col-4 ">
-                    <h6>Вывод</h4>
-                        <pre class="mb-0"><code>{{ test.output }}</code></pre>
+                <div class="col-4">
+                    <pre class="mb-0"><code>{{ test.output }}</code></pre>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="input-group mb-2">
-            <div class="input-group">
-                {{ form.code }}
-                <button type="submit" class="btn btn-outline-secondary">Отправить</button>
+    <div class="card">
+        <div class="card-header bg-transparent px-3">
+            <h4 class="mb-0">Тесты</h4>
+        </div>
+        {% for test in tests %}
+        <div class="card-body {% if not forloop.last %}border-bottom{% endif %}">
+            <div class="row">
+                <div class="col-4">
+                    <pre class="mb-0"><code>{{ test.input }}</code></pre>
+                </div>
+                <div class="col-4">
+                    <pre class="mb-0"><code>{{ test.output }}</code></pre>
+                </div>
             </div>
         </div>
-    </form>
-    {% for error in form.user_code.errors %}
-    <div class="text-danger small mb-2">
-        {{ error }}
+        {% endfor %}
     </div>
-    {% endfor %}
+    {% endcomment %}
 </div>
 {% endblock %}

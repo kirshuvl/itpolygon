@@ -2,19 +2,20 @@ from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from django.db.models import Prefetch
 from django.http import HttpResponseRedirect
-from django.views.generic import CreateView, DetailView, UpdateView, DeleteView, ListView, TemplateView
+from django.views.generic import CreateView, DetailView, UpdateView, DeleteView, ListView, TemplateView, FormView
 from lms.courses.models import Course
 from lms.topics.models import Topic
 from lms.lessons.models import Lesson
 from lms.steps.models import Step, StepEnroll, TextStep, VideoStep, QuestionStep
-from lms.problems.models import ProblemStep
-
+from lms.problems.models import ProblemStep, TestForProblemStep
+from users.models import CustomUser
 from cms.other.forms import \
     CourseCreateForm, \
+    TestForProblemStepForm, \
     TopicCreateForm, \
     LessonCreateForm, \
     TextStepCreateForm, VideoStepCreateForm, QuestionStepCreateForm, ProblemStepCreateForm
-from users.models import CustomUser
+import random
 
 
 class CMS_Dashboard(TemplateView):
@@ -127,6 +128,7 @@ class CMS_CourseDelete(DeleteView):
     def get_success_url(self):
         return reverse('CMS_UserCoursesList')
 
+
 class CMS_CourseStatistics(DetailView):
     model = Course
     template_name = 'cms/courses/statistics.html'
@@ -135,10 +137,11 @@ class CMS_CourseStatistics(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(CMS_CourseStatistics, self).get_context_data(**kwargs)
-        context['users'] = CustomUser.objects.filter(courses_enrolls__course=self.object)
+        context['users'] = CustomUser.objects.filter(
+            courses_enrolls__course=self.object)
 
         return context
-    
+
     def get_object(self):
 
         return get_object_or_404(
@@ -202,9 +205,9 @@ class CMS_TopicUpdate(UpdateView):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Редактировать урок {}'.format(
             self.object.title)
-            
+
         return context
-    
+
     def get_object(self):
 
         return get_object_or_404(Topic.objects.select_related('course'), slug=self.kwargs['topic_slug'])
@@ -235,6 +238,7 @@ class CMS_TopicDelete(DeleteView):
                 'course_slug': self.kwargs['course_slug'],
             },
         )
+
 
 class CMS_LessonCreate(CreateView):  # Запросов: 3
     model = Lesson
@@ -428,6 +432,15 @@ class CMS_ProblemStepDetail(CMS_StepDetail):
     model = ProblemStep
     template_name = 'cms/steps/problem_step/detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tests'] = TestForProblemStep.objects.filter(number__gte=self.object.first_test,
+                                                             problem=self.object).order_by('number')
+        context['samples'] = TestForProblemStep.objects.filter(number__lte=self.object.last_sample,
+                                                               number__gte=self.object.first_sample,
+                                                               problem=self.object).order_by('number')
+        return context
+
 
 class CMS_StepUpdate(UpdateView):
     context_object_name = 'step'
@@ -510,6 +523,73 @@ class CMS_StepDelete(DeleteView):
                 'course_slug': self.kwargs['course_slug'],
                 'topic_slug': self.kwargs['topic_slug'],
                 'lesson_slug': self.kwargs['lesson_slug'],
+            },
+        )
+
+
+class CMS_ProblemStepCreateTests(FormView):
+    model = TestForProblemStep
+    template_name = 'cms/steps/problem_step/create_tests.html'
+    form_class = TestForProblemStepForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['step'] = ProblemStep.objects.get(
+            slug=self.kwargs['step_slug'])
+        return context
+
+    def form_valid(self, form):
+        zip_file = form.cleaned_data.get('zip_file')
+        rewrite = form.cleaned_data.get('rewrite')
+        problem = ProblemStep.objects.get(slug=self.kwargs['step_slug'])
+        tests = TestForProblemStep.objects.filter(
+            problem=problem).order_by('number')
+
+        if rewrite:
+            data_create = []
+            if len(zip_file) <= len(tests):
+                for num, test in zip_file.items():
+                    tests[num - 1].input = test['input']
+                    tests[num - 1].output = test['output']
+            else:
+                for num in range(len(tests)):
+                    tests[num].input = zip_file[num + 1]['input']
+                    tests[num].output = zip_file[num + 1]['output']
+
+                for num in range(len(tests) + 1, len(zip_file) + 1, 1):
+                    data_create.append(
+                        TestForProblemStep(
+                            input=zip_file[num]['input'],
+                            output=zip_file[num]['output'],
+                            problem=problem,
+                            number=num
+                        )
+
+                    )
+            TestForProblemStep.objects.bulk_update(tests, ['input', 'output'])
+        else:
+            data_create = []
+            for num in zip_file:
+                data_create.append(
+                    TestForProblemStep(
+                        input=zip_file[num]['input'],
+                        output=zip_file[num]['output'],
+                        problem=problem,
+                        number=num + tests.count()
+                    )
+                )
+        TestForProblemStep.objects.bulk_create(data_create)
+
+        return super().form_valid(form)
+
+    def get_success_url(self) -> str:
+        return reverse(
+            'CMS_ProblemStepDetail',
+            kwargs={
+                'course_slug': self.kwargs['course_slug'],
+                'topic_slug': self.kwargs['topic_slug'],
+                'lesson_slug': self.kwargs['lesson_slug'],
+                'step_slug': self.kwargs['step_slug'],
             },
         )
 

@@ -2,9 +2,9 @@ from django import forms
 from lms.courses.models import Course
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from lms.lessons.models import Lesson
-from lms.problems.models import ProblemStep
+from lms.problems.models import ProblemStep, TestForProblemStep
 from lms.steps.models import QuestionStep, Step, TextStep, VideoStep
-
+from zipfile import ZipFile, Path
 from lms.topics.models import Topic
 
 
@@ -498,3 +498,76 @@ class ProblemStepCreateForm(StepCreateForm):
                 }
             ),
         }
+
+
+class TestForProblemStepForm(forms.Form):
+    zip_file = forms.FileField(
+        widget=forms.FileInput(
+            attrs={
+                'class': 'form-control', 'placeholder': 'Выбрать файл'
+            }
+        )
+    )
+    rewrite = forms.BooleanField(
+        widget=forms.CheckboxInput(
+            attrs={
+                'class': 'form-check-input',
+                'placeholder': 'Опубликовать',
+                'role': 'switch'
+            }
+        )
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(TestForProblemStepForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].required = False
+
+    def clean_zip_file(self):
+        zip_file = self.cleaned_data.get('zip_file')
+
+        if zip_file is None:
+            return self.add_error('zip_file', 'Выберите файл')
+
+        with ZipFile(zip_file, 'r') as file:
+            data = self.open_file(file)
+
+        return data
+
+    def open_file(self, file):
+        data = {}
+
+        for cur_file in file.infolist():
+            with file.open(cur_file) as cur_f:
+                data[cur_file.filename] = str(
+                    cur_f.read(), encoding='UTF-8').replace('\r', '')
+
+        if len(data) % 2 == 1:
+            return self.add_error('zip_file', 'Количество файлов нечетное, значит не хватает какого-то теста')
+
+        loc_data = sorted(data)
+        for el in range(0, len(data), 2):
+            if not (loc_data[el][:2] == loc_data[el + 1][:2] and loc_data[el][2:] == '_in.txt' and
+                    loc_data[el + 1][2:] == '_out.txt' and int(loc_data[el][:2]) == el // 2 + 1 and
+                    int(loc_data[el + 1][:2]) == el // 2 + 1):
+                return self.add_error('zip_file', 'Что-то пошло не так. Перепроверьте тесты. Возможно пропущен тест')
+        file_data = {}
+
+        for el in range(1, len(sorted(data)) // 2 + 1, 1):
+            file_data[el] = {'input': data['{}_in.txt'.format(str(el).zfill(2))],
+                             'output': data['{}_out.txt'.format(str(el).zfill(2))]}
+
+        return file_data
+
+    def is_valid(self):
+        errors = self.errors.as_data()
+        for field in self.fields:
+            if field == 'rewrite':
+                continue
+            if field not in errors:
+                self.fields[field].widget.attrs.update(
+                    {'class': 'form-control is-valid'})
+            else:
+                self.fields[field].widget.attrs.update(
+                    {'class': 'form-control is-invalid'})
+        return super().is_valid()
