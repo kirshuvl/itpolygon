@@ -78,7 +78,7 @@ class ProblemStep(Step):
                 'step_slug': self.slug,
             },
         )
-    
+
     def cms_update(self):
         return reverse(
             'CMS_ProblemStepUpdate',

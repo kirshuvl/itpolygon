@@ -1,0 +1,52 @@
+{% extends 'cms/steps/step_base.html' %}
+{% block page_title %}{{ step.title }}{% endblock %}
+{% block step_body %}
+<div class="card-body">
+    <div class="card mb-2">
+        <div class="card-header bg-transparent px-3">
+            Ограничение времени: {{ step.cputime }} секунда | Ограничение памяти: {{ step.memory }} Мб
+        </div>
+        <div class="card-body border-bottom pb-0">
+            <h4>Легенда</h4>
+            {{ step.description|safe }}
+        </div>
+        <div class="card-body border-bottom pb-0">
+            <h4>Формат ввода</h4>
+            {{ step.input_format|safe }}
+        </div>
+        <div class="card-body pb-0">
+            <h4>Формат вывода</h4>
+            {{ step.output_format|safe }}
+        </div>
+        {% if step.notes %}
+        <div class="card-body border-top pb-0">
+            <h4>Примечания</h4>
+            {{ step.notes|safe }}
+        </div>
+        {% endif %}
+    </div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="input-group mb-2">
+            <div class="input-group">
+                {{ form.zip_file }}
+                <button type="submit" class="btn btn-outline-secondary">Отправить</button>
+            </div>
+        </div>
+
+        {% for error in form.zip_file.errors %}
+        <div class="text-danger small mb-2">
+            {{ error }}
+        </div>
+        {% endfor %}
+        {% if step.tests.count > 0 %}
+        <div class="input-group">
+            <div class="form-check form-switch">
+                {{ form.rewrite }}
+            </div>
+            <label class="form-check-label" for="id_is_published">Перезаписать тесты?</label>
+        </div>
+        {% endif %}
+    </form>
+</div>
+{% endblock %}

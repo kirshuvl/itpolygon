@@ -35,9 +35,14 @@
                     </h4>
                 </div>
                 {% if step.type == 'problem' %}
-                <a href="">
-                    <span class="btn btn-success badge p-2 rounded opacity-50"><i class="bi bi-plus-square me-2"></i>Добавить тесты</span>
-                </a>
+                <div>
+                    <a href="" class="btn btn-success badge p-2 rounded opacity-25">
+                        <i class="bi bi-plus-square me-2"></i>Добавить тест
+                    </a>
+                    <a href="{% url 'CMS_ProblemStepCreateTests' step.lesson.topic.course.slug step.lesson.topic.slug step.lesson.slug step.slug %}" class="btn btn-success badge p-2 rounded opacity-25">
+                        <i class="bi bi-plus-square me-2"></i>Добавить тесты
+                    </a>
+                </div>
                 {% endif %}
             </div>
         </div>
