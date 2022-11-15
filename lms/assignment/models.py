@@ -7,17 +7,16 @@ from users.models import CustomUser
 
 class AssignmentStep(Step):
     file = models.FileField(
-            verbose_name='Файл',
-            upload_to='assignment/%Y/%m/%d/',
-            blank=True,
+        verbose_name='Файл',
+        upload_to='assignment/%Y/%m/%d/',
+        blank=True,
     )
 
     class Meta:
         verbose_name = 'Задание'
         verbose_name_plural = 'Задания'
         ordering = ['title']
-    
-    
+
     def step_icon_class(self):
         return 'bi-clipboard-plus'
 
@@ -34,6 +33,29 @@ class AssignmentStep(Step):
                 'step_slug': self.slug,
             },
         )
+
+    def get_cms_url(self):
+        return reverse(
+            'CMS_AssignmentStepDetail',
+            kwargs={
+                'course_slug': self.lesson.topic.course.slug,
+                'topic_slug': self.lesson.topic.slug,
+                'lesson_slug': self.lesson.slug,
+                'step_slug': self.slug,
+            },
+        )
+
+    def cms_update(self):
+        return reverse(
+            'CMS_AssignmentStepUpdate',
+            kwargs={
+                'course_slug': self.lesson.topic.course.slug,
+                'topic_slug': self.lesson.topic.slug,
+                'lesson_slug': self.lesson.slug,
+                'step_slug': self.slug,
+            },
+        )
+
 
 class UserAnswerForAssignmentStep(models.Model):
     user_answer = models.TextField(
@@ -62,9 +84,9 @@ class UserAnswerForAssignmentStep(models.Model):
         auto_now=True,
     )
     file = models.FileField(
-            verbose_name='Файл',
-            upload_to='assignment/%Y/%m/%d/',
-            blank=True,
+        verbose_name='Файл',
+        upload_to='assignment/%Y/%m/%d/',
+        blank=True,
     )
     STATUS_CHOICES = [
         ('RV', 'На проверке'),

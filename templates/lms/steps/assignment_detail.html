@@ -4,6 +4,24 @@
 <div class="card-body pb-0">
     {{ step.description|safe }}
 </div>
+{% if step.file %}
+<div class="card-footer bg-transparent p-3">
+    <div class="card col-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <a href="{{ step.file.url }}" class="text-decoration-none stretched-link">{% get_file_name step.file.name %}</a>
+                    </div>
+                    <div>
+                        <i class="bi bi-file-earmark-{% get_file_format step.file.name %}"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
 {% endblock %}
 {% load assignment_tags %}
 {% block under_content %}
@@ -31,7 +49,7 @@
                     {{ error }}
                 </div>
                 {% endfor %}
-                <button type="submit" class="col-12 btn btn-outline-secondary p-2">Отправить</button>
+                <button type="submit" class="col-12 btn btn-outline-secondary p-2">Добавить ответ</button>
             </form>
         </div>
     </div>
@@ -67,7 +85,7 @@
                         </div>
                     </div>
                     <div class="col-4 text-end">
-                        <span class="badge bg-secondary p-2 rounded opacity-50 me-2">{{ attempt.get_status_display }}</span>{{ attempt.date_create|date:'d.m.Y H:i:s' }} 
+                        <span class="badge bg-secondary p-2 rounded opacity-50 me-2">{{ attempt.get_status_display }}</span>{{ attempt.date_create|date:'d.m.Y H:i:s' }}
                     </div>
                 </div>
             </div>
@@ -87,10 +105,6 @@
                                 </div>
                             </div>
                         </div>
-
-
-
-                        
                     </div>
                 </div>
             </div>
@@ -99,62 +113,3 @@
     </div>
 </div>
 {% endblock %}
-
-{% comment %}
-{% if user|user_has_right_answer:attempts %}
-<div class="card">
-    <div class="card-body text-success">
-        Ты уже ответил верно на этот вопрос!
-    </div>
-</div>
-{% elif attempts.count < step.num_attempts %} <form method="post">
-    {% csrf_token %}
-    <div class="input-group">
-        <span class="input-group-text p-2">Ответ:</span>
-        {{ form.user_answer }}
-        <button type="submit" class="btn btn-outline-secondary p-2">Отправить</button>
-    </div>
-    </form>
-    {% else %}
-    <div class="card">
-        <div class="card-body text-danger">
-            К сожалению, попытки закончились :(
-        </div>
-    </div>
-    {% endif %}
-    {% if attempts %}
-    <div class="card my-2">
-        <div class="card-body">
-            <div class="row align-items-center">
-                <div class="col-3 offset-1 text-center border-start border-end">
-                    Ваш ответ
-                </div>
-                <div class="col-3 border-end text-center">
-                    Дата ответа
-                </div>
-            </div>
-        </div>
-    </div>
-    {% for attempt in attempts %}
-    <div class="card mb-1">
-        <div class="card-body">
-            <div class="row align-items-center">
-                <div class="col-1 text-center border-end">
-                    {% if attempt.is_correct %}
-                    <span class="badge bg-success opacity-50 p-2 rounded"><i class="bi bi-check-square"></i></span>
-                    {% else %}
-                    <span class="badge bg-danger opacity-50 p-2 rounded"><i class="bi bi-x-square"></i></span>
-                    {% endif %}
-                </div>
-                <div class="col-3 text-center border-end">
-                    {{ attempt.user_answer }}
-                </div>
-                <div class="col-3 text-center border-end">
-                    {{ attempt.date_create|date:'d.m.Y H:i:s' }}
-                </div>
-            </div>
-        </div>
-    </div>
-    {% endfor %}
-    {% endif %}
-    {% endcomment %}

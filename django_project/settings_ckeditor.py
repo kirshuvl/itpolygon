@@ -3,7 +3,7 @@ CKEDITOR_CONFIGS = {
         'skin': 'moono-lisa',
         'toolbar_itpolygon': [
             {'name': 'document', 'items': [
-                'Source', 'Preview', 'codesnippet', ]},
+                'Source', 'Preview', 'CodeSnippet', ]},
             {'name': 'basicstyles',
              'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
             {'name': 'paragraph',
@@ -29,5 +29,6 @@ CKEDITOR_CONFIGS = {
             'autolink',
         ]),
     },
+    
 
 }

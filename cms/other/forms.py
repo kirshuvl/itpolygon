@@ -2,10 +2,11 @@ from django import forms
 from lms.courses.models import Course
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from lms.lessons.models import Lesson
-from lms.problems.models import ProblemStep, TestForProblemStep
+from lms.problems.models import ProblemStep
 from lms.steps.models import QuestionStep, Step, TextStep, VideoStep
-from zipfile import ZipFile, Path
+from zipfile import ZipFile
 from lms.topics.models import Topic
+from lms.assignment.models import AssignmentStep
 
 
 class MixinForm(forms.ModelForm):
@@ -571,3 +572,17 @@ class TestForProblemStepForm(forms.Form):
                 self.fields[field].widget.attrs.update(
                     {'class': 'form-control is-invalid'})
         return super().is_valid()
+
+
+class AssignmentStepCreateForm(StepCreateForm):
+    class Meta(StepCreateForm.Meta):
+        model = AssignmentStep
+        fields = StepCreateForm.Meta.fields + ['file']
+        widgets = StepCreateForm.Meta.widgets | {
+            'file': forms.FileInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Файл'
+                }
+            ),
+        }
