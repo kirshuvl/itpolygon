@@ -29,6 +29,7 @@
           </a>
           {% if user.is_superuser %}<a href="{% url 'CRMDashboard' %}" class="btn btn-outline-danger me-2">CRM</a>
           <a href="{% url 'CMS_Dashboard' %}" class="btn btn-outline-primary me-2">CMS</a>{% endif %}
+          <a href="{% url 'UserHomeworkList' %}" class="btn btn-outline-primary me-2 position-relative">Домашние задания</a>
           <a href="{% url 'UserProfile' %}" class="btn btn-outline-primary me-2">Аккаунт</a>
           <a href="{% url 'UserLogout' %}" class="btn btn-outline-primary">Выйти</a>
           {% else %}

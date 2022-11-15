@@ -12,6 +12,7 @@ urlpatterns = [
     path('courses/<str:course_slug>/update', CMS_CourseUpdate.as_view(), name='CMS_CourseUpdate'),
     path('courses/<str:course_slug>/delete', CMS_CourseDelete.as_view(), name='CMS_CourseDelete'),
     path('courses/<str:course_slug>/statistics', CMS_CourseStatistics.as_view(), name='CMS_CourseStatistics'),
+    path('courses/<str:course_slug>/submissions', CMS_CourseSubmissions.as_view(), name='CMS_CourseSubmissions'),
 
     # Topic
 

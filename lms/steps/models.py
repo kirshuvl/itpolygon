@@ -68,7 +68,7 @@ class Step(PolymorphicModel):
                 'step_slug': self.slug,
             },
         )
-    
+
     def cms_delete(self):
         return reverse(
             'CMS_StepDelete',
@@ -112,7 +112,7 @@ class TextStep(Step):
                 'step_slug': self.slug,
             },
         )
-    
+
     def cms_update(self):
         return reverse(
             'CMS_TextStepUpdate',
@@ -163,7 +163,7 @@ class VideoStep(Step):
                 'step_slug': self.slug,
             },
         )
-        
+
     def cms_update(self):
         return reverse(
             'CMS_VideoStepUpdate',
@@ -174,6 +174,7 @@ class VideoStep(Step):
                 'step_slug': self.slug,
             },
         )
+
     def step_icon_class(self):
         return 'bi-play-btn'
 
@@ -217,7 +218,7 @@ class QuestionStep(Step):
                 'step_slug': self.slug,
             },
         )
-    
+
     def cms_update(self):
         return reverse(
             'CMS_QuestionStepUpdate',
@@ -228,8 +229,6 @@ class QuestionStep(Step):
                 'step_slug': self.slug,
             },
         )
-    
-    
 
     def step_icon_class(self):
         return 'bi-question-square'

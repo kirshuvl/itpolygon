@@ -105,7 +105,7 @@ def get_step_position(steps, current_step):
             break
     return position
 
-
+@register.filter
 def step_color(step):
     enroll = step.steps_enrolls.first()
     if enroll is None:

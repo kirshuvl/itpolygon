@@ -1,0 +1,56 @@
+{% extends 'lms/dashboard.html' %}
+{% block page_title %}{{ page_title }}{% endblock %}
+{% load homeworks_tags %}
+{% block breadcrumb %}
+<div class="card shadow mb-2">
+    <div class="card-body small">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb m-0">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'UserProfile' %}" class="text-decoration-none">Аккаунт</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    Мои достижения
+                </li>
+            </ol>
+        </nav>
+    </div>
+</div>
+{% endblock %}
+{% block main_content %}
+<div class="col-lg-9">
+    <div class="card shadow">
+        <div class="card-header bg-transparent p-3">
+            <div class="row">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="m-0">
+                            <i class="bi bi-house me-3"></i>Домашнее задание
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            {{ homework.description|safe }}
+            <hr>
+            {% for step in homework.steps.all %}
+            <div class="card {% if not forloop.last %}mb-2{% endif %}">
+                <div class="card-body p-2">
+                    <div class="row">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                               <span class="badge bg-{{ step|step_color }} p-2 rounded me-2"><i class="bi {{ step.step_icon_class }}"></i></span><a href="{{ step.get_absolute_url }}" class="text-decoration-none stretched-link" target="_blank">{{ step.title }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

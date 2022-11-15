@@ -20,6 +20,8 @@ INSTALLED_APPS = [
     'lms.help.apps.OtherConfig',
     'lms.achievements.apps.AchievementsConfig',
     'lms.problems.apps.ProblemsConfig',
+    'lms.homeworks.apps.HomeworksConfig',
+    'lms.assignment.apps.AssignmentConfig',
     'crm.lead.apps.LeadConfig',
     'cms.other.apps.OtherConfig',
     'django_cleanup.apps.CleanupConfig',
@@ -55,6 +57,8 @@ TEMPLATES = [
                 'lms.courses.templatetags.courses_tags',
                 'lms.lessons.templatetags.lessons_tags',
                 'lms.steps.templatetags.steps_tags',
+                'lms.homeworks.templatetags.homeworks_tags',
+                'lms.assignment.templatetags.assignment_tags',
             ]
         },
 

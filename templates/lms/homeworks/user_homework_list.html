@@ -1,0 +1,75 @@
+{% extends 'lms/dashboard.html' %}
+{% block page_title %}{{ page_title }}{% endblock %}
+{% load homeworks_tags %}
+{% block breadcrumb %}
+<div class="card shadow mb-2">
+    <div class="card-body small">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb m-0">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'UserProfile' %}" class="text-decoration-none">Аккаунт</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    Мои домашние задания
+                </li>
+            </ol>
+        </nav>
+    </div>
+</div>
+{% endblock %}
+{% block main_content %}
+<div class="col-lg-9">
+    <div class="card shadow">
+        <div class="card-header bg-transparent p-3">
+            <div class="row">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="m-0">
+                            <i class="bi bi-house me-3"></i>{{ page_title }}
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if homeworks %}
+        <div class="card-body">
+            {% for homework in homeworks %}
+            <div class="row gx-2 {% if not forloop.last %}mb-2{% endif %}">
+                <div class="col-10">
+                    <div class="card">
+                        <div class="card-body p-2">
+                            <div class="row">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <span class="badge bg-secondary p-2 opacity-50 me-2"># {{ forloop.counter }}</span><a href="{% url 'UserHomeworkDetail' homework.pk %}" class="text-decoration-none">Домашнее задание</a>
+                                    </div>
+                                    <div>
+                                        <span class="badge bg-outline-secondary p-2 opacity-50 me-2 text-secondary">{{ homework.date_to|date:'d M H:i'}}</span>
+                                        <span class="small text-secondary me-2">{{ homework|steps_finished }} / {{ homework|steps_counter }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="card h-100">
+                        <div class="card-body p-2">
+                            <div class="progress h-100">
+                                <div class="progress-bar" role="progressbar" aria-label="" style="width: {{ homework|lesson_progress_percent }}%;" aria-valuenow="" aria-valuemin="20" aria-valuemax="100">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="card-body text-center text-danger">
+            У тебя нет домашних заданий! Можно отдохнуть :)
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

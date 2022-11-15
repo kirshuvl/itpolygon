@@ -7,7 +7,7 @@ from lms.courses.models import Course
 from lms.topics.models import Topic
 from lms.lessons.models import Lesson
 from lms.steps.models import Step, StepEnroll, TextStep, VideoStep, QuestionStep
-from lms.problems.models import ProblemStep, TestForProblemStep
+from lms.problems.models import ProblemStep, TestForProblemStep, UserAnswerForProblemStep
 from users.models import CustomUser
 from cms.other.forms import \
     CourseCreateForm, \
@@ -157,6 +157,19 @@ class CMS_CourseStatistics(DetailView):
             ),
             slug=self.kwargs['course_slug']
         )
+
+
+class CMS_CourseSubmissions(ListView):
+    model = UserAnswerForProblemStep
+    template_name = 'cms/courses/problems_list.html'
+    context_object_name = 'attempts'
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super(CMS_CourseSubmissions, self).get_context_data(**kwargs)
+        context['course'] = Course.objects.get(slug=self.kwargs['course_slug'])
+
+        return context
 
 
 class CMS_TopicCreate(CreateView):  # Запросов: 3

@@ -1,4 +1,3 @@
-import imp
 from django import forms
 from lms.steps.models import UserAnswerForQuestionStep
 
