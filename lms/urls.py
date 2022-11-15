@@ -1,6 +1,8 @@
 from django.urls import path, include
 from lms.achievements.views import UserAchievements
+from lms.assignment.views import AssignmentStepDetail
 from lms.courses.views import CoursesList, UserCoursesList, CourseDetail
+from lms.homeworks.views import UserHomeworkList, UserHomeworkDetail
 from lms.lessons.views import LessonDetail, LessonStatistics
 from lms.steps.mixins import BaseStepMixin
 from lms.steps.views import TextStepDetail, VideoStepDetail, QuestionStepDetail
@@ -44,6 +46,10 @@ urlpatterns = [
          ProblemStepDetail.as_view(),
          name='ProblemStepDetail'
          ),
+    path('courses/<str:course_slug>/<str:topic_slug>/<str:lesson_slug>/<str:step_slug>/assignment/',
+         AssignmentStepDetail.as_view(),
+         name='AssignmentStepDetail'
+         ),
     path('submissions/<int:user_answer_pk>/',
          UserCodeDetail.as_view(),
          name='UserCodeDetail'
@@ -55,4 +61,7 @@ urlpatterns = [
          BaseStepMixin.user_end_step,
          name='UserEndStep'
          ),
+    path('homeworks/my', UserHomeworkList.as_view(), name='UserHomeworkList'),
+    path('homeworks/my/<int:homework_pk>/',
+         UserHomeworkDetail.as_view(), name='UserHomeworkDetail')
 ]

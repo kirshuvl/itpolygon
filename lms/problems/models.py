@@ -186,6 +186,10 @@ class UserAnswerForProblemStep(models.Model):
         verbose_name='Баллы',
         default=0,
     )
+    is_new = models.BooleanField(
+        verbose_name='Новая?',
+        default=True
+    )
 
     class Meta:
         verbose_name = 'Попытка пользователя'

@@ -39,6 +39,9 @@
                             <a href="{% url 'UserCoursesList' %}" class="nav-link {% if url_name == 'UserCoursesList'%}active{% endif %}"><i class="bi bi-ui-checks-grid me-3"></i>Мои курсы</a>
                         </li>
                         <li class="nav-item mb-1">
+                            <a href="{% url 'UserHomeworkList' %}" class="nav-link {% if url_name == 'UserHomeworkList' or url_name == 'UserHomeworkDetail' %}active{% endif %}"><i class="bi bi-house me-3"></i>Домашние задания</a>
+                        </li>
+                        <li class="nav-item mb-1">
                             <a href="{% url 'UserAchievementsList' %}" class="nav-link {% if url_name == 'UserAchievementsList'%}active{% endif %}"><i class="bi bi-gem me-3"></i>Мои достижения</a>
                         </li>
                     </ul>

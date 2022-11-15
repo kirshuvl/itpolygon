@@ -7,14 +7,15 @@ from lms.courses.models import Course
 from lms.topics.models import Topic
 from lms.lessons.models import Lesson
 from lms.steps.models import Step, StepEnroll, TextStep, VideoStep, QuestionStep
-from lms.problems.models import ProblemStep, TestForProblemStep
+from lms.problems.models import ProblemStep, TestForProblemStep, UserAnswerForProblemStep
+from lms.assignment.models import AssignmentStep
 from users.models import CustomUser
 from cms.other.forms import \
     CourseCreateForm, \
     TestForProblemStepForm, \
     TopicCreateForm, \
     LessonCreateForm, \
-    TextStepCreateForm, VideoStepCreateForm, QuestionStepCreateForm, ProblemStepCreateForm
+    TextStepCreateForm, VideoStepCreateForm, QuestionStepCreateForm, ProblemStepCreateForm, AssignmentStepCreateForm
 import random
 
 
@@ -157,6 +158,19 @@ class CMS_CourseStatistics(DetailView):
             ),
             slug=self.kwargs['course_slug']
         )
+
+
+class CMS_CourseSubmissions(ListView):
+    model = UserAnswerForProblemStep
+    template_name = 'cms/courses/problems_list.html'
+    context_object_name = 'attempts'
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super(CMS_CourseSubmissions, self).get_context_data(**kwargs)
+        context['course'] = Course.objects.get(slug=self.kwargs['course_slug'])
+
+        return context
 
 
 class CMS_TopicCreate(CreateView):  # Запросов: 3
@@ -408,6 +422,17 @@ class CMS_ProblemStepCreate(CMS_StepCreate):  # Запросов: 3
         return context
 
 
+class CMS_AssignmentStepCreate(CMS_StepCreate):
+    model = AssignmentStep
+    form_class = AssignmentStepCreateForm
+    template_name = 'cms/steps/assignment_step/create.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Добавить задание'
+        return context
+
+
 class CMS_StepDetail(DetailView):
     context_object_name = 'step'
     slug_url_kwarg = 'step_slug'
@@ -440,6 +465,11 @@ class CMS_ProblemStepDetail(CMS_StepDetail):
                                                                number__gte=self.object.first_sample,
                                                                problem=self.object).order_by('number')
         return context
+
+
+class CMS_AssignmentSteppDetail(CMS_StepDetail):
+    model = AssignmentStep
+    template_name = 'cms/steps/assignment_step/detail.html'
 
 
 class CMS_StepUpdate(UpdateView):
@@ -501,6 +531,18 @@ class CMS_ProblemStepUpdate(CMS_StepUpdate):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Редактировать задачу на программирование: {}'.format(
+            self.object.title)
+        return context
+
+
+class CMS_AssignmentStepUpdate(CMS_StepUpdate):
+    model = AssignmentStep
+    form_class = AssignmentStepCreateForm
+    template_name = 'cms/steps/assignment_step/update.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Редактировать задание: {}'.format(
             self.object.title)
         return context
 

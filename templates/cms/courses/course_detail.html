@@ -38,7 +38,10 @@
                     <h4 class="m-0"><i class="bi bi-ui-checks-grid me-3"></i>{{ course.title }}</h4>
                 </div>
                 <div>
-                    <a href="{% url 'CMS_CourseStatistics' course.slug %}" class="btn btn-secondary badge p-2 rounded opacity-25" target="_blank">
+                    <a href="{% url 'CMS_CourseSubmissions' course.slug %}" class="btn btn-secondary badge p-2 rounded opacity-50">
+                        <i class="bi bi-code-square me-2"></i>Все посылки
+                    </a>
+                    <a href="{% url 'CMS_CourseStatistics' course.slug %}" class="btn btn-secondary badge p-2 rounded opacity-50" target="_blank">
                         <i class="bi bi-eye me-2"></i>Статистика курса
                     </a>
                     <a href="{% url 'topics_sort' course.slug %}" class="btn btn-secondary badge p-2 rounded opacity-50">

@@ -59,9 +59,9 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="{% url 'CMS_LessonUpdate' lesson.topic.course.slug lesson.topic.slug lesson.slug %}">Редактировать</a></li>
-                                    <li><a class="dropdown-item" href="">Удалить</a></li>
-                                    <li><a class="dropdown-item" href="">Пересчитать уроки</a></li>
-                                    <li><a class="dropdown-item" href="">Опубликовать</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'CMS_LessonDelete' lesson.topic.course.slug lesson.topic.slug lesson.slug %}">Удалить</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'steps_sort' lesson.slug %}">Пересчитать уроки</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'lesson_check_publish' lesson.slug %}">{% if lesson.is_published %}Снять с публикации{% else %}Опубликовать{% endif %}</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -120,6 +120,9 @@
                 </a>
                 <a href="{% url 'CMS_ProblemStepCreate' lesson.topic.course.slug lesson.topic.slug lesson.slug %}" class="btn btn-primary badge p-2 rounded opacity-50">
                     <i class="bi bi-plus-square me-2"></i>Задача
+                </a>
+                <a href="{% url 'CMS_AssignmentStepCreate' lesson.topic.course.slug lesson.topic.slug lesson.slug %}" class="btn btn-primary badge p-2 rounded opacity-50">
+                    <i class="bi bi-plus-square me-2"></i>Задание
                 </a>
             </div>
         </div>

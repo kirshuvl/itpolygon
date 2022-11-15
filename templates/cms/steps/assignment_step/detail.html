@@ -1,0 +1,25 @@
+{% extends 'cms/steps/step_base.html' %}
+{% block page_title %}{{ step.title }}{% endblock %}
+{% block step_body %}
+<div class="card-body pb-0">
+    {{ step.description|safe }}
+</div>
+{% if step.file %}
+<div class="card-footer bg-transparent p-3">
+    <div class="card col-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <a href="{{ step.file.url }}" class="text-decoration-none stretched-link">{% get_file_name step.file.name %}</a>
+                    </div>
+                    <div>
+                        <i class="bi bi-file-earmark-{% get_file_format step.file.name %}"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
