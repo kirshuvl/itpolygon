@@ -26,50 +26,102 @@
         </div>
     </div>
     <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-bordered mb-0">
-                <tbody>
-                    <tr>
-                        <td>
-                          
-                        </td>
-                        {% for topic in course.topics.all %}
-                        <td class="px-1 text-nowrap me-1" colspan="{{ topic.lessons.count }}">
-                            {{ topic.title }}
-                        </td>
-                        {% endfor %}
-                    </tr>
-                    <tr>
-                        <td>
-                            Фамилия Имя
-                        </td>
-                        {% for topic in course.topics.all %}
-                        {% for lesson in topic.lessons.all %}
-                        <td class="px-1 text-nowrap me-1">
-                            {{ lesson.title }}
-                        </td>
-                        {% endfor %}
-                        {% endfor %}
-                    </tr>
-                    {% for user in users %}
-                    <tr>
-                        <td>
-                            {{ user.first_name }} {{ user.last_name }}
-                        </td>
-                        {% for topic in course.topics.all %}
-                        {% for lesson in topic.lessons.all %}
-                        <td class="px-1 text-nowrap me-1">
-                            {% for step in lesson.steps.all %}
-                            <span class="badge bg-{% step_colors step user %} p-2 rounded"><i class="bi {{ step.step_icon_class }}"></i></span>
+
+        <div class="row gx-2 small mb-2">
+            <div class="col-2">
+                <div class="card">
+                    <div class="card-body">
+                        Имя Фамилия
+                    </div>
+                </div>
+            </div>
+            <div class="col-10">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row ">
+                            {% for topic in course.topics.all %}
+
+                            {% for lesson in topic.lessons.all %}
+                           
+                            
+                            <div class="col border-end">
+                                {{ lesson.title }}
+                            </div>
                             {% endfor %}
-                        </td>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% for user in users %}
+        <div class="row gx-2 small">
+            <div class="col-2">
+                <div class="card">
+                    <div class="card-body">
+                        {{ user.first_name }} {{ user.last_name }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-10">
+                <div class="card">
+                    <div class="card-body">
+                        asdasd
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+
+
+
+            {% comment %}
+            <div class="table-responsive">
+                <table class="table table-bordered mb-0">
+                    <tbody>
+                        <tr>
+                            <td>
+
+                            </td>
+                            {% for topic in course.topics.all %}
+                            <td class="px-1 text-nowrap me-1" colspan="{{ topic.lessons.count }}">
+                                {{ topic.title }}
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td class="px-1 text-nowrap me-1">
+                                Фамилия Имя
+                            </td>
+                            {% for topic in course.topics.all %}
+                            {% for lesson in topic.lessons.all %}
+                            <td class="px-1 text-nowrap me-1">
+                                {{ lesson.title }}
+                            </td>
+                            {% endfor %}
+                            {% endfor %}
+                        </tr>
+                        {% for user in users %}
+                        <tr>
+                            <td class="px-1 text-nowrap me-1">
+                                {{ user.first_name }} {{ user.last_name }}
+                            </td>
+                            {% for topic in course.topics.all %}
+                            {% for lesson in topic.lessons.all %}
+                            <td class="px-1 text-nowrap me-1">
+                                {% for step in lesson.steps.all %}
+                                <span class="badge bg-{% step_colors step user %} p-2 rounded"><i class="bi {{ step.step_icon_class }}"></i></span>
+                                {% endfor %}
+                            </td>
+                            {% endfor %}
+                            {% endfor %}
+                        </tr>
                         {% endfor %}
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
+            {% endcomment %}
         </div>
     </div>
-</div>
-{% endblock %}
+    {% endblock %}

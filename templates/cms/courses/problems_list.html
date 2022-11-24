@@ -91,7 +91,9 @@
                         {% if attempt.verdict == 'PR' %}-{% else %}{{ attempt.points }}{% endif %}
                     </div>
                     <div class="col-1 text-end text-danger">
-                        <span class="badge bg-secondary p-2 opacity-50"><i class="bi bi-eye"></i></span>
+                        <a href="{% url 'rerun_submissions' attempt.pk %}" class="text-decoration-none">
+                            <span class="badge bg-secondary p-2 opacity-50"><i class="bi bi-arrow-repeat"></i></span>
+                        </a>
                         <a href="">
                             {% if attempt.is_new %}
                             <span class="badge bg-success p-2 opacity-50"><i class="bi bi-check-square"></i></span>

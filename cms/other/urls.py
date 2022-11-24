@@ -72,4 +72,6 @@ urlpatterns = [
 
     path('move/<str:course_slug>/<str:topic_slug>/<str:lesson_slug>/<str:step_slug>/up/', step_up, name='step_up'),
     path('move/<str:course_slug>/<str:topic_slug>/<str:lesson_slug>/<str:step_slug>/down/', step_down, name='step_down'),
+
+    path('submissions/<int:user_answer_pk>/rerun', rerun_submission, name='rerun_submissions'),
 ]

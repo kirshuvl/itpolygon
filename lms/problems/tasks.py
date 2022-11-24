@@ -50,7 +50,7 @@ def run_user_code(user_answer_pk):
                 test=test,
                 verdict=get_verdict(test, result),
                 exit_code=result['exit_code'],
-                stdout=str(result['stdout'], encoding='UTF-8').strip(),
+                stdout=str(result['stdout'], encoding='UTF-8'),
                 stderr=str(result['stderr'], encoding='UTF-8').strip(),
                 duration=result['duration'],
                 timeout=result['timeout'],
@@ -104,7 +104,7 @@ def run_user_code(user_answer_pk):
 
 
 def get_verdict(test, result):
-    res = str(result['stdout'], encoding='UTF-8').strip()
+    res = str(result['stdout'], encoding='UTF-8')
 
     if result['timeout']:
         return 'TL'
