@@ -7,7 +7,7 @@ from lms.courses.models import Course
 from lms.topics.models import Topic
 from lms.lessons.models import Lesson
 from lms.steps.models import Step, StepEnroll, TextStep, VideoStep, QuestionStep
-from lms.problems.models import ProblemStep, TestForProblemStep, UserAnswerForProblemStep
+from lms.problems.models import ProblemStep, TestForProblemStep, TestUserAnswer, UserAnswerForProblemStep
 from lms.assignment.models import AssignmentStep
 from users.models import CustomUser
 from cms.other.forms import \
@@ -16,7 +16,7 @@ from cms.other.forms import \
     TopicCreateForm, \
     LessonCreateForm, \
     TextStepCreateForm, VideoStepCreateForm, QuestionStepCreateForm, ProblemStepCreateForm, AssignmentStepCreateForm
-import random
+from lms.problems.tasks import run_user_code
 
 
 class CMS_Dashboard(TemplateView):
@@ -804,4 +804,16 @@ def steps_sort(request, lesson_slug):
     for num, step in enumerate(steps):
         step.number = num + 1
         step.save()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+def rerun_submission(request, user_answer_pk):
+    user_answer = UserAnswerForProblemStep.objects.get(pk=user_answer_pk)
+    user_answer.verdict = 'PR'
+    user_answer.cputime = 0
+    user_answer.first_fail_test = 0
+    user_answer.points = 0
+    user_answer.save()
+    TestUserAnswer.objects.filter(user=user_answer.user, code=user_answer).delete()
+    run_user_code.delay(user_answer_pk)
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
