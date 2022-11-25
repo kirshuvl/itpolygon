@@ -164,13 +164,16 @@ class CMS_CourseSubmissions(ListView):
     model = UserAnswerForProblemStep
     template_name = 'cms/courses/problems_list.html'
     context_object_name = 'attempts'
-    paginate_by = 10
+    paginate_by = 20
 
     def get_context_data(self, **kwargs):
         context = super(CMS_CourseSubmissions, self).get_context_data(**kwargs)
         context['course'] = Course.objects.get(slug=self.kwargs['course_slug'])
 
         return context
+    
+    def get_queryset(self):
+        return UserAnswerForProblemStep.objects.select_related('problem__lesson__topic__course', 'user').filter(problem__lesson__topic__course__slug=self.kwargs['course_slug'])
 
 
 class CMS_TopicCreate(CreateView):  # Запросов: 3
