@@ -31,16 +31,16 @@
     </div>
     <div class="card my-2">
         <div class="card-header bg-transparent px-3">
-            <h4 class="mb-0">Пример</h4>
+            <h4 class="mb-0">Примеры</h4>
         </div>
         {% for test in tests %}
         <div class="card-body {% if not forloop.last %}border-bottom{% endif %}">
             <div class="row">
-                <div class="col-4 h-100">
+                <div class="col-6">
                     <h6>Ввод</h6>
                         <pre class="mb-0"><code>{{ test.input }}</code></pre>
                 </div>
-                <div class="col-4 ">
+                <div class="col-6">
                     <h6>Вывод</h6>
                         <pre class="mb-0"><code>{{ test.output }}</code></pre>
                 </div>

@@ -80,6 +80,7 @@
                             </a>
                         </div>
                         <div>
+                            {% if step.type == 'problem' %}<span class="small text-secondary me-2">{{ step.tests.count }} тестов</span>{% endif %}
                             <a href="{% url 'step_down' step.lesson.topic.course.slug step.lesson.topic.slug step.lesson.slug step.slug %}" class="btn btn-outline-secondary badge p-1 rounded opacity-25 text-primary">
                                 <i class="bi bi-arrow-down "></i>
                             </a>
