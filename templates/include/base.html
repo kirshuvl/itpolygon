@@ -1,7 +1,6 @@
 <!doctype html>
 {% load static %}
 {% block overflow %}<html lang="en" style="overflow-y: scroll;">{% endblock %}
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,14 +12,13 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
     <script>hljs.highlightAll();</script>
 </head>
-
 <body>
     {% include 'include/_navbar.html' %}
     {% block body %}
     <div class="container">
         <div class="card shadow">
             <div class="card-body">
-                Вы не заполнили страницу контентом :( Новым пользователям не пугаться
+                Вы не заполнили страницу контентом :( Если Вы это увидели - значит что-то пошло не так. Напишите преподавателю об этом :) 
             </div>
         </div>
     </div>
@@ -28,5 +26,4 @@
     {% include 'include/_footer.html' %}
     <script src="{% static 'bootstrap/bootstrap.bundle.min.js' %}"></script>
 </body>
-
 </html>

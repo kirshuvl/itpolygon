@@ -31,7 +31,7 @@ class CMS_Dashboard(TemplateView):
 
 class CMS_CoursesList(ListView):
     model = Course
-    template_name = 'cms/courses/courses_list.html'
+    template_name = 'cms/courses/list.html'
     context_object_name = 'courses'
 
     def get_context_data(self, **kwargs):
@@ -46,7 +46,7 @@ class CMS_CoursesList(ListView):
 
 class CMS_UserCoursesList(ListView):
     model = Course
-    template_name = 'cms/courses/courses_list.html'
+    template_name = 'cms/courses/list.html'
     context_object_name = 'courses'
 
     def get_context_data(self, **kwargs):
@@ -62,7 +62,7 @@ class CMS_UserCoursesList(ListView):
 class CMS_CourseCreate(CreateView):
     model = Course
     form_class = CourseCreateForm
-    template_name = 'cms/courses/course_create.html'
+    template_name = 'cms/courses/create.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -80,7 +80,7 @@ class CMS_CourseCreate(CreateView):
 
 class CMS_CourseDetail(DetailView):
     model = Course
-    template_name = 'cms/courses/course_detail.html'
+    template_name = 'cms/courses/detail.html'
     slug_url_kwarg = 'course_slug'
     context_object_name = 'course'
 
@@ -101,7 +101,7 @@ class CMS_CourseDetail(DetailView):
 class CMS_CourseUpdate(UpdateView):
     model = Course
     form_class = CourseCreateForm
-    template_name = 'cms/courses/course_update.html'
+    template_name = 'cms/courses/update.html'
     context_object_name = 'course'
     slug_url_kwarg = 'course_slug'
 
@@ -116,7 +116,7 @@ class CMS_CourseUpdate(UpdateView):
 
 class CMS_CourseDelete(DeleteView):
     model = Course
-    template_name = 'cms/courses/course_delete.html'
+    template_name = 'cms/courses/delete.html'
     context_object_name = 'course'
     slug_url_kwarg = 'course_slug'
 
@@ -162,7 +162,7 @@ class CMS_CourseStatistics(DetailView):
 
 class CMS_CourseSubmissions(ListView):
     model = UserAnswerForProblemStep
-    template_name = 'cms/courses/problems_list.html'
+    template_name = 'cms/courses/problems.html'
     context_object_name = 'attempts'
     paginate_by = 20
 
@@ -179,7 +179,7 @@ class CMS_CourseSubmissions(ListView):
 class CMS_TopicCreate(CreateView):  # Запросов: 3
     model = Topic
     form_class = TopicCreateForm
-    template_name = 'cms/topics/topic_create.html'
+    template_name = 'cms/topics/create.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -206,7 +206,7 @@ class CMS_TopicCreate(CreateView):  # Запросов: 3
 
 class CMS_TopicDetail(DetailView):
     model = Topic
-    template_name = 'cms/topics/topic_detail.html'
+    template_name = 'cms/topics/detail.html'
     slug_url_kwarg = 'topic_slug'
     context_object_name = 'topic'
 
@@ -214,7 +214,7 @@ class CMS_TopicDetail(DetailView):
 class CMS_TopicUpdate(UpdateView):
     model = Topic
     form_class = TopicCreateForm
-    template_name = 'cms/topics/topic_update.html'
+    template_name = 'cms/topics/update.html'
     context_object_name = 'topic'
     slug_url_kwarg = 'topic_slug'
 
@@ -240,7 +240,7 @@ class CMS_TopicUpdate(UpdateView):
 
 class CMS_TopicDelete(DeleteView):
     model = Topic
-    template_name = 'cms/topics/topic_delete.html'
+    template_name = 'cms/topics/delete.html'
     context_object_name = 'topic'
     slug_url_kwarg = 'topic_slug'
 
@@ -260,7 +260,7 @@ class CMS_TopicDelete(DeleteView):
 class CMS_LessonCreate(CreateView):  # Запросов: 3
     model = Lesson
     form_class = LessonCreateForm
-    template_name = 'cms/lessons/lesson_create.html'
+    template_name = 'cms/lessons/create.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -310,7 +310,7 @@ class CMS_LessonContestCreate(CMS_LessonCreate):  # Запросов: 3
 
 class CMS_LessonDetail(DetailView):  # Запросов: 8
     model = Lesson
-    template_name = 'cms/lessons/lesson_detail.html'
+    template_name = 'cms/lessons/detail.html'
     slug_url_kwarg = 'lesson_slug'
     context_object_name = 'lesson'
 
@@ -321,7 +321,7 @@ class CMS_LessonDetail(DetailView):  # Запросов: 8
 class CMS_LessonUpdate(UpdateView):
     model = Lesson
     form_class = LessonCreateForm
-    template_name = 'cms/lessons/lesson_update.html'
+    template_name = 'cms/lessons/update.html'
     slug_url_kwarg = 'lesson_slug'
 
     def get_success_url(self):
@@ -335,7 +335,7 @@ class CMS_LessonUpdate(UpdateView):
 
 class CMS_LessonDelete(DeleteView):
     model = Lesson
-    template_name = 'cms/lessons/lesson_delete.html'
+    template_name = 'cms/lessons/delete.html'
     context_object_name = 'lesson'
     slug_url_kwarg = 'lesson_slug'
 
@@ -354,7 +354,7 @@ class CMS_LessonDelete(DeleteView):
 
 
 class CMS_StepCreate(CreateView):  # Запросов: 3
-    template_name = 'cms/steps/step_create.html'
+    template_name = 'cms/steps/create.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -552,7 +552,7 @@ class CMS_AssignmentStepUpdate(CMS_StepUpdate):
 
 class CMS_StepDelete(DeleteView):
     model = Step
-    template_name = 'cms/steps/step_delete.html'
+    template_name = 'cms/steps/delete.html'
     context_object_name = 'step'
     slug_url_kwarg = 'step_slug'
 

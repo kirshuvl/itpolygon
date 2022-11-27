@@ -4,22 +4,17 @@
     {% block breadcrumb %}
     {% endblock %}
     {% block user_info %}
-    <div class="col-12 mb-2">
-        <div class="card shadow">
-            <div class="card-body">
-                <div class="row gx-2">
-                    <div class="col-1 d-none d-lg-block">
-                        <img src="{{ user.icon.url }}" class="img-fluid rounded float-start" alt="..." />
-                    </div>
-                    <div class="col-11">
-                        <h3>
-                            Привет, {{ user.first_name }}!
-                            <div class="me-3">{% block user_type %}{% endblock %}</div>
-                        </h3>
-                        <div class="row">
-                            <div class="col"><i class="bi bi-gem me-2"></i>{{ user.coin }}</div>
-                        </div>
-                    </div>
+    <div class="card shadow mb-2">
+        <div class="card-body">
+            <div class="row gx-2">
+                <div class="col-1 d-none d-lg-block">
+                    <img src="{{ user.icon.url }}" class="img-fluid rounded float-start" />
+                </div>
+                <div class="col-11">
+                    <h3>
+                        Привет, {{ user.first_name }}!
+                    </h3>
+                    <i class="bi bi-gem me-2"></i>{{ user.coin }}
                 </div>
             </div>
         </div>
@@ -49,7 +44,8 @@
                 </div>
             </div>
         </div>
-        {% endblock %} {% block main_content %}
+        {% endblock %}
+        {% block main_content %}
         <div class="col-lg-9">Вы не заполнили шаблон</div>
         {% endblock %}
     </div>
