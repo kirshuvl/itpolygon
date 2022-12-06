@@ -10,7 +10,7 @@ from lms.topics.models import Topic
 
 class CoursesList(ListView):
     model = Course
-    template_name = 'lms/courses/courses_list.html'
+    template_name = 'main/courses_list.html'
     context_object_name = 'courses'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -24,7 +24,7 @@ class CoursesList(ListView):
 
 class UserCoursesList(ListView):
     model = Course
-    template_name = 'lms/courses/user_courses_list.html'
+    template_name = 'lms/courses/list.html'
     context_object_name = 'courses'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -39,7 +39,7 @@ class UserCoursesList(ListView):
 
 class CourseDetail(DetailView):
     model = Course
-    template_name = 'lms/courses/course_detail.html'
+    template_name = 'lms/courses/detail.html'
     slug_url_kwarg = 'course_slug'
     context_object_name = 'course'
 

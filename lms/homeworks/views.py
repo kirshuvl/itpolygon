@@ -3,7 +3,7 @@ from django.views.generic import DetailView, ListView
 from lms.homeworks.models import Homework
 from django.db.models import Prefetch
 from lms.lessons.models import Lesson
-from lms.steps.models import Step
+from lms.steps.models import Step, StepEnroll
 
 
 
@@ -20,7 +20,7 @@ class UserHomeworkList(ListView):
         return context
 
     def get_queryset(self):
-        return Homework.objects.prefetch_related('steps__steps_enrolls').select_related('course').filter(user=self.request.user, is_done=False)
+        return Homework.objects.prefetch_related(Prefetch('steps__steps_enrolls', queryset=StepEnroll.objects.filter(user=self.request.user))).select_related('course').filter(user=self.request.user, is_done=False)
 
 
 class UserHomeworkDetail(DetailView):

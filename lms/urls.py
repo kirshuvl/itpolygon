@@ -10,18 +10,10 @@ from lms.problems.views import ProblemStepDetail, UserCodeDetail
 
 
 urlpatterns = [
-    path('courses/all',
-         CoursesList.as_view(),
-         name='CoursesList'
-         ),
-    path('courses/my',
-         UserCoursesList.as_view(),
-         name='UserCoursesList'
-         ),
-    path('achievements/my',
-         UserAchievements.as_view(),
-         name='UserAchievementsList'
-         ),
+    path('courses/all', CoursesList.as_view(), name='CoursesList'),
+    path('courses/my', UserCoursesList.as_view(), name='UserCoursesList'),
+    path('achievements/my', UserAchievements.as_view(),
+         name='UserAchievementsList'),
     path('courses/<str:course_slug>/',
          CourseDetail.as_view(),
          name='CourseDetail'

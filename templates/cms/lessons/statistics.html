@@ -8,10 +8,13 @@
     <a href="{% url 'CMS_UserCoursesList' %}" class="text-decoration-none">Мои курсы</a>
 </li>
 <li class="breadcrumb-item active">
-    {{ course.title }}
+    <a href="{{ lesson.topic.course.get_cms_url }}" class="text-decoration-none">{{ lesson.topic.course.title }}</a>
 </li>
 <li class="breadcrumb-item active">
-    Статистика курса
+    {{ lesson.topic.title }}
+</li>
+<li class="breadcrumb-item active">
+    Статистика урока
 </li>
 {% endblock %}
 {% block main_content %}
@@ -20,7 +23,7 @@
         <div class="row">
             <div class="d-flex justify-content-between">
                 <div>
-                    <h4 class="m-0"><i class="bi bi-ui-checks-grid me-3"></i>Статистика курса: {{ course.title }}</h4>
+                    <h4 class="m-0"><i class="bi bi-ui-checks-grid me-3"></i>Статистика урока: {{ lesson.title }}</h4>
                 </div>
             </div>
         </div>
@@ -57,31 +60,21 @@
                     {% if forloop.first %}
                     <div class="card-body p-0 d-flex">
                         <div class="d-flex p-2 border-bottom pe-1">
-                            {% for topic in course.topics.all %}
-                            {% for lesson in topic.lessons.all %}
-                            <div class="col {% if not forloop.parentloop.last or not forloop.last %}border-end me-1{% endif %}">
-                                <div class="border-bottom mb-2 text-truncate pb-1" style="max-width: {% get_width_col lesson %}px;"><a href="{{ lesson.get_absolute_url }}" class="text-decoration-none">{{ lesson.title }}</a></div>
+                            <div>
+                                <div class="border-bottom mb-2 text-truncate pb-1"><a href="{{ lesson.get_absolute_url }}" class="text-decoration-none">{{ lesson.title }}</a></div>
                                 <div class="d-flex">
                                     {% for step in lesson.steps.all %}
                                     <a href="{{ step.get_absolute_url }}"><span class="badge bg-secondary p-2 rounded me-1"><i class="bi {{ step.step_icon_class }}"></i></span></a>
                                     {% endfor %}
                                 </div>
                             </div>
-                            {% endfor %}
-                            {% endfor %}
                         </div>
                     </div>
                     {% endif %}
                     <div class="card-body p-0 d-flex">
                         <div class="d-flex p-2 {% if not forloop.last %}border-bottom{% endif %} pe-1">
-                            {% for topic in course.topics.all %}
-                            {% for lesson in topic.lessons.all %}
-                            <div class="col d-flex {% if not forloop.parentloop.last or not forloop.last %}border-end me-1{% endif %}">
-                                {% for step in lesson.steps.all %}
-                                <span class="badge bg-{% step_colors step user %} p-2 rounded me-1 opacity-50"><i class="bi {{ step.step_icon_class }}"></i></span>
-                                {% endfor %}
-                            </div>
-                            {% endfor %}
+                            {% for step in lesson.steps.all %}
+                            <span class="badge bg-{% step_colors step user %} p-2 rounded me-1 opacity-50"><i class="bi {{ step.step_icon_class }}"></i></span>
                             {% endfor %}
                         </div>
                     </div>
