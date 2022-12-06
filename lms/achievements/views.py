@@ -8,6 +8,7 @@ class UserAchievements(ListView):
     model = StepAchievement
     template_name = 'lms/achievements/user_achievement_list.html'
     context_object_name = 'achievements'
+    paginate_by = 10
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(UserAchievements, self).get_context_data(**kwargs)
@@ -15,4 +16,4 @@ class UserAchievements(ListView):
         return context
 
     def get_queryset(self):
-        return Achievement.objects.filter(user=self.request.user).order_by('-date_create')
+        return StepAchievement.objects.select_related('for_what').filter(user=self.request.user).order_by('-date_create')

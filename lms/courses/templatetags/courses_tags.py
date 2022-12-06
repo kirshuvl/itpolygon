@@ -82,3 +82,10 @@ def end_steps_count_for_topic(topic, user):
             cnt_2 += 1
 
     return f'{cnt} / {cnt_2}'
+
+
+@register.simple_tag
+def get_width_col(lesson):
+    cnt = lesson.steps.count()
+
+    return 28 * cnt + 4 * (cnt - 1)

@@ -37,14 +37,14 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <h4 class="m-0">
-                            <i class="bi bi-ui-checks-grid me-3"></i>{{ course.title.capitalize }}
+                            <i class="bi bi-ui-checks-grid me-3"></i>{{ course.title }}
                         </h4>
                     </div>
                 </div>
             </div>
         </div>
         <div class="card-body">
-            {% for topic in course.topics.all|dictsort:"number" %}
+            {% for topic in course.topics.all %}
             <div class="row gx-2 mb-2">
                 <div class="col-10">
                     <div class="card h-100" data-bs-toggle="collapse" href="#collapse{{ topic.slug }}" role="button" aria-expanded="false" aria-controls="collapse{{ topic.slug }}">
@@ -75,7 +75,7 @@
             </div>
 
             <div class="collapse show" id="collapse{{ topic.slug }}">
-                {% for lesson in topic.lessons.all|dictsort:"number" %}
+                {% for lesson in topic.lessons.all %}
                 <div class="row gx-2 mb-2 ">
                     <div class="col-9 offset-1">
                         <div class="card h-100">
