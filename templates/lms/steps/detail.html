@@ -107,10 +107,7 @@
     </div>
     {% block under_content %}{% endblock %}
     {% block buttons %}
-    <div class="row gx-2">
-        {% previous_step steps step %}
-        {% next_step steps step attempts %}
-    </div>
+    {% user_end_step step %}
     {% endblock %}
 </div>
 {% endblock %}

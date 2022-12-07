@@ -16,14 +16,14 @@
             Уже есть правильный ответ
         </div>
     </div>
-    {% elif step.num_attempts > attempts.count or step.num_attempts == -1 %}
+    {% elif step.num_attempts > attempts.count %}
     <div class="card mt-2">
         <div class="card-body">
             <form method="post">
                 {% csrf_token %}
-                <div class="input-group">
-                    <span class="input-group-text p-2">Ответ:</span>
-                    {{ form.user_answer }}
+                <div class="btn-group col-12">{% for radio in form.user_answer %}{{ radio.tag }}
+                    <label class="btn btn-outline-primary col-12 p-2" for="{{ radio.id_for_label  }}">{{ radio.choice_label }}</label>
+                    {% endfor %}
                     <button type="submit" class="btn btn-outline-secondary p-2">Отправить</button>
                 </div>
             </form>

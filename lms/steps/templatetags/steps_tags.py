@@ -46,6 +46,17 @@ def previous_step(steps, current_step):
 
 
 @register.simple_tag
+def user_end_step(current_step):
+    enroll = current_step.steps_enrolls.first()
+    if current_step.type() == 'text' or current_step.type() == 'video':
+        if enroll is None or enroll.status == 'PR':
+            return button(current_step.end_step(), 'success', 'Материал изучен!')
+        elif enroll.status == 'RP':
+            return button(current_step.end_step(), 'success', 'Материал повторен!')
+    return mark_safe('')
+
+
+@register.simple_tag
 def next_step(steps, current_step, attempts):
     if current_step.lesson.type == 'ST':
         return next_step_for_standart_lesson(steps, current_step, attempts)
@@ -122,6 +133,6 @@ def step_color(step):
 
 
 def button(next, color, text):
-    return mark_safe('<div class="col"><a href="{}" class="btn btn-outline-{} shadow col-12">{}</a></div>'.
+    return mark_safe('<div class="col"><a href="{}" class="btn btn-{} shadow col-12">{}</a></div>'.
                      format(next, color, text)
                      )

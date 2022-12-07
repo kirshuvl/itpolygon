@@ -189,7 +189,7 @@ class QuestionStep(Step):
     )
     num_attempts = models.IntegerField(
         verbose_name='Количество попыток',
-        default=5,
+        default=-1,
     )
 
     class Meta:
@@ -269,6 +269,97 @@ class UserAnswerForQuestionStep(models.Model):
     def get_absolute_url(self):
         return reverse(
             'QuestionStepDetail',
+            kwargs={
+                'course_slug': self.question.lesson.topic.course.slug,
+                'topic_slug': self.question.lesson.topic.slug,
+                'lesson_slug': self.question.lesson.slug,
+                'step_slug': self.question.slug,
+            },
+        )
+
+
+class QuestionChoiceStep(Step):
+    num_attempts = models.IntegerField(
+        verbose_name='Количество попыток',
+        default=-1,
+    )
+
+    class Meta:
+        verbose_name = 'Вопрос с выбором ответа'
+        verbose_name_plural = 'Вопросы с выбором ответа'
+        ordering = ['title']
+
+    def get_absolute_url(self):
+        return reverse(
+            'QuestionChoiceStepDetail',
+            kwargs={
+                'course_slug': self.lesson.topic.course.slug,
+                'topic_slug': self.lesson.topic.slug,
+                'lesson_slug': self.lesson.slug,
+                'step_slug': self.slug,
+            },
+        )
+
+    def step_icon_class(self):
+        return 'bi-question-square'
+
+    def type(self):
+        return 'question'
+
+
+class TestForQuestionChoiceStep(models.Model):
+    title = models.CharField(
+        verbose_name='Ответ',
+        max_length=250,
+    )
+    is_correct = models.BooleanField(
+        default=False,
+    )
+    question = models.ForeignKey(
+        QuestionChoiceStep,
+        related_name='tests',
+        verbose_name='Вопрос',
+        on_delete=models.CASCADE,
+    )
+
+    class Meta:
+        verbose_name = 'Вариант ответа'
+        verbose_name_plural = 'Варианты ответа'
+        ordering = ['pk']
+
+    def __str__(self) -> str:
+        return self.title
+
+
+class UserAnswerForQuestionChoiceStep(models.Model):
+    user_answer = models.ForeignKey(
+        TestForQuestionChoiceStep,
+        related_name='answers',
+        verbose_name='Ответ пользователя',
+        on_delete=models.PROTECT,
+    )
+    is_correct = models.BooleanField(
+        default=False,
+    )
+    user = models.ForeignKey(
+        CustomUser,
+        related_name='question_choice_answers',
+        verbose_name='Пользователь',
+        on_delete=models.PROTECT,
+    )
+    question = models.ForeignKey(
+        QuestionChoiceStep,
+        related_name='answers',
+        verbose_name='Вопрос',
+        on_delete=models.CASCADE,
+    )
+    date_create = models.DateTimeField(
+        auto_now=True,
+    )
+
+    def get_absolute_url(self):
+        return reverse(
+            'QuestionChoiceStepDetail',
             kwargs={
                 'course_slug': self.question.lesson.topic.course.slug,
                 'topic_slug': self.question.lesson.topic.slug,

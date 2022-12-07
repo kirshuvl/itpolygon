@@ -49,7 +49,7 @@ class ProblemStep(Step):
     )
     num_attempts = models.IntegerField(
         verbose_name='Количество попыток',
-        default=5,
+        default=-1,
     )
 
     class Meta:
