@@ -1,5 +1,6 @@
 from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
+from lms.assignment.models import UserAnswerForAssignmentStep
 from lms.steps.models import Step, StepEnroll
 from lms.achievements.models import StepAchievement
 
@@ -21,3 +22,12 @@ def delete_step(sender, instance, **kwargs):
     for num, step in enumerate(steps):
         step.number = num + 1
         step.save()
+
+
+@receiver(post_save, sender=UserAnswerForAssignmentStep)
+def change_status(sender, instance, **kwargs):
+    if instance.is_correct:
+        step_enroll = StepEnroll.objects.get(user=instance.user,
+                                             step=instance.assignment)
+        step_enroll.status = 'OK'
+        step_enroll.save()

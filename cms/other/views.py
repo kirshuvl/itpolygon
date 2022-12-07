@@ -8,7 +8,7 @@ from lms.topics.models import Topic
 from lms.lessons.models import Lesson
 from lms.steps.models import Step, StepEnroll, TextStep, VideoStep, QuestionStep
 from lms.problems.models import ProblemStep, TestForProblemStep, TestUserAnswer, UserAnswerForProblemStep
-from lms.assignment.models import AssignmentStep
+from lms.assignment.models import AssignmentStep, UserAnswerForAssignmentStep
 from users.models import CustomUser
 from cms.other.forms import \
     CourseCreateForm, \
@@ -172,7 +172,7 @@ class CMS_CourseSubmissions(ListView):
         context['course'] = Course.objects.get(slug=self.kwargs['course_slug'])
 
         return context
-    
+
     def get_queryset(self):
         return UserAnswerForProblemStep.objects.select_related('problem__lesson__topic__course', 'user').filter(problem__lesson__topic__course__slug=self.kwargs['course_slug'])
 
@@ -818,6 +818,16 @@ def rerun_submission(request, user_answer_pk):
     user_answer.first_fail_test = 0
     user_answer.points = 0
     user_answer.save()
-    TestUserAnswer.objects.filter(user=user_answer.user, code=user_answer).delete()
+    TestUserAnswer.objects.filter(
+        user=user_answer.user, code=user_answer).delete()
     run_user_code.delay(user_answer_pk)
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+class CMS_UserAssignmentsList(ListView):
+    model = UserAnswerForAssignmentStep
+    template_name = 'cms/steps/assignment_step/list.html'
+    context_object_name = 'assignments'
+
+
+    def get_queryset(self):
+        return UserAnswerForAssignmentStep.objects.select_related('assignment__lesson__topic__course', 'user').filter(assignment__lesson__topic__course__authors=self.request.user)

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from lms.assignment.models import AssignmentStep, UserAnswerForAssignmentStep
+from lms.assignment.models import AssignmentStep, ReviewForUserAnswerForAssignmentStep, UserAnswerForAssignmentStep
 
 
 class AssignmentStepAdmin(admin.ModelAdmin):
@@ -16,6 +16,12 @@ class UserAnswerForAssignmentStepAdmin(admin.ModelAdmin):
     search_fields = ('id', 'user', 'is_correct', 'assignment')
 
 
+class ReviewForUserAnswerForAssignmentStepAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'user_answer')
+    list_display_links = ('id', 'user', 'user_answer')
+    search_fields = ('id', 'user', 'user_answer')
+
+
 admin.site.register(AssignmentStep, AssignmentStepAdmin)
-admin.site.register(UserAnswerForAssignmentStep,
-                    UserAnswerForAssignmentStepAdmin)
+admin.site.register(UserAnswerForAssignmentStep, UserAnswerForAssignmentStepAdmin)
+admin.site.register(ReviewForUserAnswerForAssignmentStep, ReviewForUserAnswerForAssignmentStepAdmin)

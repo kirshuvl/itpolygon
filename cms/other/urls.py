@@ -4,6 +4,7 @@ urlpatterns = [
     path('', CMS_Dashboard.as_view(), name='CMS_Dashboard'),
     path('courses/all', CMS_CoursesList.as_view(), name='CMS_CoursesList'),
     path('courses/my', CMS_UserCoursesList.as_view(), name='CMS_UserCoursesList'),
+    path('courses/assignments/my', CMS_UserAssignmentsList.as_view(), name='CMS_UserAssignmentsList'),
 
     # Course
 

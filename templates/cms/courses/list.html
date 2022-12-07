@@ -15,12 +15,12 @@
             <div class="d-flex justify-content-between">
                 <div>
                     <h4 class="m-0"><i class="bi bi-ui-checks-grid me-3"></i>Все курсы</h4>
-                </div>
+                </div>{% comment %}
                 <div>
                     <a href="{% url 'CMS_CourseCreate' %}" class="btn btn-success badge p-2 rounded opacity-50">
                         <i class="bi bi-plus-square me-2"></i>Создать курс
                     </a>
-                </div>
+                </div>{% endcomment %}
             </div>
 
         </div>
@@ -29,34 +29,37 @@
     <div class="card-body">
         <div class="card mb-2">
             <div class="card-body p-2">
-                <div class="row align-items-center">
+                <div class="row align-items-center text-center">
                     <div class="col-4 offset-1 border-start border-end">
                         Название курса
+                    </div>
+                    <div class="col-2 offset-1 border-start border-end">
+                        Дата создания
                     </div>
                 </div>
             </div>
         </div>
         {% for course in courses %}
-        <div class="card {% if not forloop.last %}mb-2{% else %}mb-0{% endif %}">
+        <div class="card {% if not forloop.last %}mb-2{% endif %}">
             <div class="card-body p-2">
-                <div class="row align-items-center">
-                    <div class="col-1 border-end pe-2">
+                <div class="row align-items-center text-center">
+                    <div class="col-1 border-end">
                         <img src="{{ course.icon.url }}" class="rounded p-0 col-12 bg-light" alt="{{ course.title }}">
                     </div>
                     <div class="col-4 border-end">
                         <a href="{% url 'CMS_CourseDetail' course.slug %}" class="text-decoration-none">{{ course.title }}</a>
                     </div>
-                    <div class="col-1 border-end text-center">
+                    <div class="col-1 border-end">
                         {% if course.is_published %}
                         <span class="badge bg-success p-2 rounded opacity-50"><i class="bi bi-check-square"></i></span>
                         {% else %}
                         <span class="badge bg-danger p-2 rounded opacity-50"><i class="bi bi-x-square"></i></span>
                         {% endif %}
                     </div>
-                    <div class="col-2 border-end text-center">
+                    <div class="col-2 border-end">
                         {{ course.date_create|date:'d.m.Y' }}
                     </div>
-                    <div class="col-4 text-end">
+                    <div class="col-1 offset-3">
                         <div class="btn-group dropstart">
                             <a href="" class="text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
                                 <span class="badge bg-secondary p-2 dropdown-toggle opacity-50"><i class="ms-1 bi bi-eye"></i></span>

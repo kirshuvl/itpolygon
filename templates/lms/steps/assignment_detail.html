@@ -71,7 +71,7 @@
     </div>
     <div class="card-body">
         {% for attempt in attempts %}
-        <div class="card {% if not forloop.last %}mb-2{% endif %}">
+        <div class="card mb-2">
             <div class="card-body border-bottom">
                 <div class="row align-items-center">
                     <div class="col-8">
@@ -109,6 +109,50 @@
                 </div>
             </div>
         </div>
+        {% for review in attempt.reviews.all %}
+        
+                <div class="card mb-2 offset-1">
+                    <div class="card-body border-bottom">
+                        <div class="row align-items-center">
+                            <div class="col-8">
+                                <div class="row align-items-center">
+                                    <div class="col-1 border-end pe-2">
+                                        <img src="{{ review.user.icon.url }}" class="rounded p-0 col-12 bg-light" alt="">
+                                    </div>
+                                    <div class="col-6">
+                                        {{ review.user.first_name }} {{ review.user.last_name }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4 text-end">
+                                <span class="badge bg-secondary p-2 rounded opacity-50 me-2">{{ attempt.get_status_display }}</span>{{ review.date_create|date:'d.m.Y H:i:s' }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body pb-0">
+                        {{ review.text|safe }}
+                    </div>
+                    {% if review.file %}
+                    <div class="card-footer bg-transparent p-3">
+                        <div class="card col-4">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <a href="{{ review.file.url }}" class="text-decoration-none stretched-link">{% get_file_name review.file.name %}</a>
+                                        </div>
+                                        <div>
+                                            <i class="bi bi-file-earmark-{% get_file_format review.file.name %}"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+        
+        {% endfor %}
         {% endfor %}
     </div>
 </div>
