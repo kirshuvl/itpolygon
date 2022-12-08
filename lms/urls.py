@@ -5,7 +5,7 @@ from lms.courses.views import CoursesList, UserCoursesList, CourseDetail
 from lms.homeworks.views import UserHomeworkList, UserHomeworkDetail
 from lms.lessons.views import LessonDetail, LessonStatistics
 from lms.steps.mixins import BaseStepMixin
-from lms.steps.views import TextStepDetail, VideoStepDetail, QuestionStepDetail
+from lms.steps.views import QuestionChoiceStepDetail, TextStepDetail, VideoStepDetail, QuestionStepDetail
 from lms.problems.views import ProblemStepDetail, UserCodeDetail
 
 
@@ -33,6 +33,10 @@ urlpatterns = [
     path('courses/<str:course_slug>/<str:topic_slug>/<str:lesson_slug>/<str:step_slug>/question/',
          QuestionStepDetail.as_view(),
          name='QuestionStepDetail'
+         ),
+    path('courses/<str:course_slug>/<str:topic_slug>/<str:lesson_slug>/<str:step_slug>/question/choice/',
+         QuestionChoiceStepDetail.as_view(),
+         name='QuestionChoiceStepDetail'
          ),
     path('courses/<str:course_slug>/<str:topic_slug>/<str:lesson_slug>/<str:step_slug>/problem/',
          ProblemStepDetail.as_view(),

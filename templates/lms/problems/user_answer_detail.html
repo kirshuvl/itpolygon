@@ -21,9 +21,9 @@
             <pre class="mb-0"><code>{{ user_answer.code }}</code></pre>
         </div>
     </div>
-    <div class="card my-2">
+    <div class="card mb-1">
         <div class="card-body">
-            <div class="row align-items-center">
+            <div class="row align-items-center small">
                 <div class="col-1 text-center border-end">
                     # теста
                 </div>
@@ -52,9 +52,9 @@
         </div>
     </div>
     {% for attempt in user_answer.attempts.all %}
-    <div class="card mb-1">
+    <div class="card {% if not forloop.last %}mb-1{% endif %}">
         <div class="card-body">
-            <div class="row align-items-center">
+            <div class="row align-items-center small">
                 <div class="col-1 text-center border-end">
                     {{ attempt.test.number }}
                 </div>

@@ -90,6 +90,7 @@ class UserAnswerForAssignmentStep(models.Model):
     )
     STATUS_CHOICES = [
         ('RV', 'На проверке'),
+        ('BF', 'На доработке'),
         ('OK', 'Проверено'),
     ]
     status = models.CharField(
@@ -98,6 +99,9 @@ class UserAnswerForAssignmentStep(models.Model):
         choices=STATUS_CHOICES,
         default='RV',
     )
+
+    def __str__(self) -> str:
+        return self.assignment.title
 
     class Meta:
         verbose_name = 'Ответ на задание'
@@ -114,3 +118,38 @@ class UserAnswerForAssignmentStep(models.Model):
                 'step_slug': self.assignment.slug,
             },
         )
+
+
+class ReviewForUserAnswerForAssignmentStep(models.Model):
+    user = models.ForeignKey(
+        CustomUser,
+        related_name='reviews',
+        verbose_name='Автор ревью',
+        on_delete=models.PROTECT,
+    )
+    user_answer = models.ForeignKey(
+        UserAnswerForAssignmentStep,
+        related_name='reviews',
+        verbose_name='Задание',
+        on_delete=models.CASCADE,
+    )
+    text = models.TextField(
+        verbose_name='Ответ на решение',
+        max_length=10000,
+    )
+    date_create = models.DateTimeField(
+        auto_now=True,
+    )
+    date_update = models.DateTimeField(
+        auto_now=True,
+    )
+    file = models.FileField(
+        verbose_name='Файл',
+        upload_to='assignment/%Y/%m/%d/',
+        blank=True,
+    )
+
+    class Meta:
+        verbose_name = 'Ревью задания'
+        verbose_name_plural = 'Ревью заданий'
+        ordering = ['pk']
