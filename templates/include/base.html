@@ -1,6 +1,7 @@
 <!doctype html>
 {% load static %}
-{% block overflow %}<html lang="en" style="overflow-y: scroll;">{% endblock %}
+<html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -33,13 +34,14 @@
     </noscript>
     <!-- /Yandex.Metrika counter -->
 </head>
-<body>
+
+<body style="overflow-y: scroll;">
     {% include 'include/_navbar.html' %}
     {% block body %}
     <div class="container">
         <div class="card shadow">
             <div class="card-body">
-                Вы не заполнили страницу контентом :( Если Вы это увидели - значит что-то пошло не так. Напишите преподавателю об этом :) 
+                Вы не заполнили страницу контентом :( Если Вы это увидели - значит что-то пошло не так. Напишите преподавателю об этом :)
             </div>
         </div>
     </div>
@@ -47,4 +49,5 @@
     {% include 'include/_footer.html' %}
     <script src="{% static 'bootstrap/bootstrap.bundle.min.js' %}"></script>
 </body>
+
 </html>
