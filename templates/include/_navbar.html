@@ -1,43 +1,54 @@
-{% load static %}
-{% load users_tags %}
-
+{% load static %}{% load users_tags %}
 <div class="container">
-  <nav class="navbar navbar-expand-lg bg-white mb-4 border-bottom">
-    <div class="container-fluid px-0">
-      <a class="navbar-brand p-0 m-0" href="/">
-        <img src="{% static 'picture/logo_500x500.png' %}" alt="" width="60" height="60" class="d-inline-block">
-      </a>
-      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbar">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'HomePage' %}">Главная</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'ShuvalovView' %}">Преподаватель</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'CoursesList' %}">Все курсы</a>
-          </li>
-        </ul>
-        <div class="d-flex">
-          {% if user.is_authenticated %}
-          <a href="{% url 'UserAchievementsList' %}" class="btn btn-outline-secondary me-2">
-            {{ user.coin }}<i class="bi bi-gem ms-1"></i>
-          </a>
-          {% if user.is_superuser %}<a href="{% url 'CRMDashboard' %}" class="btn btn-outline-danger me-2">CRM</a>
-          <a href="{% url 'CMS_Dashboard' %}" class="btn btn-outline-primary me-2">CMS</a>{% endif %}
-          <a href="{% url 'UserHomeworkList' %}" class="btn btn-outline-primary me-2 position-relative">Домашние задания</a>
-          <a href="{% url 'UserProfile' %}" class="btn btn-outline-primary me-2">Аккаунт</a>
-          <a href="{% url 'UserLogout' %}" class="btn btn-outline-primary">Выйти</a>
-          {% else %}
-          <a href="{% url 'UserLogin' %}" class="btn btn-outline-primary me-2">Войти</a>
-          <a href="{% url 'UserRegistration' %}" class="btn btn-outline-primary">Зарегистрироваться</a>
-          {% endif %}
+    <nav class="navbar navbar-expand-lg bg-white mb-4 border-bottom">
+        <div class="container-fluid me-1">
+            <a class="navbar-brand p-0 m-0" href="/">
+                <img src="{% static 'picture/logo_500x500.png' %}" alt="" width="60" height="60" class="d-inline-block">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header border-bottom p-2">
+                    <a class="navbar-brand p-0 m-0" href="/">
+                        <img src="{% static 'picture/logo_500x500.png' %}" alt="" width="60" height="60" class="d-inline-block">
+                    </a>
+                    <h2 class="offcanvas-title">ИТ Полигон</h2>
+                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav">
+                        {% with request.resolver_match.url_name as url_name %}
+                        <li class="nav-item">
+                            <a href="{% url 'HomePage' %}" class="nav-link {% if url_name == 'HomePage' %}active{% endif %}">Главная</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'FeedbackList' %}" class="nav-link {% if url_name == 'FeedbackList' %}active{% endif %}">Отзывы</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'CoursesList' %}" class="nav-link {% if url_name == 'CoursesList' %}active{% endif %}">Все курсы</a>
+                        </li>
+                        {% endwith %}
+                    </ul>
+                    <hr class="d-lg-none mt-2 mb-4">
+                    <div class="d-grid d-lg-block ms-auto gap-2">
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'UserAchievementsList' %}" class="btn btn-outline-secondary">
+                            {{ user.coin }}<i class="bi bi-gem ms-1"></i>
+                        </a>
+                        {% if user.is_superuser %}<a href="{% url 'CRMDashboard' %}" class="btn btn-outline-danger">CRM</a>
+                        <a href="{% url 'CMS_Dashboard' %}" class="btn btn-outline-primary">CMS</a>{% endif %}
+                        <a href="{% url 'UserHomeworkList' %}" class="btn btn-outline-primary">Домашние задания</a>
+                        <a href="{% url 'UserProfile' %}" class="btn btn-outline-primary">Аккаунт</a>
+                        <a href="{% url 'UserLogout' %}" class="btn btn-outline-primary">Выйти</a>
+                        {% else %}
+                        <a href="{% url 'UserLogin' %}" class="btn btn-outline-primary">Войти</a>
+                        <a href="{% url 'UserRegistration' %}" class="btn btn-outline-primary">Зарегистрироваться</a>
+                        {% endif %}
+                        {% block test %}{% endblock %}
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </nav>
+    </nav>
 </div>
