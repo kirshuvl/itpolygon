@@ -1,8 +1,15 @@
-{% extends 'include/base.html' %}
+{% extends 'include/base.html' %}{% load static %}
 {% block body %}
 <div class="container">
-    {% block breadcrumb %}
-    {% endblock %}
+    <div class="card shadow mb-2">
+        <div class="card-body small">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb m-0">
+                    {% block breadcrumb %}{% endblock %}
+                </ol>
+            </nav>
+        </div>
+    </div>
     {% block user_info %}
     <div class="card shadow mb-2">
         <div class="card-body">
@@ -20,10 +27,11 @@
         </div>
     </div>
     {% endblock %}
+    {% block row %}
     <div class="row g-2">
-        {% block left_sidebar %}
-        <div class="col-lg-3">
-            <div class="card shadow">
+        <div class="col-lg-4 col-xl-3">
+            {% block sidebar %}
+            <div class="card shadow d-none d-lg-block">
                 <div class="card-body">
                     {% with request.resolver_match.url_name as url_name %}
                     <ul class="nav nav-pills flex-column">
@@ -36,18 +44,64 @@
                         <li class="nav-item mb-1">
                             <a href="{% url 'UserHomeworkList' %}" class="nav-link {% if url_name == 'UserHomeworkList' or url_name == 'UserHomeworkDetail' %}active{% endif %}"><i class="bi bi-house me-3"></i>Домашние задания</a>
                         </li>
-                        <li class="nav-item mb-1">
+                        <li class="nav-item">
                             <a href="{% url 'UserAchievementsList' %}" class="nav-link {% if url_name == 'UserAchievementsList'%}active{% endif %}"><i class="bi bi-gem me-3"></i>Достижения</a>
                         </li>
                     </ul>
                     {% endwith %}
                 </div>
             </div>
+            <div class="card shadow d-lg-none">
+                <div class="card-body">
+                    <nav class="navbar bg-white p-0">
+                        <div class="container-fluid p-0">
+                            <h4 class="m-0">Меню</h4>
+                            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2" aria-controls="offcanvasNavbar2">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar2" aria-labelledby="offcanvasNavbarLabel">
+                                <div class="offcanvas-header border-bottom p-2">
+                                    <a class="navbar-brand p-0 m-0" href="/">
+                                        <img src="{% static 'picture/logo_500x500.png' %}" alt="" width="60" height="60" class="d-inline-block">
+                                    </a>
+                                    <h2 class="offcanvas-title">ИТ Полигон</h2>
+                                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                </div>
+                                <div class="offcanvas-body">
+                                    {% with request.resolver_match.url_name as url_name %}
+                                    <ul class="nav nav-pills flex-column">
+                                        <li class="nav-item mb-1">
+                                            <a href="{% url 'UserProfile' %}" class="nav-link {% if url_name == 'UserProfile' or url_name == 'UserProfileUpdate' %}active{% endif %}"><i class="bi bi-person me-3"></i>Мой профиль</a>
+                                        </li>
+                                        <li class="nav-item mb-1">
+                                            <a href="{% url 'UserCoursesList' %}" class="nav-link {% if url_name == 'UserCoursesList'%}active{% endif %}"><i class="bi bi-ui-checks-grid me-3"></i>Мои курсы</a>
+                                        </li>
+                                        <li class="nav-item mb-1">
+                                            <a href="{% url 'UserHomeworkList' %}" class="nav-link {% if url_name == 'UserHomeworkList' or url_name == 'UserHomeworkDetail' %}active{% endif %}"><i class="bi bi-house me-3"></i>Домашние задания</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{% url 'UserAchievementsList' %}" class="nav-link {% if url_name == 'UserAchievementsList'%}active{% endif %}"><i class="bi bi-gem me-3"></i>Достижения</a>
+                                        </li>
+                                    </ul>
+                                    {% endwith %}
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            {% endblock %}
         </div>
-        {% endblock %}
-        {% block main_content %}
-        <div class="col-lg-9">Вы не заполнили шаблон</div>
-        {% endblock %}
+        <div class="col-lg-8 col-xl-9">
+            {% block content %}
+            <div class="card shadow">
+                <div class="card-body">
+                    Тут контент в правой части. Если видите этот текст - сообщите разработчикам. Что-то пошло не так :()
+                </div>
+            </div>
+            {% endblock %}
+        </div>
     </div>
+    {% endblock %}
 </div>
 {% endblock %}
