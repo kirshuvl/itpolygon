@@ -38,3 +38,14 @@ def step_colors(step, user):
             elif enroll.status == 'WA':
                 return 'danger'
     return 'secondary'
+
+
+@register.simple_tag
+def date_counter(enrolls, day):
+    
+    for enroll in enrolls:
+        if enroll.grouper == day:
+            return len(enroll.list)
+
+    return 0
+

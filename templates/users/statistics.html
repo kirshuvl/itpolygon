@@ -1,0 +1,54 @@
+{% extends 'include/base.html' %}
+{% load lessons_tags %}
+
+{% block body %}
+
+{% regroup enrolls by date_create.date as rrr %}
+
+<div class="container">
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="d-flex">
+                <div class="flex-fill">
+                    <div class="col">
+                        <div class="card-body d-flex flex-column p-0 pe-1">
+                            <span class="badge bg-secondary p-2 rounded mb-1 opacity-25"><i class="bi bi-square"></i>Monday</span>
+                            <span class="badge bg-secondary p-2 rounded mb-1 opacity-25"><i class="bi bi-square"></i>Monday</span>
+                            <span class="badge bg-secondary p-2 rounded mb-1 opacity-25"><i class="bi bi-square"></i>Monday</span>
+                            <span class="badge bg-secondary p-2 rounded mb-1 opacity-25"><i class="bi bi-square"></i>Monday</span>
+                            <span class="badge bg-secondary p-2 rounded mb-1 opacity-25"><i class="bi bi-square"></i>Monday</span>
+                            <span class="badge bg-secondary p-2 rounded mb-1 opacity-25"><i class="bi bi-square"></i>Monday</span>
+                            <span class="badge bg-secondary p-2 rounded opacity-25"><i class="bi bi-square"></i>Monday</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-inline-flex">
+                    {% for month in data %}
+                    {% for week in month %}
+                    <div class="col">
+                        <div class="card-body d-flex flex-column p-0 pe-1">
+                            {% for day in week %}
+                            {% date_counter rrr day as w%}
+                            <span class="badge {% if user.date_create.date == day or w > 0%}bg-success{% elif day != 0%}bg-secondary{% else %}bg-white{% endif %} p-2 rounded mb-1 {% if w == 0%}opacity-25{% elif 3 > w %}opacity-50{% elif 8 > w %}opacity-75%{% else %}opacity-100{%endif%}"><i class="bi bi-app"></i></span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% endfor %}
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% comment %}
+{% for enroll in enrolls %}
+
+
+{{ enroll.date_create.date }}
+{% endfor %}}
+{%endcomment %}
+{% endblock %}
