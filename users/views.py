@@ -9,6 +9,8 @@ from crm.lead.forms import UserFeedBackForm
 from users.models import CustomUser
 from lms.courses.models import Course
 from crm.lead.models import Status, UserFeedBack
+import datetime as dt
+from lms.steps.models import Step, StepEnroll
 
 
 class HomePage(CreateView):
@@ -94,7 +96,6 @@ class UserProfile(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(UserProfile, self).get_context_data()
-        context['page_title'] = 'Мой профиль'
         return context
 
     def get_object(self):
@@ -127,3 +128,57 @@ class ShuvalovView(TemplateView):
         context['page_title'] = 'Шувалов Кирилл Сергеевич'
 
         return context
+
+
+class UserStatistics(TemplateView):
+    
+    template_name = 'users/statistics.html'
+    #context_object_name = 'user'
+ 
+    def get_context_data(self, **kwargs):
+        context = super(UserStatistics, self).get_context_data(**kwargs)
+        context['data'] = self.get_data()
+        context['enrolls'] = StepEnroll.objects.filter(user__nickname=self.kwargs['nickname'], status='OK')
+
+        return context
+
+
+    #def get_object(self):
+    #    return get_object_or_404(CustomUser, nickname=self.kwargs['nickname'])
+    
+
+    def get_data(self):
+
+        current_date = dt.datetime.today().date()
+        q = current_date + dt.timedelta(days=-1)
+        print('current_date', current_date, q, current_date.isocalendar().week, current_date.isocalendar().weekday)
+
+        num_week = 4*9
+        #for day in range(current_date.isocalendar().weekday + num_week * 7):
+        #    print(current_date + dt.timedelta(days=-(day+1)))
+
+        
+        data = []
+        w = (9 * 4 - 1) * 7 + current_date.isocalendar().weekday - 1
+        start_day = current_date + dt.timedelta(days=-w)
+        print('start_da', start_day)
+        cnt = 0
+        for month in range(9):
+            data.append([])
+            for week in range(4):
+                data[month].append([])
+                for day in range(7):
+                    if start_day <= current_date:
+                        data[month][week].append(start_day)
+                    else:
+                        data[month][week].append(0)
+                    start_day += dt.timedelta(days=1)
+        print(data)
+        #data = dt.datetime.today()
+        #print('Data:', data, type(data), data.date(), data.time())
+        #new_data = data + dt.timedelta(days=1)
+        #
+        #q = Step.objects.get(pk=41)
+        #print(q.date_update.date(), data.date(), type(q.date_update), data.date() == q.date_update.date(), new_data)
+
+        return data

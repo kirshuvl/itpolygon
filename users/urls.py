@@ -9,7 +9,8 @@ urlpatterns = [
     path('logout/', UserLogout.as_view(), name='UserLogout'),
     path('profile/', UserProfile.as_view(), name='UserProfile'),
     path('profile/update/', UserProfileUpdate.as_view(), name='UserProfileUpdate'),
-    path('teachers/shuvalov/', ShuvalovView.as_view(), name='ShuvalovView')
+    path('teachers/shuvalov/', ShuvalovView.as_view(), name='ShuvalovView'),
+    path('users/<str:nickname>/statistics', UserStatistics.as_view(), name='UserStatistics')
 ]
 
 
