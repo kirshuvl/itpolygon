@@ -36,17 +36,17 @@
                     {% with request.resolver_match.url_name as url_name %}
                     <ul class="nav nav-pills flex-column">
                         <li class="nav-item mb-1">
-                            <a href="{% url 'UserProfile' %}" class="nav-link {% if url_name == 'UserProfile' or url_name == 'UserProfileUpdate' %}active{% endif %}"><i class="bi bi-person me-3"></i>Мой профиль</a>
+                            <a href="{% url 'UserProfile' %}" class="nav-link {% if url_name == 'UserProfile' or url_name == 'UserProfileUpdate' %}active{% endif %}"><i class="bi bi-person me-2"></i>Мой профиль</a>
                         </li>
                         <li class="nav-item mb-1">
-                            <a href="{% url 'UserCoursesList' %}" class="nav-link {% if url_name == 'UserCoursesList'%}active{% endif %}"><i class="bi bi-ui-checks-grid me-3"></i>Мои курсы</a>
-                        </li>
+                            <a href="{% url 'UserCoursesList' %}" class="nav-link {% if url_name == 'UserCoursesList'%}active{% endif %}"><i class="bi bi-ui-checks-grid me-2"></i>Мои курсы</a>
+                        </li>{% comment %}
                         <li class="nav-item mb-1">
-                            <a href="{% url 'UserHomeworkList' %}" class="nav-link {% if url_name == 'UserHomeworkList' or url_name == 'UserHomeworkDetail' %}active{% endif %}"><i class="bi bi-house me-3"></i>Домашние задания</a>
+                            <a href="{% url 'UserHomeworkList' %}" class="nav-link {% if url_name == 'UserHomeworkList' or url_name == 'UserHomeworkDetail' %}active{% endif %}"><i class="bi bi-house me-2"></i>Домашние задания</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{% url 'UserAchievementsList' %}" class="nav-link {% if url_name == 'UserAchievementsList'%}active{% endif %}"><i class="bi bi-gem me-3"></i>Достижения</a>
-                        </li>
+                            <a href="{% url 'UserAchievementsList' %}" class="nav-link {% if url_name == 'UserAchievementsList'%}active{% endif %}"><i class="bi bi-gem me-2"></i>Достижения</a>
+                        </li>{% endcomment %}
                     </ul>
                     {% endwith %}
                 </div>
@@ -56,32 +56,32 @@
                     <nav class="navbar bg-white p-0">
                         <div class="container-fluid p-0">
                             <h4 class="m-0">Меню</h4>
-                            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2" aria-controls="offcanvasNavbar2">
+                            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#menu" aria-controls="menu">
                                 <span class="navbar-toggler-icon"></span>
                             </button>
-                            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar2" aria-labelledby="offcanvasNavbarLabel">
+                            <div class="offcanvas offcanvas-end border-0 w-75 rounded" tabindex="-1" id="menu" aria-labelledby="menuLabel">
                                 <div class="offcanvas-header border-bottom p-2">
                                     <a class="navbar-brand p-0 m-0" href="/">
                                         <img src="{% static 'picture/logo_500x500.png' %}" alt="" width="60" height="60" class="d-inline-block">
                                     </a>
                                     <h2 class="offcanvas-title">ИТ Полигон</h2>
-                                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    <button type="button" class="btn-close ms-auto me-2" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                                 </div>
                                 <div class="offcanvas-body">
                                     {% with request.resolver_match.url_name as url_name %}
                                     <ul class="nav nav-pills flex-column">
                                         <li class="nav-item mb-1">
-                                            <a href="{% url 'UserProfile' %}" class="nav-link {% if url_name == 'UserProfile' or url_name == 'UserProfileUpdate' %}active{% endif %}"><i class="bi bi-person me-3"></i>Мой профиль</a>
+                                            <a href="{% url 'UserProfile' %}" class="nav-link {% if url_name == 'UserProfile' or url_name == 'UserProfileUpdate' %}active{% endif %}"><i class="bi bi-person me-2"></i>Мой профиль</a>
                                         </li>
                                         <li class="nav-item mb-1">
-                                            <a href="{% url 'UserCoursesList' %}" class="nav-link {% if url_name == 'UserCoursesList'%}active{% endif %}"><i class="bi bi-ui-checks-grid me-3"></i>Мои курсы</a>
-                                        </li>
+                                            <a href="{% url 'UserCoursesList' %}" class="nav-link {% if url_name == 'UserCoursesList'%}active{% endif %}"><i class="bi bi-ui-checks-grid me-2"></i>Мои курсы</a>
+                                        </li>{% comment %}
                                         <li class="nav-item mb-1">
-                                            <a href="{% url 'UserHomeworkList' %}" class="nav-link {% if url_name == 'UserHomeworkList' or url_name == 'UserHomeworkDetail' %}active{% endif %}"><i class="bi bi-house me-3"></i>Домашние задания</a>
+                                            <a href="{% url 'UserHomeworkList' %}" class="nav-link {% if url_name == 'UserHomeworkList' or url_name == 'UserHomeworkDetail' %}active{% endif %}"><i class="bi bi-house me-2"></i>Домашние задания</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="{% url 'UserAchievementsList' %}" class="nav-link {% if url_name == 'UserAchievementsList'%}active{% endif %}"><i class="bi bi-gem me-3"></i>Достижения</a>
-                                        </li>
+                                            <a href="{% url 'UserAchievementsList' %}" class="nav-link {% if url_name == 'UserAchievementsList'%}active{% endif %}"><i class="bi bi-gem me-2"></i>Достижения</a>
+                                        </li>{% endcomment %}
                                     </ul>
                                     {% endwith %}
                                 </div>
