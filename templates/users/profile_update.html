@@ -1,5 +1,5 @@
 {% extends 'lms/dashboard.html' %}
-{% block page_title %}{{ page_title }}{% endblock %}
+{% block page_title %}Редактировать профиль{% endblock %}
 {% block breadcrumb %}
 <li class="breadcrumb-item">
     <a href="{% url 'UserProfile' %}" class="text-decoration-none">Аккаунт</a>
@@ -12,12 +12,11 @@
 </li>
 {% endblock %}
 {% block content %}
-
 <div class="card shadow">
     <div class="card-header bg-transparent p-3">
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex justify-content-between">
             <h4 class="m-0"><i class="bi bi-person me-3"></i>Мой профиль</h4>
-            <a href="{% url 'UserProfileUpdate' %}"><span class="badge bg-secondary p-2 opacity-50 text-white"><i class="bi bi-pencil-square me-2"></i>Редактировать</span></a>
+            <a href="{% url 'UserProfile' %}"><span class="badge bg-secondary p-2 opacity-50 text-white"><i class="bi bi-arrow-bar-left"></i></span></a>
         </div>
     </div>
     <div class="card-body">
@@ -99,5 +98,4 @@
         </form>
     </div>
 </div>
-
 {% endblock %}
