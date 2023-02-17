@@ -6,7 +6,7 @@ from django.db.models import Prefetch
 from lms.lessons.models import Lesson
 from lms.steps.models import Step, StepEnroll
 from lms.topics.models import Topic
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class CoursesList(ListView):
     model = Course
@@ -22,7 +22,7 @@ class CoursesList(ListView):
         return Course.objects.filter(is_published=True)
 
 
-class UserCoursesList(ListView):
+class UserCoursesList(LoginRequiredMixin, ListView):
     model = Course
     template_name = 'lms/courses/list.html'
     context_object_name = 'courses'
@@ -45,7 +45,7 @@ class CourseDetail(DetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(CourseDetail, self).get_context_data(**kwargs)
-        context['page_title'] = self.object.title
+        context['page_title'] = 'Курс «{}»'.format(self.object.title)
         return context
 
     def get_object(self):

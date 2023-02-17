@@ -12,11 +12,18 @@ class ProblemStepDetail(BaseStepMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['attempts'] = UserAnswerForProblemStep.objects.filter(
-            problem=self.object, user=self.request.user)
+        
         context['tests'] = TestForProblemStep.objects.filter(number__lte=self.object.last_sample,
                                                              number__gte=self.object.first_sample,
                                                              problem=self.object).order_by('number')
+        
+        if self.request.user.is_superuser:
+            context['users_attempts'] = UserAnswerForProblemStep.objects.select_related('problem__lesson__topic__course', 'user').filter(
+                problem=self.object)
+            context['attempts'] = context['users_attempts'].filter(user=self.request.user)
+        else:
+            context['attempts'] = UserAnswerForProblemStep.objects.select_related('problem__lesson__topic__course', 'user').filter(
+                problem=self.object, user=self.request.user)
         return context
 
     def form_valid(self, form):

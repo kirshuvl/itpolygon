@@ -164,7 +164,7 @@ class CMS_CourseStatistics(DetailView):
 class CMS_CourseSubmissions(ListView):
     model = UserAnswerForProblemStep
     template_name = 'cms/courses/problems.html'
-    context_object_name = 'attempts'
+    context_object_name = 'users_attempts'
     paginate_by = 20
 
     def get_context_data(self, **kwargs):

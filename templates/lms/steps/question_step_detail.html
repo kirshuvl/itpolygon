@@ -49,17 +49,32 @@
         <div class="card mb-1">
             <div class="card-body">
                 <div class="row align-items-center small">
-                    <div class="col-1 text-center border-end">
+                    <div class="col-2 col-lg-1 text-center border-end text-truncate">
                         ID
                     </div>
-                    <div class="col-4 text-center border-end">
-                        Время ответа
+                    <div class="col-lg-3 col-xl-2 text-center border-end d-none d-lg-block">
+                        Дата
                     </div>
-                    <div class="col-4 text-center border-end">
+                    <div class="col-3 col-xl-2 text-center border-end text-truncate d-none d-md-block">
+                        Задача
+                    </div>
+                    <div class="col-5 col-md-3 col-xl-2 text-center border-end text-truncate">
                         Ответ
                     </div>
-                    <div class="col-3 text-center border-end">
-                        Результат
+                    <div class="col-2 col-lg-1 text-center border-end text-truncate">
+                        Вердикт
+                    </div>
+                    <div class="col-xl-1 text-center border-end d-none d-xl-block">
+                        Время
+                    </div>
+                    <div class="col-xl-1 text-center border-end d-none d-xl-block">
+                        Тест
+                    </div>
+                    <div class="col-xl-1 text-center border-end d-none d-xl-block">
+                        Язык
+                    </div>
+                    <div class="col-3 col-md-2 col-lg-1 pe-2">
+                        <span class="badge btn btn-secondary p-2 col-12 opacity-50"><i class="bi bi-eye"></i></span>
                     </div>
                 </div>
             </div>
@@ -68,21 +83,32 @@
         <div class="card {% if not forloop.last %}mb-1{% endif %}">
             <div class="card-body">
                 <div class="row align-items-center small">
-                    <div class="col-1 text-center border-end">
+                    <div class="col-2 col-lg-1 text-center border-end text-truncate">
                         {{ attempt.pk }}
                     </div>
-                    <div class="col-4 text-center border-end">
+                    <div class="col-lg-3 col-xl-2 text-center border-end d-none d-lg-block">
                         {{ attempt.date_create|date:'d.m.Y H:i:s' }}
                     </div>
-                    <div class="col-4 text-center border-end">
-                        {{ attempt.user_answer }}
+                    <div class="col-3 col-xl-2 text-center border-end text-truncate d-none d-md-block">
+                        <a href="{{ attempt.question.get_absolute_url }}" class="text-decoration-none">{{ attempt.question }}</a>
                     </div>
-                    <div class="col-3 text-center border-end">
-                        {% if attempt.is_correct %}
-                        <span class="badge bg-success opacity-50 p-2 rounded"><i class="bi bi-check-square"></i></span>
-                        {% else %}
-                        <span class="badge bg-danger opacity-50 p-2 rounded"><i class="bi bi-x-square"></i></span>
-                        {% endif %}
+                    <div class="col-5 col-md-3 col-xl-2 text-center border-end text-truncate">
+                        <a href="#" class="text-decoration-none">{{ attempt.user }}</a>
+                    </div>
+                    <div class="col-2 col-lg-1 text-center border-end {% if attempt.is_correct %}text-success{% else %}text-danger{% endif %}">
+                        {% if attempt.is_correct %}OK{% else %}WA{% endif %}
+                    </div>
+                    <div class="col-xl-1 text-center border-end d-none d-xl-block">
+                        {% if attempt.is_correct %}OK{% else %}WA{% endif %}
+                    </div>
+                    <div class="col-xl-1 text-center border-end d-none d-xl-block {% if attempt.first_fail_test != 0 %}text-danger{% endif %}">
+                        {% if attempt.first_fail_test == 0 %}-{% else %}{{ attempt.first_fail_test }}{% endif %}
+                    </div>
+                    <div class="col-xl-1 text-center border-end d-none d-xl-block">
+                        Python
+                    </div>
+                    <div class="col-3 col-md-2 col-lg-1 pe-2">
+                        <a href="{{ attempt.get_detail }}"><span class="badge btn btn-primary p-2 col-12 opacity-50"><i class="bi bi-eye"></i></span></a>
                     </div>
                 </div>
             </div>

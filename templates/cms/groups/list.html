@@ -1,0 +1,78 @@
+{% extends 'cms/dashboard.html' %}
+{% block page_title %}{{ page_title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+    <a href="{% url 'CMS_Dashboard' %}" class="text-decoration-none">CMS</a>
+</li>
+<li class="breadcrumb-item active">
+    Все группы
+</li>
+{% endblock %}
+{% block right_sidebar %}
+<div class="card shadow">
+    <div class="card-header bg-transparent p-3">
+        <div class="row">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h4 class="m-0"><i class="bi bi-ui-checks-grid me-3"></i>Все курсы</h4>
+                </div>
+                <div>
+                    <a href="" class="btn btn-success badge p-2 rounded opacity-50"><i class="bi bi-plus-square m-0"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if groups %}
+    <div class="card-body">
+        <div class="card mb-2">
+            <div class="card-body p-2">
+                <div class="row align-items-center text-center">
+                    <div class="col-2 offset-1 border-start border-end">
+                        Название группы
+                    </div>
+                    <div class="col-4 border-end">
+                        Курс
+                    </div>
+                    <div class="col-2 border-end">
+                        Дата создания
+                    </div>
+                    <div class="col-2 border-end">
+                        Учеников
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% for group in groups %}
+        <div class="card {% if not forloop.last %}mb-2{% endif %}">
+            <div class="card-body p-2">
+                <div class="row align-items-center text-center">
+                    <div class="col-1 border-end">
+                        <img src="{{ group.course.icon.url }}" class="rounded p-0 col-12 bg-light" alt="{{ course.title }}">
+                    </div>
+                    <div class="col-2 border-end">
+                        {{ group.title }}
+                    </div>
+                    <div class="col-4 border-end">
+                        {{ group.course.title }}
+                    </div>
+                    <div class="col-2 border-end">
+                        {{ group.date_create|date:'d.m.Y H:i'}}
+                    </div>
+                    <div class="col-2 border-end">
+                        {{ group.enrolls.count }}
+                    </div>
+                    <div class="col-1">
+                        <a href="{% url 'CMS_UserCourseGroupDetail' group.pk %}">kek</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="card-body text-center text-danger">
+        Вы еще не <a href=" " class="text-decoration-none">создали</a> ни одной группы :(
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
