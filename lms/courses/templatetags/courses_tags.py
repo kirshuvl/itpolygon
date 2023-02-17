@@ -53,7 +53,7 @@ def topic_steps_cnt(topic):
     return cnt
 
 
-@register.filter
+@register.simple_tag
 def topic_progress_percent(topic):
     if topic_steps_cnt(topic) == 0:
         return 0
@@ -89,3 +89,12 @@ def get_width_col(lesson):
     cnt = lesson.steps.count()
 
     return 28 * cnt + 4 * (cnt - 1)
+
+
+
+@register.simple_tag
+def is_problem_correct(attempts):
+    for attempt in attempts:
+        if attempt.verdict == 'OK':
+            return True
+    return False

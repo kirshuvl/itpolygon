@@ -10,7 +10,7 @@ urlpatterns = [
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('__debug__/', include('debug_toolbar.urls')),
     path('crm/', include('crm.urls')),
-    path('cms/', include('cms.urls')),
+    path('', include('cms.urls')),
     path('', include('lms.urls')),
     path('', include('users.urls')),
     path('', HomePage.as_view(), name='HomePage'),

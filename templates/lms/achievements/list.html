@@ -1,0 +1,66 @@
+{% extends 'lms/dashboard.html' %}
+{% block page_title %}Мои достижения{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+    <a href="{% url 'UserProfile' %}" class="text-decoration-none">Аккаунт</a>
+</li>
+<li class="breadcrumb-item active">
+    Мои достижения
+</li>
+{% endblock %}
+{% block content %}
+<div class="card shadow">
+    <div class="card-header bg-transparent p-3">
+        <div class="d-flex justify-content-between">
+            <h4 class="m-0"><i class="bi bi-gem me-3"></i>Мои достижения</h4>
+        </div>
+    </div>
+    {% if achievements %}
+    <div class="card-body">
+        <div class="card mb-2">
+            <div class="card-body p-2">
+                <div class="row align-items-center">
+                    <div class="col-2 col-xl-1 border-end pe-2">
+                        <span class="badge bg-secondary opacity-50 p-2 col-12"><i class="bi bi-gem"></i></span>
+                    </div>
+                    <div class="col-8 col-xl-6 border-end">
+                        За что достижение?
+                    </div>
+                    <div class="d-none d-xl-block col-xl-3 border-end text-center">
+                        Дата
+                    </div>
+                    <div class="col-2 text-center">
+                        Действие
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% for achieve in achievements %}
+        <div class="card {% if not forloop.last %}mb-1{% else %}mb-0{% endif %}">
+            <div class="card-body p-2">
+                <div class="row align-items-center">
+                    <div class="col-2 col-xl-1 border-end pe-2">
+                        <span class="badge bg-secondary opacity-50 p-2 col-12"><i class="bi bi-gem me-1"></i>{{ achieve.points }}</span>
+                    </div>
+                    <div class="col-8 col-xl-6 border-end">
+                        <a href="#" class="text-decoration-none">{{ achieve.for_what.title }}</a>
+                    </div>
+                    <div class="d-none d-xl-block col-xl-3 border-end text-center">
+                        {{ achieve.date_create|date:'d.m.Y H:i:s' }}
+                    </div>
+                    <div class="col-2">
+                        <a href="#"><span class="badge btn btn-primary p-2 col-12"><i class="bi bi-eye"></i></span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="card-body text-center text-danger">
+        У вас пока что нет достижений. Проходите уроки, выполняйте задания и достижения обязательно появятся!
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

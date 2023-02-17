@@ -1,18 +1,17 @@
 from django.views.generic import ListView
-from lms.achievements.models import Achievement, StepAchievement
+from lms.achievements.models import StepAchievement
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-# Create your views here.
 
-
-class UserAchievements(ListView):
+class UserAchievements(LoginRequiredMixin, ListView):
     model = StepAchievement
-    template_name = 'lms/achievements/user_achievement_list.html'
+    template_name = 'lms/achievements/list.html'
     context_object_name = 'achievements'
     paginate_by = 10
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(UserAchievements, self).get_context_data(**kwargs)
-        context['page_title'] = 'Мои достижения'
+
         return context
 
     def get_queryset(self):

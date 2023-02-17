@@ -1,16 +1,14 @@
 {% extends 'lms/steps/detail.html' %}
 {% block page_title %}{{ page_title }}{% endblock %}
-{% block block_breadcrumb %}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+    <a href="{{ user_answer.problem.get_absolute_url }}" class="text-decoration-none">Вернуться к задаче</a>
+</li>
+{% endblock %}
 {% block step_header %}
 <div class="card-header bg-transparent p-3">
-    <div class="row">
-        <div class="d-flex justify-content-between">
-            <div>
-                <h4 class="m-0">
-                    <i class="bi bi-code-square me-3"></i>Посылка ID {{ user_answer.pk }}
-                </h4>
-            </div>
-        </div>
+    <div class="d-flex justify-content-between align-items-center">
+        <h4 class="m-0 text-truncate"><i class="bi bi-code-square me-2"></i>Посылка ID {{ user_answer.pk }}</h4>
     </div>
 </div>
 {% endblock %}
@@ -18,35 +16,33 @@
 <div class="card-body">
     <div class="card mb-2">
         <div class="card-body">
-            <pre class="mb-0"><code>{{ user_answer.code }}</code></pre>
+            <pre class="mb-0 rounded"><code>{{ user_answer.code }}</code></pre>
         </div>
     </div>
     <div class="card mb-1">
         <div class="card-body">
             <div class="row align-items-center small">
-                <div class="col-1 text-center border-end">
+                <div class="col-3 col-sm-2 col-xl-1 text-center border-end">
                     # теста
                 </div>
-                <div class="col-1 text-center border-end">
+                <div class="d-none d-sm-block col-sm-2 col-md-2 text-center border-end">
                     ID теста
                 </div>
-                <div class="col-2 text-center border-end">
-                    Время теста
+                <div class="col-4 col-sm-3 col-xl-3 text-center border-end px-0">
+                    Дата
                 </div>
-                <div class="col-2 text-center border-end">
+                <div class="d-none d-xl-block col-2 text-center border-end">
                     Компилятор
                 </div>
-                <div class="col-2 text-center border-end">
+                <div class="col-3 col-md-2 text-center border-end text-truncate">
                     Вердикт
                 </div>
-                <div class="col-1 text-center border-end">
+                <div class="d-none d-xl-block col-1 text-center border-end">
                     Время
                 </div>
-                <div class="col-1 text-center border-end">
-                    Баллы
-                </div>
-                <div class="col-2 text-center border-end">
-                    Ввод и вывод
+
+                <div class="col-2 col-xl-1 pe-2">
+                    <span class="badge btn btn-secondary p-2 col-12 opacity-50"><i class="bi bi-eye"></i></span>
                 </div>
             </div>
         </div>
@@ -55,29 +51,26 @@
     <div class="card {% if not forloop.last %}mb-1{% endif %}">
         <div class="card-body">
             <div class="row align-items-center small">
-                <div class="col-1 text-center border-end">
+                <div class="col-3 col-sm-2 col-xl-1 text-center border-end">
                     {{ attempt.test.number }}
                 </div>
-                <div class="col-1 text-center border-end">
+                <div class="d-none d-sm-block col-sm-2 col-md-2 text-center border-end">
                     {{ attempt.pk }}
                 </div>
-                <div class="col-2 text-center border-end">
-                    {{ attempt.date_create|date:'d.m.Y H:i:s' }}
+                <div class="col-4 col-sm-3 col-xl-3 text-center border-end px-0">
+                    <span class="d-inline-block">{{ attempt.date_create|date:'d.m.Y' }}</span> <span class="d-none d-xl-inline-block">{{ attempt.date_create|date:'H:i:s' }}</span>
                 </div>
-                <div class="col-2 text-center border-end">
+                <div class="d-none d-xl-block col-2 text-center border-end">
                     Python
                 </div>
-                <div class="col-2 text-center border-end {% if attempt.verdict == 'OK' %}text-success{% else %}text-danger{% endif %}">
+                <div class="col-3 col-md-2 text-center border-end {% if attempt.verdict == 'OK' %}text-success{% else %}text-danger{% endif %}">
                     {{ attempt.verdict }}
                 </div>
-                <div class="col-1 text-center border-end">
+                <div class="d-none d-xl-block col-1 text-center border-end">
                     {{ attempt.duration|point }}
                 </div>
-                <div class="col-1 text-center border-end">
-                    {% if attempt.verdict == 'OK' %}1{% else %}0{% endif %}
-                </div>
-                <div class="col-2 text-center">
-                    <a class="text-decoration-none" data-bs-toggle="collapse" href="#collapse{{ attempt.pk }}" role="button" aria-expanded="false" aria-controls="collapse{{ attempt.pk }}">Развернуть</a>
+                <div class="col-2 col-xl-1 pe-2">
+                    <a data-bs-toggle="collapse" href="#collapse{{ attempt.pk }}" role="button" aria-expanded="false" aria-controls="collapse{{ attempt.pk }}"><span class="badge btn btn-primary p-2 col-12 opacity-50"><i class="bi bi-eye"></i></span></a>
                 </div>
             </div>
         </div>
@@ -104,10 +97,8 @@
                 <pre class="mb-0"><code>{{ attempt.stderr }}</code></pre>
             </div>
             {% endif %}
-            
         </div>
     </div>
-
     {% endfor %}
 </div>
 {% block buttons %}

@@ -1,0 +1,56 @@
+{% extends 'include/base.html' %}
+{% load static %}
+{% block page_title %}Отзывы{% endblock %}
+{% block body %}
+<div class="py-5">
+    <div class="container">
+        <h1 class="mb-4">Все отзывы</h1>
+    </div>
+</div>
+
+<div class="container">
+    <div class="col-8 mx-auto">
+        {% for feedback in feedbacks %}
+        <div class="card shadow mb-4">
+            <div class="card-header bg-transparent p-3">
+                <div class="row align-items-center">
+                    <div class="col-1">
+                        {% if feedback.user %}
+                        <img src="{{ feedback.user.icon.url }}" class="img-fluid rounded float-start" />
+                        {% else %}
+                        <img src="media/main/default_user_image.png" class="img-fluid rounded float-start" />
+                        {% endif %}
+                    </div>
+                    <div class="col-11">
+                        <h4 class="m-0">{% if feedback.user %}{{ feedback.user.first_name }} {{ feedback.user.last_name }}{% elif firrst_name or last_name %}{{ feedback.first_name}} {{ feedback.last_name }}{% else %}Анонимный отзыв :){% endif %}</h4>
+                        {% if feedback.course %}
+                        Курс: <a href="{{ feedback.course.get_absolute_url }}" class="text-decoration-none mt-auto">{{ feedback.course }}</a>
+                        {% else %}
+                        Курс не указан
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="col-11 offset-1">
+                    {{ feedback.text }}
+                </div>
+            </div>
+            <div class="card-footer bg-transparent p-3">
+                <div class="row">
+                    <div class="col-9 border-end">
+                        <div class="progress h-100">
+                            <div class="progress-bar" role="progressbar" aria-label="" style="width:{{feedback.get_rating_percent}}%;" aria-valuenow="1" aria-valuemin="0" aria-valuemax="5"> {{ feedback.rating }} \ 5
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3 text-end">
+                        {{ feedback.date_create|date:'d.m.Y H:i:s' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

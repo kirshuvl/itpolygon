@@ -2,17 +2,17 @@ from django.utils.safestring import mark_safe
 from django import template
 register = template.Library()
 
-
+#устарело
 @register.simple_tag
 def step_get_steps(steps, current_step):
     string = ''
     for step in steps:
         if step == current_step:
-            string += '<a href="{}" class="text-decoration-none"><span class="badge bg-{} p-2 rounded"><i class="bi {}"></i></span></a> '.\
+            string += '<a href="{}" class="text-decoration-none"><span class="badge bg-{} p-2 rounded me-1"><i class="bi {}"></i></span></a> '.\
                 format(step.get_absolute_url(), step_color(
                     step), step.step_icon_class())
         else:
-            string += '<a href="{}" class="text-decoration-none"><span class="badge bg-{} p-2 rounded opacity-50"><i class="bi {}"></i></span></a> '.\
+            string += '<a href="{}" class="text-decoration-none"><span class="badge bg-{} p-2 rounded me-1 opacity-50"><i class="bi {}"></i></span></a> '.\
                 format(step.get_absolute_url(), step_color(
                     step), step.step_icon_class())
     return mark_safe(string)

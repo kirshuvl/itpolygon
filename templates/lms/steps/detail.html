@@ -1,113 +1,71 @@
-{% extends 'include/base.html' %}
+{% extends 'lms/dashboard.html' %}{% load static %}
 {% block page_title %}{{ page_title }}{% endblock %}
 {% load steps_tags %}
-{% block body %}
-<div class="container">
-    {% block block_breadcrumb %}
-    <div class="card shadow mb-2">
-        <div class="card-body small">
-            <div class="row">
-                <div class="d-flex justify-content-between">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb m-0">
-                            {% block breadcrumb %}
-                            <li class="breadcrumb-item">
-                                <a href="{% url 'UserProfile' %}" class="text-decoration-none">Аккаунт</a>
-                            </li>
-                            <li class="breadcrumb-item">
-                                <a href="{% url 'UserCoursesList' %}" class="text-decoration-none">Мои курсы</a>
-                            </li>
-                            <li class="breadcrumb-item">
-                                <a href="{{ step.lesson.topic.course.get_absolute_url }}" class="text-decoration-none">{{ step.lesson.topic.course.title }}</a>
-                            </li>
-                            <li class="breadcrumb-item">
-                                {{ step.lesson.topic.title }}
-                            </li>
-                            <li class="breadcrumb-item">
-                                <a href="{{ step.lesson.get_absolute_url }}" class="text-decoration-none">{{ step.lesson.title }}</a>
-                            </li>
-                            <li class="breadcrumb-item active">
-                                {{ step.title }}
-                            </li>
-                            {% endblock %}
-                        </ol>
-                    </nav>
-                    <div>
-                        <a class="text-decoration-none" data-bs-toggle="collapse" href="#StepCollapse" role="button" aria-expanded="false" aria-controls="StepCollapse">Что значат иконки?</a>
+{% block breadcrumb %}
+<li class="breadcrumb-item d-md-inline-block">
+    <a href="{% url 'UserProfile' %}" class="text-decoration-none">Аккаунт</a>
+</li>
+<li class="breadcrumb-item">
+    <a href="{% url 'UserCoursesList' %}" class="text-decoration-none">Мои курсы</a>
+</li>
+<li class="breadcrumb-item">
+    <a href="{{ step.lesson.topic.course.get_absolute_url }}" class="text-decoration-none">{{ step.lesson.topic.course.title }}</a>
+</li>
+<li class="breadcrumb-item">
+    {{ step.lesson.topic.title }}
+</li>
+<li class="breadcrumb-item">
+    <a href="{{ step.lesson.get_absolute_url }}" class="text-decoration-none">{{ step.lesson.title }}</a>
+</li>
+<li class="breadcrumb-item active">
+    {{ step.title }}
+</li>
+{% endblock %}
+{% block user_info %}{% endblock %}
+{% block row %}
+<div class="card shadow mb-2">
+    {% block step_header %}
+    <div class="card-header bg-transparent p-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h4 class="m-0 text-truncate"><i class="bi bi-ui-checks-grid me-2"></i>{{ step.title }}</h4>
+            <nav class="navbar bg-white p-0 d-lg-none">
+                <div class="container-fluid p-0">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#course_menu" aria-controls="course_menu">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="offcanvas offcanvas-end border-0 w-75 rounded" tabindex="-1" id="course_menu" aria-labelledby="course_menuLabel">
+                        <div class="offcanvas-header border-bottom p-2">
+                            <a class="navbar-brand p-0 m-0" href="/">
+                                <img src="{% static 'picture/logo_500x500.png' %}" alt="" width="60" height="60" class="d-inline-block">
+                            </a>
+                            <h2 class="offcanvas-title">ИТ Полигон</h2>
+                            <button type="button" class="btn-close ms-auto me-2" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                            {% for step_ in steps %}
+                            <div class="card mb-1">
+                                <div class="card-body p-2">
+                                    <a href="{{ step_.get_absolute_url }}" class="text-decoration-none">
+                                        <span class="badge bg-{{ step_|step_color }} p-2 rounded me-2{% if step_ != step %} opacity-50{% endif %}"><i class="bi {{ step_.step_icon_class }}"></i></span>{{ step_.title }}
+                                    </a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="card shadow mb-2 collapse" id="StepCollapse">
-        <div class="card-body">
-            <div class="mb-2">
-                Ниже варианты шагов
-            </div>
-            <div class="mb-2">
-                <span class="badge bg-secondary p-2 rounded"><i class="bi bi-card-text"></i></span> - Текстовый шаг
-            </div>
-            <div class="mb-2">
-                <span class="badge bg-secondary p-2 rounded"><i class="bi bi-play-btn"></i></span> - Видео шаг
-            </div>
-            <div class="mb-2">
-                <span class="badge bg-secondary p-2 rounded"><i class="bi bi-question-square"></i></span> - Вопрос
-            </div>
-            <hr>
-            <div class="mb-2">
-                Цветовые обозначения
-            </div>
-            <div class="mb-2">
-                <span class="badge bg-secondary p-2 rounded"><i class="bi bi-card-text"></i></span> - Шаг не начат (ссылка на него недоступна)
-            </div>
-            <div class="mb-2">
-                <span class="badge bg-success p-2 rounded"><i class="bi bi-card-text"></i></span> - Шаг изучен
-            </div>
-            <div class="mb-2">
-                <span class="badge bg-danger p-2 rounded"><i class="bi bi-question-square"></i></span> - Ошибка (Дан неправильный ответ на вопрос)
-            </div>
-            <div class="mb-2">
-                <span class="badge bg-warning p-2 rounded"><i class="bi bi-card-text"></i></span> - Повторить шаг
-            </div>
-            <div class="mb-2">
-                <span class="badge bg-primary p-2 rounded"><i class="bi bi-card-text"></i></span> - Шаг на изучении
+            </nav>
+            <div class="d-none d-lg-flex">
+                {% include 'lms/steps/steps.html' %}
             </div>
         </div>
     </div>
     {% endblock %}
-    <div class="card shadow mb-2">
-        {% block step_header %}
-        <div class="card-header bg-transparent p-3">
-            <div class="row">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <h4 class="m-0">
-                            <i class="bi bi-ui-checks-grid me-3"></i>{{ step.title }}
-                        </h4>
-                    </div>
-                    <div>
-                        {% if user.is_superuser %}
-                        <a href="{% url 'LessonStatistics' step.lesson.slug %}" class="text-decoration-none" target="_blank">
-                            <span class="badge bg-secondary p-2 rounded opacity-50">
-                                <i class="bi bi-calendar"></i>
-                            </span>
-                        </a>
-                        {% endif %}
-                        {% step_get_steps steps step %}
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endblock %}
-        {% block step_body %}
-        <div class="card-body">
-            Вы не заполнили блок
-        </div>
-        {% endblock %}
+    {% block step_body %}
+    <div class="card-body">
+        Вы не заполнили блок
     </div>
-    {% block under_content %}{% endblock %}
-    {% block buttons %}
-    {% user_end_step step %}
     {% endblock %}
 </div>
+{% block under_content %}{% endblock %}
 {% endblock %}

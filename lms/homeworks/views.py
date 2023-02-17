@@ -4,13 +4,13 @@ from lms.homeworks.models import Homework
 from django.db.models import Prefetch
 from lms.lessons.models import Lesson
 from lms.steps.models import Step, StepEnroll
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 
-
-class UserHomeworkList(ListView):
+class UserHomeworkList(LoginRequiredMixin, ListView):
     model = Homework
-    template_name = 'lms/homeworks/user_homework_list.html'
+    template_name = 'lms/homeworks/list.html'
     context_object_name = 'homeworks'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -23,7 +23,7 @@ class UserHomeworkList(ListView):
         return Homework.objects.prefetch_related(Prefetch('steps__steps_enrolls', queryset=StepEnroll.objects.filter(user=self.request.user))).select_related('course').filter(user=self.request.user, is_done=False)
 
 
-class UserHomeworkDetail(DetailView):
+class UserHomeworkDetail(LoginRequiredMixin, DetailView):
     model = Homework
     template_name = 'lms/homeworks/homework_detail.html'
     context_object_name = 'homework'

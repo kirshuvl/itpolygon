@@ -33,22 +33,7 @@
             {% block sidebar %}
             <div class="card shadow d-none d-lg-block">
                 <div class="card-body">
-                    {% with request.resolver_match.url_name as url_name %}
-                    <ul class="nav nav-pills flex-column">
-                        <li class="nav-item mb-1">
-                            <a href="{% url 'UserProfile' %}" class="nav-link {% if url_name == 'UserProfile' or url_name == 'UserProfileUpdate' %}active{% endif %}"><i class="bi bi-person me-2"></i>Мой профиль</a>
-                        </li>
-                        <li class="nav-item mb-1">
-                            <a href="{% url 'UserCoursesList' %}" class="nav-link {% if url_name == 'UserCoursesList'%}active{% endif %}"><i class="bi bi-ui-checks-grid me-2"></i>Мои курсы</a>
-                        </li>{% comment %}
-                        <li class="nav-item mb-1">
-                            <a href="{% url 'UserHomeworkList' %}" class="nav-link {% if url_name == 'UserHomeworkList' or url_name == 'UserHomeworkDetail' %}active{% endif %}"><i class="bi bi-house me-2"></i>Домашние задания</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{% url 'UserAchievementsList' %}" class="nav-link {% if url_name == 'UserAchievementsList'%}active{% endif %}"><i class="bi bi-gem me-2"></i>Достижения</a>
-                        </li>{% endcomment %}
-                    </ul>
-                    {% endwith %}
+                    {% include 'lms/_nav.html' %}
                 </div>
             </div>
             <div class="card shadow d-lg-none">
@@ -68,22 +53,7 @@
                                     <button type="button" class="btn-close ms-auto me-2" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                                 </div>
                                 <div class="offcanvas-body">
-                                    {% with request.resolver_match.url_name as url_name %}
-                                    <ul class="nav nav-pills flex-column">
-                                        <li class="nav-item mb-1">
-                                            <a href="{% url 'UserProfile' %}" class="nav-link {% if url_name == 'UserProfile' or url_name == 'UserProfileUpdate' %}active{% endif %}"><i class="bi bi-person me-2"></i>Мой профиль</a>
-                                        </li>
-                                        <li class="nav-item mb-1">
-                                            <a href="{% url 'UserCoursesList' %}" class="nav-link {% if url_name == 'UserCoursesList'%}active{% endif %}"><i class="bi bi-ui-checks-grid me-2"></i>Мои курсы</a>
-                                        </li>{% comment %}
-                                        <li class="nav-item mb-1">
-                                            <a href="{% url 'UserHomeworkList' %}" class="nav-link {% if url_name == 'UserHomeworkList' or url_name == 'UserHomeworkDetail' %}active{% endif %}"><i class="bi bi-house me-2"></i>Домашние задания</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{% url 'UserAchievementsList' %}" class="nav-link {% if url_name == 'UserAchievementsList'%}active{% endif %}"><i class="bi bi-gem me-2"></i>Достижения</a>
-                                        </li>{% endcomment %}
-                                    </ul>
-                                    {% endwith %}
+                                    {% include 'lms/_nav.html' %}
                                 </div>
                             </div>
                         </div>
@@ -100,6 +70,7 @@
                 </div>
             </div>
             {% endblock %}
+            {% block under_content %}{% endblock %}
         </div>
     </div>
     {% endblock %}
