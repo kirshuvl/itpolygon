@@ -1,68 +1,78 @@
 {% extends 'include/base.html' %}
-{% block page_title %}{{ page_title }}{% endblock %}
-{% block body %}
+{% block page_title %}{{ page_title }}{% endblock page_title %}
+{% block body %}{% load static %}
 <div class="container">
-    {% block block_breadcrumb %}
     <div class="card shadow mb-2">
         <div class="card-body small">
-            <div class="row">
-                <div class="d-flex justify-content-between">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb m-0">
-                            {% block breadcrumb %}
-                            <li class="breadcrumb-item active">
-                                CMS
-                            </li>
-                            {% endblock %}
-                        </ol>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb m-0">
+                    {% block breadcrumb %}
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'CMS_Dashboard' %}" class="text-decoration-none">CMS</a>
+                    </li>
+                    {% endblock breadcrumb %}
+                </ol>
+            </nav>
+        </div>
+    </div>
+    {% block user_info %}
+    <div class="card shadow mb-2">
+        <div class="card-body">
+            <div class="row gx-2">
+                <div class="col-1 d-none d-lg-block">
+                    <img src="{{ user.icon.url }}" class="img-fluid rounded">
+                </div>
+                <div class="col-12 col-lg-11">
+                    <h3 class="mb-2">Привет, {{ user.first_name }}!</h3>
+                    <i class="bi bi-gem me-2"></i>{{ user.coin }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock user_info %}
+    {% block row %}
+    <div class="row g-2">
+        <div class="col-lg-4 col-xl-3">
+            <div class="card shadow">
+                <div class="card-body d-none d-lg-block">
+                    {% include 'cms/include/_nav.html' %}
+                </div>
+                <div class="card-body d-block d-lg-none">
+                    <nav class="navbar p-0">
+                        <h4 class="m-0">Меню</h4>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#menu" aria-controls="menu">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="offcanvas offcanvas-end border-0 rounded-start " tabindex="-1" id="menu">
+                            <div class="offcanvas-header border-bottom p-2">
+                                <a class="navbar-brand p-0 m-0" href="/">
+                                    <img src="{% static 'picture/logo_500x500.png' %}" alt="" width="60" height="60" class="d-inline-block">
+                                </a>
+                                <h2 class="offcanvas-title">ИТ Полигон</h2>
+                                <button type="button" class="btn-close ms-auto me-2" data-bs-dismiss="offcanvas"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                                {% include 'cms/include/_nav.html' %}
+                            </div>
+                        </div>
                     </nav>
                 </div>
             </div>
         </div>
-    </div>
-    {% endblock %}
-    {% block main_content %}
-    <div class="row g-2">
-        <div class="col-lg-3">
-            {% block left_sidebar %}
+        <div class="col-lg-8 col-xl-9">
+            {% block content %}
             <div class="card shadow">
+                <div class="card-header bg-transparent p-3">
+                    <h4 class="m-0 text-truncate"><i class="bi bi-ui-checks-grid me-2"></i>Главная</h4>
+                </div>
                 <div class="card-body">
-                    {% with request.resolver_match.url_name as url_name %}
-                    <ul class="nav nav-pills flex-column">
-                        <li class="nav-item mb-1">
-                            <a href="{% url 'CMS_Dashboard' %}" class="nav-link {% if url_name == 'CMS_Dashboard' %}active{% endif %}"><i class="bi bi-person me-3"></i>Главная</a>
-                        </li>
-                        <li class="nav-item mb-1">
-                            <a href="{% url 'CMS_UserCoursesList' %}" class="nav-link {% if url_name == 'CMS_UserCoursesList' or url_name == 'CMS_CourseCreate' or url_name == 'CMS_CourseUpdate' or url_name == 'CMS_CourseDelete' or url_name == 'CMS_CourseDetail' %}active{% endif %}"><i class="bi bi-ui-checks-grid me-3"></i>Мои курсы</a>
-                        </li>{% comment %}
-                        <li class="nav-item mb-1">
-                            <a href="{% url 'CMS_UserCourseGroupList' %}" class="nav-link {% if url_name == 'CMS_UserCourseGroupList' %}active{% endif %}"><i class="bi bi-ui-checks-grid me-3"></i>Мои группы</a>
-                        </li>
-                        <li class="nav-item mb-1">
-                            <a href="{% url 'CMS_UserAssignmentsList' %}" class="nav-link {% if url_name == 'CMS_UserAssignmentsList' %}active{% endif %}"><i class="bi bi-house me-3"></i>Задания</a>
-                        </li>{% endcomment %}
-                    </ul>
-                    <hr>
-                    <ul class="nav nav-pills flex-column">
-                        <li class="nav-item mb-1">
-                            <a href="{% url 'CMS_CoursesList' %}" class="nav-link {% if url_name == 'CMS_CoursesList'%}active{% endif %}"><i class="bi bi-ui-checks-grid me-3"></i>Все курсы</a>
-                        </li>
-                    </ul>
-                    {% endwith %}
+                    Добро пожаловать в панель управления. Это главная страница.
                 </div>
             </div>
             {% endblock %}
-        </div>
-        <div class="col-lg-9">
-            {% block right_sidebar %}
-            <div class="card shadow">
-                <div class="card-body">
-                    Вы не заполнили шаблон
-                </div>
-            </div>
-            {% endblock %}
+            {% block under_content %}{% endblock %}
         </div>
     </div>
-    {% endblock %}
+    {% endblock row %}
 </div>
 {% endblock %}

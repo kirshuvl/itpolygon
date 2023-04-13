@@ -1,75 +1,69 @@
 {% extends 'cms/dashboard.html' %}
-{% block page_title %}{{ page_title }}{% endblock %}
 {% block breadcrumb %}
 <li class="breadcrumb-item">
     <a href="{% url 'CMS_Dashboard' %}" class="text-decoration-none">CMS</a>
 </li>
 <li class="breadcrumb-item active">
-    Все курсы
+    Курсы
 </li>
-{% endblock %}
-{% block right_sidebar %}
+{% endblock breadcrumb %}
+{% block content %}
 <div class="card shadow">
     <div class="card-header bg-transparent p-3">
-        <div class="row">
-            <div class="d-flex justify-content-between">
-                <div>
-                    <h4 class="m-0"><i class="bi bi-ui-checks-grid me-3"></i>Все курсы</h4>
-                </div>{% comment %}
-                <div>
-                    <a href="{% url 'CMS_CourseCreate' %}" class="btn btn-success badge p-2 rounded opacity-50">
-                        <i class="bi bi-plus-square me-2"></i>Создать курс
-                    </a>
-                </div>{% endcomment %}
-            </div>
-
+        <div class="d-flex justify-content-between">
+            <h4 class="m-0 text-truncate"><i class="bi bi-ui-checks-grid me-2"></i>Мои курсы</h4>
+            <a href="{% url 'CMS_CourseCreate' %}"><span class="badge bg-success p-2 opacity-75 text-white"><i class="bi bi-plus-square"></i></span></a>
         </div>
     </div>
     {% if courses %}
     <div class="card-body">
         <div class="card mb-2">
             <div class="card-body p-2">
-                <div class="row align-items-center text-center">
-                    <div class="col-4 offset-1 border-start border-end">
+                <div class="row align-items-center">
+                    <div class="col-2 col-md-1 border-end pe-2">
+                        <span class="badge bg-secondary opacity-25 p-2 col-12"><i class="bi bi-card-image"></i></span>
+                    </div>
+                    <div class="col-7 col-xl-6 border-end">
                         Название курса
                     </div>
-                    <div class="col-2 offset-1 border-start border-end">
+                    <div class="d-none d-xl-block col-xl-2 border-end text-center">
                         Дата создания
+                    </div>
+                    <div class="d-none d-md-block col-md-1 border-end text-center">
+                        <span class="badge bg-secondary p-2 rounded opacity-75"><i class="bi bi-question-square"></i></span>
                     </div>
                 </div>
             </div>
         </div>
         {% for course in courses %}
-        <div class="card {% if not forloop.last %}mb-2{% endif %}">
+        <div class="card {% if not forloop.last %}mb-1{% else %}mb-0{% endif %}">
             <div class="card-body p-2">
-                <div class="row align-items-center text-center">
-                    <div class="col-1 border-end">
-                        <img src="{{ course.icon.url }}" class="rounded p-0 col-12 bg-light" alt="{{ course.title }}">
+                <div class="row align-items-center">
+                    <div class="col-2 col-md-1 border-end pe-2">
+                        <img src="{{ course.icon.url }}" class="rounded p-0 img-fluid bg-light" alt="{{ course.title }}">
                     </div>
-                    <div class="col-4 border-end">
-                        <a href="{% url 'CMS_CourseDetail' course.slug %}" class="text-decoration-none">{{ course.title }}</a>
+                    <div class="col-7 col-xl-6 border-end">
+                        {{ course.title }}
                     </div>
-                    <div class="col-1 border-end">
-                        {% if course.is_published %}
-                        <span class="badge bg-success p-2 rounded opacity-50"><i class="bi bi-check-square"></i></span>
-                        {% else %}
-                        <span class="badge bg-danger p-2 rounded opacity-50"><i class="bi bi-x-square"></i></span>
-                        {% endif %}
-                    </div>
-                    <div class="col-2 border-end">
+                    <div class="d-none d-xl-block col-xl-2 border-end text-center">
                         {{ course.date_create|date:'d.m.Y' }}
                     </div>
-                    <div class="col-1 offset-3">
-                        <div class="btn-group dropstart">
-                            <a href="" class="text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span class="badge bg-secondary p-2 dropdown-toggle opacity-50"><i class="ms-1 bi bi-eye"></i></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{% url 'CMS_CourseUpdate' course.slug %}">Редактировать</a></li>
-                                <li><a class="dropdown-item" href="{% url 'CMS_CourseDelete' course.slug %}">Удалить</a></li>
-                                <li><a class="dropdown-item" href="{% url 'course_check_publish' course.slug %}">{% if course.is_published %}Снять с публикации{% else %}Опубликовать{% endif %}</a></li>
-                            </ul>
-                        </div>
+                    <div class="d-none d-md-block col-md-1 border-end text-center">
+                        <a href="{{ course.set_is_published }}">
+                            {% if course.is_published %}
+                            <span class="badge bg-success p-2 rounded opacity-75"><i class="bi bi-check-square"></i></span>
+                            {% else %}
+                            <span class="badge bg-danger p-2 rounded opacity-75"><i class="bi bi-x-square"></i></span>
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="col-3 col-xl-2 ps-2">
+                        <a href="{{ course.get_cms_url }}">
+                            <span class="badge btn btn-primary p-2 col-12 opacity-75">
+                                <i class="bi bi-pencil m-sm-1"></i>
+                                <span class="d-none d-xxl-inline-block">Редактировать</span>
+                            </span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -78,7 +72,7 @@
     </div>
     {% else %}
     <div class="card-body text-center text-danger">
-        Вы еще не <a href="{% url 'CMS_CourseCreate' %}" class="text-decoration-none">создали</a> ни одного курса :( 
+        Вы еще не <a href="{% url 'CMS_CourseCreate' %}" class="text-decoration-none">создали</a> ни одного курса :(
     </div>
     {% endif %}
 </div>
