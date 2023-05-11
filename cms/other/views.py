@@ -17,9 +17,11 @@ from cms.other.forms import \
     LessonCreateForm, \
     TextStepCreateForm, VideoStepCreateForm, QuestionStepCreateForm, ProblemStepCreateForm, AssignmentStepCreateForm
 from lms.problems.tasks import run_user_code
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 
-class CMS_Dashboard(TemplateView):
+class CMS_Dashboard(LoginRequiredMixin, TemplateView):
+    '''Главная страница CMS'''
     template_name = 'cms/dashboard.html'
 
     def get_context_data(self, **kwargs):
@@ -29,22 +31,8 @@ class CMS_Dashboard(TemplateView):
         return context
 
 
-class CMS_CoursesList(ListView):
-    model = Course
-    template_name = 'cms/courses/list.html'
-    context_object_name = 'courses'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['page_title'] = 'Все курсы на платформе'
-        return context
-
-    def get_queryset(self):
-        user = self.request.user
-        return Course.objects.all()
-
-
 class CMS_UserCoursesList(ListView):
+    '''Список курсов преподавателя'''
     model = Course
     template_name = 'cms/courses/list.html'
     context_object_name = 'courses'
@@ -55,11 +43,12 @@ class CMS_UserCoursesList(ListView):
         return context
 
     def get_queryset(self):
-        user = self.request.user
-        return Course.objects.filter(authors=user)
+
+        return Course.objects.filter(authors=self.request.user)
 
 
 class CMS_CourseCreate(CreateView):
+    '''Создать курс'''
     model = Course
     form_class = CourseCreateForm
     template_name = 'cms/courses/create.html'
@@ -111,7 +100,7 @@ class CMS_CourseUpdate(UpdateView):
         return context
 
     def get_success_url(self):
-        return reverse('CMS_UserCoursesList')
+        return self.get_object().get_cms_url()
 
 
 class CMS_CourseDelete(DeleteView):
@@ -823,11 +812,11 @@ def rerun_submission(request, user_answer_pk):
     run_user_code.delay(user_answer_pk)
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
+
 class CMS_UserAssignmentsList(ListView):
     model = UserAnswerForAssignmentStep
     template_name = 'cms/steps/assignment_step/list.html'
     context_object_name = 'assignments'
-
 
     def get_queryset(self):
         return UserAnswerForAssignmentStep.objects.select_related('assignment__lesson__topic__course', 'user').filter(assignment__lesson__topic__course__authors=self.request.user)

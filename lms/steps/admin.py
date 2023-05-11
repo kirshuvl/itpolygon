@@ -4,8 +4,9 @@ from polymorphic.admin import PolymorphicParentModelAdmin, PolymorphicChildModel
 from lms.steps.models import QuestionChoiceStep, Step, TestForQuestionChoiceStep, TextStep, UserAnswerForQuestionChoiceStep, VideoStep, QuestionStep, UserAnswerForQuestionStep, StepEnroll
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from django import forms
-
-
+from lms.problems.models import ProblemStep
+from lms.assignment.models import AssignmentStep
+from lms.steps.models import *
 class TextStepAdminForm(forms.ModelForm):
     text = forms.CharField(widget=CKEditorUploadingWidget())
 
@@ -16,7 +17,7 @@ class TextStepAdminForm(forms.ModelForm):
 
 class StepAdmin(PolymorphicParentModelAdmin):
     base_model = Step
-    child_models = (TextStep, VideoStep)
+    child_models = (TextStep, VideoStep, QuestionStep, QuestionChoiceStep, AssignmentStep, ProblemStep)
     list_filter = (PolymorphicChildModelFilter,)
     list_display = ('id', 'title', 'slug', 'is_published', 'points')
     list_display_links = ('id', 'title', 'slug', 'is_published', 'points')

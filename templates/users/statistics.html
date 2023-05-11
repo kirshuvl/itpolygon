@@ -1,54 +1,138 @@
 {% extends 'include/base.html' %}
 {% load lessons_tags %}
 
-{% block body %}
+{% block body %}{% now 'Y-m-d' as current_day %}
 
-{% regroup enrolls by date_update.date as rrr %}
+
+
+
+<ul>
+    {% for month, weeks in enrolls.items %}
+    <li>Месяц: {{ month }}
+        <ul>
+            {% for week, days in weeks.items %}
+            <li>Неделя: {{ week }}
+                <ul>
+                    {% for day, data in days.items %}
+                    {% if data %}<li>День: {{ day }}</li>
+                    {{ data }}{% endif %}
+                    {% endfor %}
+                </ul>
+            </li>
+            {% endfor %}
+        </ul>
+    </li>
+    {% endfor %}
+</ul>
 
 <div class="container">
-    <div class="card shadow">
+    <div class="card shadow mb-2">
         <div class="card-body">
+            <div class="row gx-2">
+                <div class="col-1 d-none d-lg-block">
+                    <img src="{{ current_user.icon.url }}" class="img-fluid rounded float-start" />
+                </div>
+                <div class="col-11">
+                    <h3>
+                        {{ current_user.first_name }} {{ current_user.last_name }}
+                    </h3>
+                    <i class="bi bi-gem me-2"></i>{{ current_user.coin }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card shadow mb-2">
+        <div class="card-body pe-3">
             <div class="d-flex">
                 <div class="flex-fill">
                     <div class="col">
                         <div class="card-body d-flex flex-column p-0 pe-1">
-                            <span class="badge bg-secondary p-2 rounded mb-1 opacity-25"><i class="bi bi-square"></i>Monday</span>
-                            <span class="badge bg-secondary p-2 rounded mb-1 opacity-25"><i class="bi bi-square"></i>Monday</span>
-                            <span class="badge bg-secondary p-2 rounded mb-1 opacity-25"><i class="bi bi-square"></i>Monday</span>
-                            <span class="badge bg-secondary p-2 rounded mb-1 opacity-25"><i class="bi bi-square"></i>Monday</span>
-                            <span class="badge bg-secondary p-2 rounded mb-1 opacity-25"><i class="bi bi-square"></i>Monday</span>
-                            <span class="badge bg-secondary p-2 rounded mb-1 opacity-25"><i class="bi bi-square"></i>Monday</span>
-                            <span class="badge bg-secondary p-2 rounded opacity-25"><i class="bi bi-square"></i>Monday</span>
+                            <span class="badge bg-secondary p-2 rounded mb-1 opacity-25"><i class="bi bi-square me-2"></i>Пн</span>
+                            <span class="badge bg-secondary p-2 rounded mb-1 opacity-25"><i class="bi bi-square me-2"></i>Вт</span>
+                            <span class="badge bg-secondary p-2 rounded mb-1 opacity-25"><i class="bi bi-square me-2"></i>Ср</span>
+                            <span class="badge bg-secondary p-2 rounded mb-1 opacity-25"><i class="bi bi-square me-2"></i>Чт</span>
+                            <span class="badge bg-secondary p-2 rounded mb-1 opacity-25"><i class="bi bi-square me-2"></i>Пт</span>
+                            <span class="badge bg-secondary p-2 rounded mb-1 opacity-25"><i class="bi bi-square me-2"></i>Сб</span>
+                            <span class="badge bg-secondary p-2 rounded opacity-25"><i class="bi bi-square me-2"></i>Вс</span>
                         </div>
                     </div>
                 </div>
-                <div class="d-inline-flex">
-                    {% for month in data %}
-                    {% for week in month %}
-                    <div class="col">
-                        <div class="card-body d-flex flex-column p-0 pe-1">
-                            {% for day in week %}
-                            {% date_counter rrr day as w%}
-                            <span class="badge {% if user.date_create.date == day or w > 0%}bg-success{% elif day != 0%}bg-secondary{% else %}bg-white{% endif %} p-2 rounded mb-1 {% if w == 0%}opacity-25{% elif 3 > w %}opacity-50{% elif 8 > w %}opacity-75%{% else %}opacity-100{%endif%}"><i class="bi bi-app"></i></span>
+                <div class="d-inline-flex nav nav-pills border-0" id="v-pills-tab" role="tablist">
+
+                    {% for month, weeks in enrolls.items %}
+                    {% for week, days in weeks.items %}
+
+                    <div class="col {% col_bootstrap forloop.parentloop.counter forloop.counter %}">
+                        <div class="card-body d-flex flex-column p-0 {% if forloop.parentloop.counter == 9 and forloop.counter == 4 %}{% else%}pe-1{% endif %}">
+                            {% for day, data in days.items %}
+                            <a class="nav-item" role="presentation">
+                                <span class="badge nav-link border-0 {% if data %}bg-success{% else %}bg-secondary{%endif %} p-2 rounded mb-1 opacity-25" id="{{ day|date:'Ymd' }}-tab" data-bs-toggle="pill" data-bs-target="#lol{{ day|date:'Ymd' }}" type="button" role="tab" aria-controls="lol{{ day|date:'Ymd' }}" aria-selected="{% if current_day == day|date:'Y-m-d' %}true{% else %}false{% endif %}"><i class="bi bi-app"></i></span>
+                            </a>
                             {% endfor %}
                         </div>
                     </div>
                     {% endfor %}
                     {% endfor %}
+
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="card shadow mb-2">
+        <div class="card-body pe-3">
+            <div class="tab-content" id="v-pills-tabContent">
+                {% for month, weeks in enrolls.items %}
+                {% for week, days in weeks.items %}
+                {% for day, data in days.items %}
+                <div class="tab-pane{% if current_day == day|date:'Y-m-d' %} active show{% endif %}" id="lol{{ day|date:'Ymd' }}" role="tabpanel" aria-labelledby="{{ day|date:'Ymd' }}-tab" tabindex="0">
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            Дата: {{ day|date:'Y-m-d' }}
+                        </div>
+
+                    </div>
+                    {% if data.textstep.all or data.textstep.end %}
+                    <div class="card mb-2">
+                        <div class="card-header bg-transparent p-3">
+                            Пройденные уроки
+                        </div>
+                        <div class="card-body">
+                            {% for value in data.textstep.all %}
+                            <a href="{{ value.step.get_absolute_url }}" class="text-decoration-none d-block mb-1">
+                                <span class="badge {% if value.status == 'OK' %}bg-success{% elif value.status == 'PR' %}bg-primary{% else %}bg-secondary{% endif %} p-2 rounded me-2 opacity-50"><i class="bi bi-card-text"></i></span>{{ value.step.title }}
+                            </a>
+                            {% endfor %}
+                            {% for value in data.textstep.end %}
+                            <a href="{{ value.step.get_absolute_url }}" class="text-decoration-none d-block mb-1">
+                                <span class="badge {% if value.status == 'OK' %}bg-success{% elif value.status == 'PR' %}bg-primary{% else %}bg-secondary{% endif %} p-2 rounded me-2 opacity-50"><i class="bi bi-card-text"></i></span>{{ value.step.title }} -> Но приступил(а) к уроку {{ value.date_create|date:'Y-m-d' }}
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if data.textstep.start %}
+                    <div class="card mb-2">
+                        <div class="card-header bg-transparent p-3">
+                            Начатые уроки
+                        </div>
+                        <div class="card-body">
+                            {% for teststep in data.textstep.start %}
+                            <a href="{{ teststep.step.get_absolute_url }}" class="text-decoration-none d-block mb-1">
+                                <span class="badge {% if teststep.status == 'OK' %}bg-success{% elif teststep.status == 'PR' %}bg-primary{% else %}bg-secondary{% endif %} p-2 rounded me-2 opacity-50"><i class="bi bi-card-text"></i></span>{{ value.step.title }} {% if value.status == 'OK' %}Но уже закончил(а)!{% endif %}
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
 
 
+
+                </div>
+                {% endfor %}
+                {% endfor %}
+                {% endfor %}
             </div>
         </div>
     </div>
 </div>
-
-
-{% comment %}
-{% for enroll in enrolls %}
-
-
-{{ enroll.date_create.date }}
-{% endfor %}}
-{%endcomment %}
 {% endblock %}

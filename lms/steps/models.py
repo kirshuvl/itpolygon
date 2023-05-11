@@ -3,9 +3,10 @@ from polymorphic.models import PolymorphicModel
 from users.models import CustomUser
 from lms.lessons.models import Lesson
 from django.urls import reverse
+from django.utils.safestring import mark_safe
 
 
-class Step(PolymorphicModel):
+class Step(models.Model):
     title = models.CharField(
         verbose_name='Название шага',
         max_length=50,
@@ -52,6 +53,51 @@ class Step(PolymorphicModel):
 
     def __str__(self):
         return self.title
+
+    @property
+    def child_type(self):
+        if hasattr(self, 'textstep'):
+            return 'textstep'
+        elif hasattr(self, 'videostep'):
+            return 'videostep'
+        elif hasattr(self, 'questionstep'):
+            return 'questionstep'
+        elif hasattr(self, 'questionchoicestep'):
+            return 'questionchoicestep'
+        elif hasattr(self, 'assignmentstep'):
+            return 'assignmentstep'
+        elif hasattr(self, 'problemstep'):
+            return 'problemstep'
+
+    @property
+    def get_absolute_url(self):
+        if hasattr(self, 'textstep'):
+            return self.textstep.get_absolute_url()
+        elif hasattr(self, 'videostep'):
+            return self.videostep.get_absolute_url()
+        elif hasattr(self, 'questionstep'):
+            return self.questionstep.get_absolute_url()
+        elif hasattr(self, 'questionchoicestep'):
+            return self.questionchoicestep.get_absolute_url()
+        elif hasattr(self, 'assignmentstep'):
+            return self.assignmentstep.get_absolute_url()
+        elif hasattr(self, 'problemstep'):
+            return self.problemstep.get_absolute_url()
+    
+    @property
+    def step_icon_class(self):
+        if hasattr(self, 'textstep'):
+            return 'bi-card-text'
+        elif hasattr(self, 'videostep'):
+            return self.videostep.get_absolute_url()
+        elif hasattr(self, 'questionstep'):
+            return self.questionstep.get_absolute_url()
+        elif hasattr(self, 'questionchoicestep'):
+            return self.questionchoicestep.get_absolute_url()
+        elif hasattr(self, 'assignmentstep'):
+            return self.assignmentstep.get_absolute_url()
+        elif hasattr(self, 'problemstep'):
+            return self.problemstep.get_absolute_url()
 
     class Meta:
         verbose_name = 'Шаг урока'
@@ -130,6 +176,9 @@ class TextStep(Step):
     def type(self):
         return 'text'
 
+    def get_type(self):
+        return 'textstep'
+
 
 class VideoStep(Step):
     video_url = models.URLField(
@@ -180,6 +229,9 @@ class VideoStep(Step):
 
     def type(self):
         return 'video'
+
+    def get_type(self):
+        return 'videostep'
 
 
 class QuestionStep(Step):
@@ -235,6 +287,9 @@ class QuestionStep(Step):
 
     def type(self):
         return 'question'
+
+    def get_type(self):
+        return 'videostep'
 
 
 class UserAnswerForQuestionStep(models.Model):

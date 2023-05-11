@@ -1,10 +1,10 @@
 {% with request.resolver_match.url_name as url_name %}
-<ul class="nav flex-column nav-pills ">
+<ul class="nav flex-column nav-pills">
     <li class="nav-item">
         <a href="{% url 'CMS_Dashboard' %}" class="nav-link {% if url_name == 'CMS_Dashboard' %}active{% endif %}"><i class="bi bi-person me-2"></i>Главная</a>
     </li>
     <li class="nav-item">
-        <a href="{% url 'CMS_UserCoursesList' %}" class="nav-link {% if url_name == 'CMS_UserCoursesList' %}active{% endif %}"><i class="bi bi-ui-checks-grid me-2"></i>Курсы</a>
+        <a href="{% url 'CMS_UserCoursesList' %}" class="nav-link {% if url_name == 'CMS_UserCoursesList' or url_name == 'CMS_CourseCreate' %}active{% endif %}"><i class="bi bi-ui-checks-grid me-2"></i>Мои курсы</a>
     </li>
     <li class="nav-item disable">
         <a href="#" class="nav-link text-secondary"><i class="bi bi-question-square me-2"></i>Группы</a>
@@ -14,10 +14,6 @@
     </li>
     <li class="nav-item disable">
         <a href="#" class="nav-link text-secondary"><i class="bi bi-question-square me-2"></i>Работы</a>
-    </li>
-    <hr class="my-2">
-    <li class="nav-item">
-        <a href="{% url 'CMS_CoursesList' %}" class="nav-link {% if url_name == 'CMS_CoursesList' %}active{% endif %}"><i class="bi bi-ui-checks-grid me-2"></i>Все курсы</a>
     </li>
 </ul>
 {% endwith %}

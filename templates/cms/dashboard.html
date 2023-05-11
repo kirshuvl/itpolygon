@@ -33,6 +33,7 @@
     {% block row %}
     <div class="row g-2">
         <div class="col-lg-4 col-xl-3">
+            {% block sidebar %}
             <div class="card shadow">
                 <div class="card-body d-none d-lg-block">
                     {% include 'cms/include/_nav.html' %}
@@ -58,6 +59,7 @@
                     </nav>
                 </div>
             </div>
+            {% endblock sidebar %}
         </div>
         <div class="col-lg-8 col-xl-9">
             {% block content %}

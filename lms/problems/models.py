@@ -1,4 +1,3 @@
-from email.policy import default
 from django.db import models
 from lms.steps.models import Step
 from django.urls import reverse
@@ -93,7 +92,7 @@ class ProblemStep(Step):
     def step_icon_class(self):
         return 'bi-code-square'
 
-    def type(self):
+    def get_type(self):
         return 'problem'
 
 

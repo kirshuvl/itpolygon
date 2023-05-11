@@ -56,6 +56,8 @@ class AssignmentStep(Step):
             },
         )
 
+    def get_type(self):
+        return 'assignment'
 
 class UserAnswerForAssignmentStep(models.Model):
     user_answer = models.TextField(

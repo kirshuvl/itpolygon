@@ -94,6 +94,7 @@ class Course(models.Model):
         verbose_name = 'Курс'
         verbose_name_plural = 'Курсы'
         ordering = ['pk']
+        db_table = 'course'
 
     def __str__(self):
         return self.title
@@ -113,15 +114,63 @@ class Course(models.Model):
             },
         )
 
-    def get_object_type(self):
-        return 'course'
+    
+
+    def get_lms_url(self):
+        return reverse(
+            'LMS_CourseDetail',
+            kwargs={
+                'course_slug': self.slug,
+            },
+        )
     
     def get_cms_url(self):
         return reverse(
             'CMS_CourseDetail',
             kwargs={
                 'course_slug': self.slug,
-            }
+            },
+        )
+    
+    def get_statistics(self):
+        return reverse(
+            'CMS_CourseStatistics',
+            kwargs={
+                'course_slug': self.slug,
+            },
+        )
+
+    def set_is_published(self):
+        return reverse(
+            'course_check_publish',
+            kwargs={
+                'course_slug': self.slug,
+            },
+        )
+
+    def create_topic(self):
+        return reverse(
+            'CMS_TopicCreate',
+            kwargs={
+                'course_slug': self.slug,
+            },
+        )
+    
+    def get_update_url(self):
+        return reverse(
+            'CMS_CourseUpdate',
+            kwargs={
+                'course_slug': self.slug,
+            },
+        )
+    
+
+    def get_delete_url(self):
+        return reverse(
+            'CMS_CourseDelete',
+            kwargs={
+                'course_slug': self.slug,
+            },
         )
 
 

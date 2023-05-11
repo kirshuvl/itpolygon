@@ -110,3 +110,51 @@ class Lesson(models.Model):
                 'lesson_slug': self.slug,
             }
         )
+
+    def down(self):
+        return reverse(
+            'CMS_LessonDown',
+            kwargs={
+                'course_slug': self.topic.course.slug,
+                'topic_slug': self.topic.slug,
+                'lesson_slug': self.slug,
+            },
+        )
+
+    def up(self):
+        return reverse(
+            'CMS_LessonUp',
+            kwargs={
+                'course_slug': self.topic.course.slug,
+                'topic_slug': self.topic.slug,
+                'lesson_slug': self.slug,
+            },
+        )
+
+    def set_is_published(self):
+        return reverse(
+            'lesson_check_publish',
+            kwargs={
+                'lesson_slug': self.slug,
+            },
+        )
+
+    def get_update_url(self):
+        return reverse(
+            'CMS_LessonUpdate',
+            kwargs={
+                'course_slug': self.topic.course.slug,
+                'topic_slug': self.topic.slug,
+                'lesson_slug': self.slug,
+            },
+        )
+
+    def get_delete_url(self):
+        return reverse(
+            'CMS_LessonDelete',
+            kwargs={
+                'course_slug': self.topic.course.slug,
+                'topic_slug': self.topic.slug,
+                'lesson_slug': self.slug,
+            },
+        )

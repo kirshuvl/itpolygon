@@ -1,8 +1,7 @@
 from django.urls import path
 from cms.other.views import *
 urlpatterns = [
-    path('', CMS_Dashboard.as_view(), name='CMS_Dashboard'),
-    path('courses/all', CMS_CoursesList.as_view(), name='CMS_CoursesList'),
+    path('', CMS_Dashboard.as_view(), name='CMS_Dashboard'), # + 
     path('courses/my', CMS_UserCoursesList.as_view(), name='CMS_UserCoursesList'),
     path('courses/assignments/my', CMS_UserAssignmentsList.as_view(), name='CMS_UserAssignmentsList'),
 
@@ -65,11 +64,11 @@ urlpatterns = [
     path('sorting/topics/<str:topic_slug>/', lessons_sort, name='lessons_sort'),
     path('sorting/steps/<str:lesson_slug>/', steps_sort, name='steps_sort'),
 
-    path('move/<str:course_slug>/<str:topic_slug>/up/', topic_up, name='topic_up'),
-    path('move/<str:course_slug>/<str:topic_slug>/down/', topic_down, name='topic_down'),
+    path('move/<str:course_slug>/<str:topic_slug>/up/', topic_up, name='CMS_TopicUp'),
+    path('move/<str:course_slug>/<str:topic_slug>/down/', topic_down, name='CMS_TopicDown'),
 
-    path('move/<str:course_slug>/<str:topic_slug>/<str:lesson_slug>/up/', lesson_up, name='lesson_up'),
-    path('move/<str:course_slug>/<str:topic_slug>/<str:lesson_slug>/down/', lesson_down, name='lesson_down'),
+    path('move/<str:course_slug>/<str:topic_slug>/<str:lesson_slug>/up/', lesson_up, name='CMS_LessonUp'),
+    path('move/<str:course_slug>/<str:topic_slug>/<str:lesson_slug>/down/', lesson_down, name='CMS_LessonDown'),
 
     path('move/<str:course_slug>/<str:topic_slug>/<str:lesson_slug>/<str:step_slug>/up/', step_up, name='step_up'),
     path('move/<str:course_slug>/<str:topic_slug>/<str:lesson_slug>/<str:step_slug>/down/', step_down, name='step_down'),
