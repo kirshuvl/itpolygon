@@ -77,6 +77,11 @@ class StepEndrollAdmin(admin.ModelAdmin):
     list_display_links = ('id', 'user', 'step', 'status')
     search_fields = ('id', 'user', 'step', 'status')
 
+class LessonStepConnectionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'lesson', 'step', 'number')
+    list_display_links = ('id', 'lesson', 'step', 'number')
+    search_fields = ('id', 'lesson', 'step', 'number')
+
 
 admin.site.register(Step, StepAdmin)
 admin.site.register(TextStep, TextStepAdmin)
@@ -87,3 +92,4 @@ admin.site.register(QuestionChoiceStep, QuestionChoiceStepAdmin)
 admin.site.register(TestForQuestionChoiceStep, TestForQuestionChoiceStepAdmin)
 admin.site.register(UserAnswerForQuestionChoiceStep, UserAnswerForQuestionChoiceStepAdmin)
 admin.site.register(StepEnroll, StepEndrollAdmin)
+admin.site.register(LessonStepConnection, LessonStepConnectionAdmin)

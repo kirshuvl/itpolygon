@@ -18,8 +18,17 @@ class LessonDetail(DetailView):
         context['page_title'] = self.object.title
 
         return context
-
+    
     def get_object(self):
+
+        return get_object_or_404(Lesson.objects.select_related('topic__course').prefetch_related(
+            'lesson'
+        ),slug=self.kwargs['lesson_slug'])
+
+
+
+
+    '''def get_object(self):
         return get_object_or_404(
             Lesson.objects.select_related('topic__course').prefetch_related(
                 Prefetch('steps', queryset=Step.objects.filter(
@@ -28,7 +37,7 @@ class LessonDetail(DetailView):
                     user=self.request.user))
             ),
             slug=self.kwargs['lesson_slug']
-        )
+        )'''
 
 
 class LessonStatistics(DetailView):

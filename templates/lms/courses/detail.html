@@ -55,7 +55,6 @@
     </div>
     <div class="card-body pb-1">
         {% for topic in course.topics.all %}
-        {% topic_progress_percent topic as topic_progress_percent %}
         <div class="row gx-2 mb-2">
             <div class="col-12 col-sm-9">
                 <div class="card {% if topic_progress_percent == '100' %}collapsed{% endif %}" data-bs-toggle="collapse" href="#collapse{{ topic.slug }}" role="button" aria-expanded="{% if topic_progress_percent == '100' %}false{% else %}true{% endif %}" aria-controls="collapse{{ topic.slug }}">
@@ -65,7 +64,7 @@
                                 <span class="badge bg-secondary p-2 opacity-50 me-2"># {{ forloop.counter }}</span>{{ topic.title }}
                             </div>
                             <div class="col-4 text-end">
-                                <span class="small text-secondary">{{ topic|topic_progress }} / {{ topic|topic_steps_cnt}}</span>
+                                <span class="small text-secondary">XXX / XXX</span>
                             </div>
                         </div>
                     </div>
@@ -90,11 +89,11 @@
                             <div class="row align-items-center">
                                 <div class="col-8 text-truncate">
                                     <a href="{{ lesson.get_absolute_url }}" class="stretched-listretched-linknk text-decoration-none">
-                                        <span class="badge bg-secondary p-2 opacity-50 me-2"># {{ forloop.counter }}</span>{{ lesson.title }}
+                                        <span class="badge bg-secondary p-2 opacity-50 me-2"># {{ forloop.counter }}</span>{{ lesson.title.upper }}
                                     </a>
                                 </div>
                                 <div class="col-4 text-end">
-                                    <span class="small text-secondary">{{ lesson|steps_finished }} / {{ lesson|steps_counter }}</span>
+                                    <span class="small text-secondary">XXX / {{ lesson.connections.count }}</span>
                                 </div>
                             </div>
                         </div>
@@ -104,12 +103,13 @@
                     <div class="card h-100">
                         <div class="card-body p-2">
                             <div class="progress h-100">
-                                <div class="progress-bar" role="progressbar" style="width: {{ lesson|lesson_progress_percent }}%;" aria-valuenow="{{ lesson|lesson_progress_percent }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            
             {% endfor %}
         </div>
         {% empty %}

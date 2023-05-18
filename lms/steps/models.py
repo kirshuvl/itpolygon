@@ -1,9 +1,7 @@
 from django.db import models
-from polymorphic.models import PolymorphicModel
 from users.models import CustomUser
 from lms.lessons.models import Lesson
 from django.urls import reverse
-from django.utils.safestring import mark_safe
 
 
 class Step(models.Model):
@@ -83,7 +81,7 @@ class Step(models.Model):
             return self.assignmentstep.get_absolute_url()
         elif hasattr(self, 'problemstep'):
             return self.problemstep.get_absolute_url()
-    
+
     @property
     def step_icon_class(self):
         if hasattr(self, 'textstep'):
@@ -125,6 +123,40 @@ class Step(models.Model):
                 'step_slug': self.slug,
             },
         )
+
+
+class LessonStepConnection(models.Model):
+    number = models.IntegerField(
+        verbose_name='№ шага в уроке',
+        default=1000,
+    )
+    author = models.ForeignKey(
+        CustomUser,
+        related_name='author',
+        verbose_name='Автор шага',
+        on_delete=models.CASCADE,
+    )
+    lesson = models.ForeignKey(
+        Lesson,
+        related_name='connections',
+        verbose_name='Урок',
+        on_delete=models.CASCADE,
+    )
+    step = models.ForeignKey(
+        Step,
+        related_name='connections',
+        verbose_name='Шаг',
+        on_delete=models.CASCADE,
+    )
+    is_published = models.BooleanField(
+        verbose_name='Опубликовать?',
+        default=False,
+    )
+
+    class Meta:
+        verbose_name = 'Доавление шага к уроку'
+        verbose_name_plural = 'Добавления шагов к уроку'
+        ordering = ['lesson', 'step', 'number']
 
 
 class TextStep(Step):

@@ -86,3 +86,16 @@ def foo(qwerty):
         return 'text'
     
     return qwerty.type()
+
+
+
+class A:
+    def __init__(self):
+        self.name = 'hello'
+    
+    def upper(self):
+        
+        return self.name.upper() + 'upper'
+    
+
+    

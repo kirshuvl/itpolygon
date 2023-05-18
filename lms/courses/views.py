@@ -4,9 +4,10 @@ from lms.courses.models import Course
 from django.shortcuts import get_object_or_404
 from django.db.models import Prefetch
 from lms.lessons.models import Lesson
-from lms.steps.models import Step, StepEnroll
+from lms.steps.models import Step, StepEnroll, LessonStepConnection
 from lms.topics.models import Topic
 from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 class CoursesList(ListView):
     model = Course
@@ -49,6 +50,19 @@ class CourseDetail(DetailView):
         return context
 
     def get_object(self):
+        return get_object_or_404(
+            Course.objects.prefetch_related(
+                Prefetch('topics', queryset=Topic.objects.filter(
+                    is_published=True).order_by('number')),
+                Prefetch('topics__lessons', queryset=Lesson.objects.filter(
+                    is_published=True).order_by('number')),
+                Prefetch('topics__lessons__connections', queryset=LessonStepConnection.objects.filter(
+                    is_published=True).order_by('number')),
+            ),
+            slug=self.kwargs['course_slug']
+        )
+
+    '''def get_object(self):
 
         return get_object_or_404(
             Course.objects.prefetch_related(
@@ -62,4 +76,4 @@ class CourseDetail(DetailView):
                          queryset=StepEnroll.objects.filter(user=self.request.user)),
             ),
             slug=self.kwargs['course_slug']
-        )
+        )'''

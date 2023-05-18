@@ -98,3 +98,7 @@ def is_problem_correct(attempts):
         if attempt.verdict == 'OK':
             return True
     return False
+
+
+# Новейшее
+

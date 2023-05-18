@@ -114,8 +114,6 @@ class Course(models.Model):
             },
         )
 
-    
-
     def get_lms_url(self):
         return reverse(
             'LMS_CourseDetail',
@@ -123,7 +121,7 @@ class Course(models.Model):
                 'course_slug': self.slug,
             },
         )
-    
+
     def get_cms_url(self):
         return reverse(
             'CMS_CourseDetail',
@@ -131,7 +129,7 @@ class Course(models.Model):
                 'course_slug': self.slug,
             },
         )
-    
+
     def get_statistics(self):
         return reverse(
             'CMS_CourseStatistics',
@@ -155,7 +153,7 @@ class Course(models.Model):
                 'course_slug': self.slug,
             },
         )
-    
+
     def get_update_url(self):
         return reverse(
             'CMS_CourseUpdate',
@@ -163,7 +161,6 @@ class Course(models.Model):
                 'course_slug': self.slug,
             },
         )
-    
 
     def get_delete_url(self):
         return reverse(
