@@ -1,0 +1,36 @@
+{% extends 'lms/dashboard.html' %}{% load static %}
+{% block page_title %}{{ page_title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+    <a href="{% url 'UserProfile' %}" class="text-decoration-none">Аккаунт</a>
+</li>
+<li class="breadcrumb-item">
+    <a href="{% url 'LMS_UserCoursesList' %}" class="text-decoration-none">Мои курсы</a>
+</li>
+<li class="breadcrumb-item">
+    <a href="{{ lesson.get_course_lms_url }}" class="text-decoration-none">{{ lesson.topic.course.title }}</a>
+</li>
+<li class="breadcrumb-item">
+    {{ lesson.topic.title }}
+</li>
+<li class="breadcrumb-item active">
+    {{ lesson.title }}
+</li>
+{% endblock %}{% block user_info %}{% endblock %}
+{% block row %}
+<div class="card shadow mb-2">
+    {% block step_body %}
+    <div class="card-body">
+        <ul>
+            {% for step in steps %}
+<li>{{step}} | {{step.steps_enrolls.all}} || {{ step.child_type }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endblock %}
+</div>
+{% block under_content %}{% endblock %}
+{% block buttons %}
+
+{% endblock %}
+{% endblock %}

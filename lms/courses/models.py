@@ -2,7 +2,6 @@ from PIL import Image
 from django.db import models
 from django.urls import reverse
 from cms.other.models import Category, Tag
-from ckeditor_uploader.fields import RichTextUploadingField
 from users.models import CustomUser
 
 
@@ -32,6 +31,10 @@ class Course(models.Model):
     )
     is_published = models.BooleanField(
         verbose_name='Опубликовать?',
+        default=False,
+    )
+    is_outside = models.BooleanField(
+        verbose_name='Опубликовать на главную страницу?',
         default=False,
     )
     date_create = models.DateTimeField(
@@ -106,15 +109,7 @@ class Course(models.Model):
             image = image.resize((500, 500), Image.ANTIALIAS)
             image.save(self.icon.path)
 
-    def get_absolute_url(self):
-        return reverse(
-            'CourseDetail',
-            kwargs={
-                'course_slug': self.slug,
-            },
-        )
-
-    def get_lms_url(self):
+    def get_lms_url(self):  # Проверить, обновить
         return reverse(
             'LMS_CourseDetail',
             kwargs={
@@ -122,7 +117,7 @@ class Course(models.Model):
             },
         )
 
-    def get_cms_url(self):
+    def get_cms_url(self):  # Проверить, обновить
         return reverse(
             'CMS_CourseDetail',
             kwargs={
@@ -130,7 +125,9 @@ class Course(models.Model):
             },
         )
 
-    def get_statistics(self):
+    '''
+
+    def get_stat_url(self): # Проверить, обновить
         return reverse(
             'CMS_CourseStatistics',
             kwargs={
@@ -138,7 +135,7 @@ class Course(models.Model):
             },
         )
 
-    def set_is_published(self):
+    def set_is_published(self): # Проверить, обновить
         return reverse(
             'course_check_publish',
             kwargs={
@@ -146,7 +143,7 @@ class Course(models.Model):
             },
         )
 
-    def create_topic(self):
+    def create_topic(self): # Проверить, обновить
         return reverse(
             'CMS_TopicCreate',
             kwargs={
@@ -154,7 +151,7 @@ class Course(models.Model):
             },
         )
 
-    def get_update_url(self):
+    def get_update_url(self): # Проверить, обновить
         return reverse(
             'CMS_CourseUpdate',
             kwargs={
@@ -162,13 +159,13 @@ class Course(models.Model):
             },
         )
 
-    def get_delete_url(self):
+    def get_delete_url(self): # Проверить, обновить
         return reverse(
             'CMS_CourseDelete',
             kwargs={
                 'course_slug': self.slug,
             },
-        )
+        )'''
 
 
 class CourseEnroll(models.Model):

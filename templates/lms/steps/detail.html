@@ -6,7 +6,7 @@
     <a href="{% url 'UserProfile' %}" class="text-decoration-none">Аккаунт</a>
 </li>
 <li class="breadcrumb-item">
-    <a href="{% url 'UserCoursesList' %}" class="text-decoration-none">Мои курсы</a>
+    <a href="{% url 'LMS_UserCoursesList' %}" class="text-decoration-none">Мои курсы</a>
 </li>
 <li class="breadcrumb-item">
     <a href="{{ step.lesson.topic.course.get_absolute_url }}" class="text-decoration-none">{{ step.lesson.topic.course.title }}</a>

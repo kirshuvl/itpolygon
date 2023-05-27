@@ -2,9 +2,9 @@ from django.db import models
 from users.models import CustomUser
 from lms.lessons.models import Lesson
 from django.urls import reverse
+from polymorphic.models import PolymorphicModel
 
-
-class Step(models.Model):
+class Step(PolymorphicModel):
     title = models.CharField(
         verbose_name='Название шага',
         max_length=50,
@@ -53,6 +53,10 @@ class Step(models.Model):
         return self.title
 
     @property
+    def get_lms_url(self):
+        return '#'
+
+    @property
     def child_type(self):
         if hasattr(self, 'textstep'):
             return 'textstep'
@@ -70,7 +74,7 @@ class Step(models.Model):
     @property
     def get_absolute_url(self):
         if hasattr(self, 'textstep'):
-            return self.textstep.get_absolute_url()
+            return 'textstep'
         elif hasattr(self, 'videostep'):
             return self.videostep.get_absolute_url()
         elif hasattr(self, 'questionstep'):
@@ -85,17 +89,7 @@ class Step(models.Model):
     @property
     def step_icon_class(self):
         if hasattr(self, 'textstep'):
-            return 'bi-card-text'
-        elif hasattr(self, 'videostep'):
-            return self.videostep.get_absolute_url()
-        elif hasattr(self, 'questionstep'):
-            return self.questionstep.get_absolute_url()
-        elif hasattr(self, 'questionchoicestep'):
-            return self.questionchoicestep.get_absolute_url()
-        elif hasattr(self, 'assignmentstep'):
-            return self.assignmentstep.get_absolute_url()
-        elif hasattr(self, 'problemstep'):
-            return self.problemstep.get_absolute_url()
+            return 'textstep'
 
     class Meta:
         verbose_name = 'Шаг урока'
@@ -202,14 +196,7 @@ class TextStep(Step):
             },
         )
 
-    def step_icon_class(self):
-        return 'bi-card-text'
-
-    def type(self):
-        return 'text'
-
-    def get_type(self):
-        return 'textstep'
+   
 
 
 class VideoStep(Step):

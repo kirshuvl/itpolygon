@@ -1,35 +1,34 @@
-from itertools import tee
+from django.db.models import Prefetch
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView
 from lms.courses.models import Course
-from django.shortcuts import get_object_or_404
-from django.db.models import Prefetch
-from lms.lessons.models import Lesson
-from lms.steps.models import Step, StepEnroll, LessonStepConnection
 from lms.topics.models import Topic
-from django.contrib.auth.mixins import LoginRequiredMixin
+from lms.lessons.models import Lesson
+from lms.steps.models import LessonStepConnection, Step
 
 
-class CoursesList(ListView):
+class CoursesList(ListView):  # Проверить, обновить
     model = Course
     template_name = 'main/courses_list.html'
     context_object_name = 'courses'
 
-    def get_context_data(self, *, object_list=None, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super(CoursesList, self).get_context_data(**kwargs)
         context['page_title'] = 'Список всех курсов'
         return context
 
     def get_queryset(self):
-        return Course.objects.filter(is_published=True)
+        return Course.objects.filter(is_outside=True, is_published=True)
 
 
-class UserCoursesList(LoginRequiredMixin, ListView):
+class LMS_UserCoursesList(LoginRequiredMixin, ListView):  # Проверить, обновить
     model = Course
     template_name = 'lms/courses/list.html'
     context_object_name = 'courses'
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(UserCoursesList, self).get_context_data(**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super(LMS_UserCoursesList, self).get_context_data(**kwargs)
         context['page_title'] = 'Мои курсы'
         return context
 
@@ -38,14 +37,14 @@ class UserCoursesList(LoginRequiredMixin, ListView):
                                      is_published=True)
 
 
-class CourseDetail(DetailView):
+class LMS_CourseDetail(LoginRequiredMixin, DetailView):  # Проверить, обновить
     model = Course
     template_name = 'lms/courses/detail.html'
     slug_url_kwarg = 'course_slug'
     context_object_name = 'course'
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(CourseDetail, self).get_context_data(**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super(LMS_CourseDetail, self).get_context_data(**kwargs)
         context['page_title'] = 'Курс «{}»'.format(self.object.title)
         return context
 

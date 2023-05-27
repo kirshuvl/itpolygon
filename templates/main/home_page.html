@@ -78,96 +78,12 @@
         </div>
     </div>
 </div>
-
-<div class="py-5">
-    <div class="container">
-        
-<div class="row g-2">
-    <div class="col">
-        <h1 class="mb-4">Тариф Junior</h1>
-        <div class="card shadow mb-2">
-            <div class="card-body">
-                Цена <span class="text-primary">5000</span> рублей за 4 занятия (недели)
-            </div>
-        </div>
-        <div class="card shadow mb-2">
-            <div class="card-body">
-                <span class="text-primary">Одно</span> онлайн занятие в неделю продолжительностью <span class="text-primary">120 минут</span>
-            </div>
-        </div>
-        <div class="card shadow mb-2">
-            <div class="card-body">
-                Доступ к обучающим материалам <span class="text-primary">24 \ 7</span>
-            </div>
-        </div>
-        <div class="card shadow mb-2">
-            <div class="card-body">
-                Доступ к <span class="text-primary">чату с преподавателем</span> для ответа на вопросы.
-            </div>
-        </div>
-    </div>
-    
-    <div class="col">
-        <h1 class="mb-4">Тариф Middle</h1>
-        <div class="card shadow mb-2">
-            <div class="card-body">
-                Цена <span class="text-primary">7500</span> рублей за 4 занятия (недели)
-            </div>
-        </div>
-        <div class="card shadow mb-2">
-            <div class="card-body">
-                <span class="text-primary">Два</span> онлайн занятия в неделю продолжительностью <span class="text-primary">120 минут</span>
-            </div>
-        </div>
-        <div class="card shadow mb-2">
-            <div class="card-body">
-                Доступ к обучающим материалам <span class="text-primary">24 \ 7</span>
-            </div>
-        </div>
-        <div class="card shadow mb-2">
-            <div class="card-body">
-                Доступ к <span class="text-primary">чату с преподавателем</span> для ответа на вопросы.
-            </div>
-        </div>
-    </div>
-    <div class="col">
-        <h1 class="mb-4">Тариф Senior</h1>
-        <div class="card shadow mb-2">
-            <div class="card-body">
-                Цена <span class="text-primary">1000</span> рублей за 4 занятия (недели)
-            </div>
-        </div>
-        <div class="card shadow mb-2">
-            <div class="card-body">
-                <span class="text-primary">Три</span> онлайн занятия в неделю продолжительностью <span class="text-primary">120 минут</span>
-            </div>
-        </div>
-        <div class="card shadow mb-2">
-            <div class="card-body">
-                Доступ к обучающим материалам <span class="text-primary">24 \ 7</span>
-            </div>
-        </div>
-        <div class="card shadow mb-2">
-            <div class="card-body">
-                Доступ к <span class="text-primary">чату с преподавателем</span> для ответа на вопросы.
-            </div>
-        </div>
-    </div>
-</div>
-    </div>
-</div>
-
-
-
-
-
-
 <div class="py-5">
     <div class="container">
         <h1 class="mb-4">Сколько стоит и что Вы получаете?</h1>
         <div class="fs-5 mb-4">
             Любой курс, который представлен на моей платформе стоит <span class="text-primary">5000</span> рублей за 4
-            недели. Или <span class="text-primary">7500</span> за 2 занятия в неделю. За это Вы получаете следующее:
+            недели. За это вы получаете следующее:
         </div>
         <div class="col-9 mb-2">
             <div class="card shadow">
@@ -179,14 +95,14 @@
         <div class="col-9 mb-2 offset-1">
             <div class="card shadow">
                 <div class="card-body">
-                    Доступ к чату с преподавателем для ответа на вопросы.
+                    Доступ к чату с преподавателем \ учениками \ помощником с 8:00 до 22:00 7 дней в неделю
                 </div>
             </div>
         </div>
         <div class="col-9 mb-2 offset-2">
             <div class="card shadow">
                 <div class="card-body">
-                    Одно или дваонлайн - занятие раз в неделю в мини-группе продолжительностью 120 минут
+                    Одно онлайн - занятие раз в неделю в мини-группе продолжительностью 120 минут
                 </div>
             </div>
         </div>
@@ -217,29 +133,7 @@
     <div class="container">
         <h1 class="mb-4">Какие курсы преподаю?</h1>
         <div class="row gx-2 gy-2">
-            {% for course in courses %}
-            <div class="col-12 col-lg-6">
-                <div class="card ">
-                    <div class="card-body h-100">
-                        <div class="row">
-                            <div class="col-9 col-md-10 col-lg-9 d-flex flex-column">
-                                <div class="flex-grow-1 fs-5 fw-semibold">
-                                    {{ course.title }}
-                                </div>
-                                <div class="flex-grow-1 fs-6">
-                                    {{ course.description|truncatechars:50 }}
-                                </div>
-                                <span class="text-primary">{{ course.min_age_students}} - {{ course.max_age_students}}
-                                    класс</span>
-                            </div>
-                            <div class="col-3 col-md-2 col-lg-3">
-                                <a href="{% url 'LandingPage' course.slug %}" class="stretched-link"><img src="{{ course.icon.url }}" alt="" class="rounded img-fluid"></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
+            
         </div>
     </div>
 </div>{% comment %}

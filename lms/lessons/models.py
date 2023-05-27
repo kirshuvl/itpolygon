@@ -65,15 +65,40 @@ class Lesson(models.Model):
     def __str__(self):
         return self.title
 
-    def get_absolute_url(self):
+    def get_lms_url(self):
         return reverse(
-            'LessonDetail',
+            'LMS_LessonDetail',
             kwargs={
                 'course_slug': self.topic.course.slug,
                 'topic_slug': self.topic.slug,
                 'lesson_slug': self.slug,
             },
         )
+
+    def get_cms_url(self):
+        return reverse(
+            'CMS_LessonDetail',
+            kwargs={
+                'course_slug': self.topic.course.slug,
+                'topic_slug': self.topic.slug,
+                'lesson_slug': self.slug,
+            }
+        )
+    
+    def get_stat_url(self):
+        return reverse(
+            'LessonStatistics',
+            kwargs={
+                'lesson_slug': self.slug,
+            },
+        )
+    
+    def get_course_lms_url(self):
+        return self.topic.course.get_lms_url()
+    
+    
+
+    '''
 
     def get_statistics(self):
         return reverse(
@@ -100,16 +125,6 @@ class Lesson(models.Model):
             return 'bi-question-square'
         else:
             return 'bi-code-square'
-
-    def get_cms_url(self):
-        return reverse(
-            'CMS_LessonDetail',
-            kwargs={
-                'course_slug': self.topic.course.slug,
-                'topic_slug': self.topic.slug,
-                'lesson_slug': self.slug,
-            }
-        )
 
     def down(self):
         return reverse(
@@ -157,4 +172,4 @@ class Lesson(models.Model):
                 'topic_slug': self.topic.slug,
                 'lesson_slug': self.slug,
             },
-        )
+        )'''

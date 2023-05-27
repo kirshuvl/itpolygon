@@ -5,7 +5,7 @@
     <a href="{% url 'UserProfile' %}" class="text-decoration-none">Аккаунт</a>
 </li>
 <li class="breadcrumb-item">
-    <a href="{% url 'UserCoursesList' %}" class="text-decoration-none">Мои курсы</a>
+    <a href="{% url 'LMS_UserCoursesList' %}" class="text-decoration-none">Мои курсы</a>
 </li>
 <li class="breadcrumb-item active">
     {{ course.title }}
@@ -74,7 +74,7 @@
                 <div class="card h-100">
                     <div class="card-body p-2">
                         <div class="progress h-100">
-                            <div class="progress-bar{% if topic_progress_percent == '100' %} bg-success{% endif %}" role="progressbar" style="width: {{ topic_progress_percent }}%;" aria-valuenow="{{ topic_progress }}" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar{% if topic_progress_percent == '100' %} bg-success{% endif %}" role="progressbar" style="width: 50%;" aria-valuenow="{{ topic_progress }}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
                 </div>
@@ -88,8 +88,8 @@
                         <div class="card-body p-2">
                             <div class="row align-items-center">
                                 <div class="col-8 text-truncate">
-                                    <a href="{{ lesson.get_absolute_url }}" class="stretched-listretched-linknk text-decoration-none">
-                                        <span class="badge bg-secondary p-2 opacity-50 me-2"># {{ forloop.counter }}</span>{{ lesson.title.upper }}
+                                    <a href="{{ lesson.get_lms_url }}" class="stretched-listretched-linknk text-decoration-none">
+                                        <span class="badge bg-secondary p-2 opacity-50 me-2"># {{ forloop.counter }}</span>{{ lesson.title }}
                                     </a>
                                 </div>
                                 <div class="col-4 text-end">

@@ -11,7 +11,7 @@
 <div class="card shadow">
     <div class="card-header bg-transparent p-3">
         <div class="d-flex justify-content-between">
-            <h4 class="m-0"><i class="bi bi-ui-checks-grid me-2"></i>Мои курсы</h4>
+            <h4 class="m-0 text-truncate"><i class="bi bi-ui-checks-grid me-2"></i>Мои курсы</h4>
         </div>
     </div>
     {% if courses %}
@@ -20,7 +20,7 @@
             <div class="card-body p-2">
                 <div class="row align-items-center">
                     <div class="col-2 col-md-1 border-end pe-2">
-                        <span class="badge bg-secondary opacity-25 p-2 col-12"><i class="bi bi-card-image"></i></span>
+                        <span class="badge bg-secondary opacity-50 p-2 col-12"><i class="bi bi-card-image"></i></span>
                     </div>
                     <div class="col-7 col-md-6 col-xl-7 border-end">
                         Название курса
@@ -42,10 +42,10 @@
                         {{ course.title }}
                     </div>
                     <div class="d-none d-md-block col-md-2 border-end text-center text-secondary">
-                        5
+                        ---
                     </div>
                     <div class="col-3 col-xl-2 ps-2">
-                        <a href="{{ course.get_absolute_url }}"><span class="badge btn btn-primary p-2 col-12"><i class="bi bi-play-circle m-sm-1"></i><span class="d-none d-md-inline-block">Продолжить</span></span></a>
+                        <a href="{{ course.get_lms_url }}"><span class="badge btn btn-primary p-2 col-12"><i class="bi bi-play-circle m-sm-1"></i><span class="d-none d-md-inline-block">Продолжить</span></span></a>
                     </div>
                 </div>
             </div>
