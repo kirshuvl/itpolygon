@@ -33,10 +33,7 @@ class Course(models.Model):
         verbose_name='Опубликовать?',
         default=False,
     )
-    is_outside = models.BooleanField(
-        verbose_name='Опубликовать на главную страницу?',
-        default=False,
-    )
+    
     date_create = models.DateTimeField(
         auto_now_add=True,
     )
@@ -97,7 +94,6 @@ class Course(models.Model):
         verbose_name = 'Курс'
         verbose_name_plural = 'Курсы'
         ordering = ['pk']
-        db_table = 'course'
 
     def __str__(self):
         return self.title
