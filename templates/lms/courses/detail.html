@@ -88,9 +88,14 @@
                         <div class="card-body p-2">
                             <div class="row align-items-center">
                                 <div class="col-8 text-truncate">
-                                    <a href="{{ lesson.get_lms_url }}" class="stretched-listretched-linknk text-decoration-none">
-                                        <span class="badge bg-secondary p-2 opacity-50 me-2"># {{ forloop.counter }}</span>{{ lesson.title }}
-                                    </a>
+                                    <div class="d-flex align-items-center">
+                                        <a href="{{ lesson.set_is_published }}">
+                                            <span class="badge {% if lesson.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50 me-2"># {{ lesson.number }}</span>
+                                        </a>
+                                        <a href="{{ lesson.get_lms_detail_url }}" class="text-decoration-none">{{ lesson.title }}
+                                        </a>
+
+                                    </div>
                                 </div>
                                 <div class="col-4 text-end">
                                     <span class="small text-secondary">XXX / {{ lesson.connections.count }}</span>
@@ -109,7 +114,6 @@
                     </div>
                 </div>
             </div>
-            
             {% endfor %}
         </div>
         {% empty %}

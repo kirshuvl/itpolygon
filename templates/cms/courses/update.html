@@ -1,11 +1,24 @@
 {% extends 'cms/courses/detail.html' %}{% load static %}
-
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+    <a href="{% url 'CMS_Dashboard' %}" class="text-decoration-none">CMS</a>
+</li>
+<li class="breadcrumb-item">
+    <a href="{% url 'CMS_CoursesList' %}" class="text-decoration-none">Курсы</a>
+</li>
+<li class="breadcrumb-item">
+    <a href="{{ course.get_cms_detail_url }}" class="text-decoration-none">{{ course.title }}</a>
+</li>
+<li class="breadcrumb-item active">
+    Редактировать курс
+</li>
+{% endblock breadcrumb %}
 {% block content %}
 <div class="card shadow">
     <div class="card-header bg-transparent p-3">
         <div class="d-flex justify-content-between">
             <h4 class="m-0 text-truncate"><i class="bi bi-ui-checks-grid me-2"></i>{{ course.title }}</h4>
-            <a href="{{ course.get_cms_url }}"><span class="badge bg-secondary p-2 opacity-50 text-white"><i class="bi bi-arrow-bar-left"></i></span></a>
+            <a href="{{ course.get_cms_detail_url }}"><span class="badge bg-secondary p-2 opacity-50 text-white"><i class="bi bi-arrow-bar-left"></i></span></a>
         </div>
     </div>
     <div class="card-body">

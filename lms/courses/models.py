@@ -33,7 +33,10 @@ class Course(models.Model):
         verbose_name='Опубликовать?',
         default=False,
     )
-    
+    is_search = models.BooleanField(
+        verbose_name='На главную страницу?',
+        default=False,
+    )
     date_create = models.DateTimeField(
         auto_now_add=True,
     )
@@ -98,6 +101,38 @@ class Course(models.Model):
     def __str__(self):
         return self.title
 
+    def get_cms_detail_url(self):  # Проверить, обновить
+        return reverse(
+            'CMS_CourseDetail',
+            kwargs={
+                'course_slug': self.slug,
+            },
+        )
+
+    def get_cms_update_url(self):
+        return reverse(
+            'CMS_CourseUpdate',
+            kwargs={
+                'course_slug': self.slug,
+            },
+        )
+
+    def get_cms_delete_url(self):  # Проверить, обновить
+        return reverse(
+            'CMS_CourseDelete',
+            kwargs={
+                'course_slug': self.slug,
+            },
+        )
+
+    def get_cms_create_topic_url(self):
+        return reverse(
+            'CMS_TopicCreate',
+            kwargs={
+                'course_slug': self.slug,
+            },
+        )
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         image = Image.open(self.icon.path)
@@ -108,14 +143,6 @@ class Course(models.Model):
     def get_lms_url(self):  # Проверить, обновить
         return reverse(
             'LMS_CourseDetail',
-            kwargs={
-                'course_slug': self.slug,
-            },
-        )
-
-    def get_cms_url(self):  # Проверить, обновить
-        return reverse(
-            'CMS_CourseDetail',
             kwargs={
                 'course_slug': self.slug,
             },
@@ -147,13 +174,7 @@ class Course(models.Model):
             },
         )
 
-    def get_update_url(self): # Проверить, обновить
-        return reverse(
-            'CMS_CourseUpdate',
-            kwargs={
-                'course_slug': self.slug,
-            },
-        )
+    
 
     def get_delete_url(self): # Проверить, обновить
         return reverse(

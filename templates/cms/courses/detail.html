@@ -4,7 +4,7 @@
     <a href="{% url 'CMS_Dashboard' %}" class="text-decoration-none">CMS</a>
 </li>
 <li class="breadcrumb-item">
-    <a href="{% url 'CMS_UserCoursesList' %}" class="text-decoration-none">Курсы</a>
+    <a href="{% url 'CMS_CoursesList' %}" class="text-decoration-none">Курсы</a>
 </li>
 <li class="breadcrumb-item active">
     {{ course.title }}
@@ -49,10 +49,7 @@
     <div class="card-header bg-transparent p-3">
         <div class="d-flex justify-content-between">
             <h4 class="m-0 text-truncate me-1"><i class="bi bi-ui-checks-grid me-2"></i>{{ course.title }}</h4>
-            <div class="d-flex">
-                <a href="{{ course.create_topic }}" class="me-1"><span class="badge bg-success p-2 opacity-50 text-white"><i class="bi bi-plus-square me-md-2"></i><span class="d-none d-md-inline-block">Добавить тему</span></span></a>
-                <a href="{{ course.get_update_url }}"><span class="badge bg-success p-2 opacity-50 text-white"><i class="bi bi-pencil me-md-2"></i><span class="d-none d-md-inline-block">Редактировать курс</span></span></a>
-            </div>
+            
         </div>
     </div>
     <div class="card-body pb-2">
@@ -69,8 +66,8 @@
                             <button type="button" class="badge btn btn-outline-secondary dropdown-toggle dropdown-toggle-split text-secondary" data-bs-toggle="dropdown" aria-expanded="false">
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ topic.get_update_url }}">Редактировать</a></li>
-                                <li><a class="dropdown-item" href="{{ topic.get_delete_url }}">Удалить</a></li>
+                                <li><a class="dropdown-item" href="{{ topic.get_cms_update_url }}">Редактировать</a></li>
+                                <li><a class="dropdown-item" href="{{ topic.get_cms_delete_url }}">Удалить</a></li>
                                 <li><a class="dropdown-item" href="{{ topic.set_is_published }}">{% if topic.is_published %}Снять с публикации{% else %}Опубликовать{% endif %}</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
@@ -79,9 +76,7 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item" href="#">Добавить урок</a></li>
-                                <li><a class="dropdown-item" href="#">Добавить тест</a></li>
-                                <li><a class="dropdown-item" href="#">Добавить контест</a></li>
+                                <li><a class="dropdown-item" href="{{ topic.get_cms_create_lesson_url }}">Добавить урок</a></li>
                             </ul>
                             <a href="{{ topic.down }}" class="badge btn btn-outline-secondary text-danger p-1">
                                 <i class="bi bi-arrow-down"></i>
@@ -97,23 +92,25 @@
         {% for lesson in topic.lessons.all|dictsort:"number" %}
         <div class="card offset-1 mb-2">
             <div class="card-body p-2">
-                <div class="row align-items-center">
-                    <div class="col-8 col-md-10 text-truncate">
+                <div class="row">
+                    <div class="col-8 text-truncate">
                         <div class="d-flex align-items-center">
                             <a href="{{ lesson.set_is_published }}">
                                 <span class="badge {% if lesson.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50 me-2"># {{ lesson.number }}</span>
                             </a>
                             <a href="{% url 'CMS_LessonDetail' lesson.topic.course.slug lesson.topic.slug lesson.slug %}" class="text-decoration-none">{{ lesson.title }}
                             </a>
+                            
                         </div>
                     </div>
-                    <div class="col-4 col-md-2 text-end">
+                    <div class="col-4 text-end">
+                        <span class="d-none d-md-inline-block small text-secondary me-2">Шагов: {{ lesson.connections.count }}</span>
                         <div class="btn-group dropstart">
                             <button type="button" class="badge btn btn-outline-secondary dropdown-toggle dropdown-toggle-split text-secondary" data-bs-toggle="dropdown" aria-expanded="false">
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ lesson.get_update_url }}">Редактировать</a></li>
-                                <li><a class="dropdown-item" href="{{ lesson.get_delete_url }}">Удалить</a></li>
+                                <li><a class="dropdown-item" href="{{ lesson.get_cms_update_url }}">Редактировать</a></li>
+                                <li><a class="dropdown-item" href="{{ lesson.get_cms_delete_url }}">Удалить</a></li>
                                 <li><a class="dropdown-item" href="{{ lesson.set_is_published }}">{% if lesson.is_published %}Снять с публикации{% else %}Опубликовать{% endif %}</a></li>
                             </ul>
                             <a href="{{ lesson.down }}" class="badge btn btn-outline-secondary text-primary p-1">
@@ -128,6 +125,10 @@
             </div>
         </div>
         {% endfor %}
+        {% empty %}
+        <div class="card-body text-center text-danger">
+            Вы еще не <a href="{{ course.get_cms_create_topic_url }}" class="text-decoration-none">создали</a> ни одной темы в курса :(
+        </div>
         {% endfor %}
     </div>
 </div>

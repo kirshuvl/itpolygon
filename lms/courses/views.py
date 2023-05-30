@@ -19,7 +19,7 @@ class CoursesList(ListView):  # Проверить, обновить
         return context
 
     def get_queryset(self):
-        return Course.objects.filter(is_outside=True, is_published=True)
+        return Course.objects.filter(is_search=True, is_published=True)
 
 
 class LMS_UserCoursesList(LoginRequiredMixin, ListView):  # Проверить, обновить
@@ -60,19 +60,3 @@ class LMS_CourseDetail(LoginRequiredMixin, DetailView):  # Проверить, �
             ),
             slug=self.kwargs['course_slug']
         )
-
-    '''def get_object(self):
-
-        return get_object_or_404(
-            Course.objects.prefetch_related(
-                Prefetch('topics', queryset=Topic.objects.filter(
-                    is_published=True).order_by('number')),
-                Prefetch('topics__lessons', queryset=Lesson.objects.filter(
-                    is_published=True).order_by('number')),
-                Prefetch('topics__lessons__steps', queryset=Step.objects.filter(
-                    is_published=True).order_by('number')),
-                Prefetch('topics__lessons__steps__steps_enrolls',
-                         queryset=StepEnroll.objects.filter(user=self.request.user)),
-            ),
-            slug=self.kwargs['course_slug']
-        )'''

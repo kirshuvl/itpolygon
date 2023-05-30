@@ -54,6 +54,11 @@
             {{ form.is_published }}</div>
         <label class="form-check-label" for="id_is_published">Опубликовать</label>
     </div>
+    <div class="input-group mb-2">
+        <div class="form-check form-switch">
+            {{ form.is_published }}</div>
+        <label class="form-check-label" for="id_is_search">Поместить на главную</label>
+    </div>
     <label class="form-label" for="id_price">Стоимость курса</label>
     <div class="input-group mb-2">
         <span class="input-group-text"><i class="bi bi-currency-dollar"></i></span>
@@ -122,7 +127,7 @@
     </div>
     {% endfor %}
     <div class="btn-group col-12">
-        <a href="{% url 'CMS_UserCoursesList' %}" class="btn btn-secondary col-12">Отмена</a>
+        <a href="{{ course.get_cms_detail_url }}" class="btn btn-secondary col-12">Отмена</a>
         <button type="submit" class="btn btn-primary col-12">{% if course %}Сохранить изменения{% else %}Создать курс{% endif %}</button>
     </div>
 </form>

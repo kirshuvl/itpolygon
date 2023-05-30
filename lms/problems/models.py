@@ -89,11 +89,11 @@ class ProblemStep(Step):
             },
         )
 
-    def step_icon_class(self):
-        return 'bi-code-square'
+    #def step_icon_class(self):
+    #    return 'bi-code-square'
 
-    def get_type(self):
-        return 'problem'
+    #def get_type(self):
+    #    return 'problem'
 
 
 class TestForProblemStep(models.Model):

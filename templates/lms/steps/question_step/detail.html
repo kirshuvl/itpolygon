@@ -1,6 +1,6 @@
 {% extends 'lms/steps/detail.html' %}
 {% block page_title %}{{ page_title }}{% endblock %}
-{% block step_body %}
+{% block step_body %}{% questionstep step as step %}
 <div class="card-body">
     <div class="card">
         <div class="card-header bg-transparent px-3">
@@ -90,7 +90,7 @@
                         {{ attempt.date_create|date:'d.m.Y H:i:s' }}
                     </div>
                     <div class="col-3 col-xl-2 text-center border-end text-truncate d-none d-md-block">
-                        <a href="{{ attempt.question.get_absolute_url }}" class="text-decoration-none">{{ attempt.question }}</a>
+                        <a href="" class="text-decoration-none">{{ attempt.question }}</a>
                     </div>
                     <div class="col-5 col-md-3 col-xl-2 text-center border-end text-truncate">
                         <a href="#" class="text-decoration-none">{{ attempt.user }}</a>

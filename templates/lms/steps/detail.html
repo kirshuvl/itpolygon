@@ -9,13 +9,13 @@
     <a href="{% url 'LMS_UserCoursesList' %}" class="text-decoration-none">Мои курсы</a>
 </li>
 <li class="breadcrumb-item">
-    <a href="{{ step.lesson.topic.course.get_absolute_url }}" class="text-decoration-none">{{ step.lesson.topic.course.title }}</a>
+    <a href="{{ step.get_current_lesson.topic.course.get_lms_url }}" class="text-decoration-none">{{ step.get_current_lesson.topic.course }}</a>
 </li>
 <li class="breadcrumb-item">
-    {{ step.lesson.topic.title }}
+    {{ step.get_current_lesson.topic.title }}
 </li>
 <li class="breadcrumb-item">
-    <a href="{{ step.lesson.get_absolute_url }}" class="text-decoration-none">{{ step.lesson.title }}</a>
+    <a href="{{ step.get_current_lesson.get_lms_url }}" class="text-decoration-none">{{ step.get_current_lesson }}</a>
 </li>
 <li class="breadcrumb-item active">
     {{ step.title }}
@@ -45,7 +45,7 @@
                             {% for step_ in steps %}
                             <div class="card mb-1">
                                 <div class="card-body p-2">
-                                    <a href="{{ step_.get_absolute_url }}" class="text-decoration-none">
+                                    <a href="" class="text-decoration-none">
                                         <span class="badge bg-{{ step_|step_color }} p-2 rounded me-2{% if step_ != step %} opacity-50{% endif %}"><i class="bi {{ step_.step_icon_class }}"></i></span>{{ step_.title }}
                                     </a>
                                 </div>
@@ -69,6 +69,6 @@
 </div>
 {% block under_content %}{% endblock %}
 {% block buttons %}
-{% user_end_step step %}
+
 {% endblock %}
 {% endblock %}

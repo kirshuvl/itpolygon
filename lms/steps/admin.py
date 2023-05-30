@@ -7,7 +7,41 @@ from django import forms
 from lms.problems.models import ProblemStep
 from lms.assignment.models import AssignmentStep
 from lms.steps.models import *
-class TextStepAdminForm(forms.ModelForm):
+
+
+class TextStepAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'slug', 'is_published', 'lesson', 'points')
+    list_display_links = ('id', 'title', 'slug',
+                          'is_published', 'lesson', 'points')
+    search_fields = ('id', 'title', 'slug', 'is_published', 'lesson', 'points')
+
+
+class VideoStepAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'slug', 'is_published', 'lesson', 'points')
+    list_display_links = ('id', 'title', 'slug',
+                          'is_published', 'lesson', 'points')
+    search_fields = ('id', 'title', 'slug', 'is_published', 'lesson', 'points')
+
+
+class QuestionStepAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'slug', 'is_published', 'lesson', 'points')
+    list_display_links = ('id', 'title', 'slug',
+                          'is_published', 'lesson', 'points')
+    search_fields = ('id', 'title', 'slug', 'is_published', 'lesson', 'points')
+
+
+class LessonStepConnectionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'lesson', 'step', 'number')
+    list_display_links = ('id', 'lesson', 'step', 'number')
+    search_fields = ('id', 'lesson', 'step', 'number')
+
+
+admin.site.register(TextStep, TextStepAdmin)
+admin.site.register(VideoStep, VideoStepAdmin)
+admin.site.register(QuestionStep, QuestionStepAdmin)
+admin.site.register(LessonStepConnection, LessonStepConnectionAdmin)
+
+'''class TextStepAdminForm(forms.ModelForm):
     text = forms.CharField(widget=CKEditorUploadingWidget())
 
     class Meta:
@@ -77,10 +111,6 @@ class StepEndrollAdmin(admin.ModelAdmin):
     list_display_links = ('id', 'user', 'step', 'status')
     search_fields = ('id', 'user', 'step', 'status')
 
-class LessonStepConnectionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'lesson', 'step', 'number')
-    list_display_links = ('id', 'lesson', 'step', 'number')
-    search_fields = ('id', 'lesson', 'step', 'number')
 
 
 admin.site.register(Step, StepAdmin)
@@ -92,4 +122,5 @@ admin.site.register(QuestionChoiceStep, QuestionChoiceStepAdmin)
 admin.site.register(TestForQuestionChoiceStep, TestForQuestionChoiceStepAdmin)
 admin.site.register(UserAnswerForQuestionChoiceStep, UserAnswerForQuestionChoiceStepAdmin)
 admin.site.register(StepEnroll, StepEndrollAdmin)
-admin.site.register(LessonStepConnection, LessonStepConnectionAdmin)
+
+'''

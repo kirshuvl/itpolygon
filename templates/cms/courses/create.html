@@ -4,7 +4,7 @@
     <a href="{% url 'CMS_Dashboard' %}" class="text-decoration-none">CMS</a>
 </li>
 <li class="breadcrumb-item">
-    <a href="{% url 'CMS_UserCoursesList' %}" class="text-decoration-none">Курсы</a>
+    <a href="{% url 'CMS_CoursesList' %}" class="text-decoration-none">Курсы</a>
 </li>{% if course %}
 <li class="breadcrumb-item">
     <a href="{{ course.get_cms_url }}" class="text-decoration-none">{{ course.title }}</a>
@@ -18,7 +18,7 @@
     <div class="card-header bg-transparent p-3">
         <div class="d-flex justify-content-between">
             <h4 class="m-0 text-truncate"><i class="bi bi-ui-checks-grid me-2"></i>{{ page_title }}</h4>
-            <a href="{% url 'CMS_UserCoursesList' %}"><span class="badge bg-secondary p-2 opacity-50 text-white"><i class="bi bi-arrow-bar-left"></i></span></a>
+            <a href="{% url 'CMS_CoursesList' %}"><span class="badge bg-secondary p-2 opacity-50 text-white"><i class="bi bi-arrow-bar-left"></i></span></a>
         </div>
     </div>
     <div class="card-body">
