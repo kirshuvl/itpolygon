@@ -5,7 +5,7 @@
     <a href="{% url 'CMS_Dashboard' %}" class="text-decoration-none">CMS</a>
 </li>
 <li class="breadcrumb-item">
-    <a href="{% url 'CMS_UserCoursesList' %}" class="text-decoration-none">Мои курсы</a>
+    <a href="{% url 'CMS_CoursesList' %}" class="text-decoration-none">Мои курсы</a>
 </li>
 <li class="breadcrumb-item">
     <a href="{{ step.lesson.topic.course.get_cms_url }}" class="text-decoration-none">{{ step.lesson.topic.course.title }}</a>

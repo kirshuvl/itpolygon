@@ -9,10 +9,10 @@
                 <h1 class="mb-4">Онлайн - школа для будущих <span class="text-primary">инженеров</span> и <span class="text-primary">программистов</span></h1>
                 <div class="fs-5 mb-4">Занятия по программированию, 3D - моделированию, электронике и многому другому
                     для школьников с 1 по 11 класс</div>
-                <a onclick="go_learn()" class="btn btn-outline-primary btn-lg px-4">Записаться на курсы!</a>
+                <a onclick="go_learn()" class="btn btn-outline-primary btn-lg px-4">Записаться на летние занятия!</a>
             </div>
             <div class="col-md-5 d-none d-md-block">
-                <img src="{% static 'picture/kid.png' %}" alt="" class="col-12 img-fluid">
+                <img src="{% static 'summer_camp/shuvalov.png' %}" alt="" class="col-12 img-fluid">
             </div>
         </div>
     </div>
@@ -79,37 +79,134 @@
     </div>
 </div>
 <div class="py-5">
-    <div class="container">
-        <h1 class="mb-4">Сколько стоит и что Вы получаете?</h1>
-        <div class="fs-5 mb-4">
-            Любой курс, который представлен на моей платформе стоит <span class="text-primary">5000</span> рублей за 4
-            недели. За это вы получаете следующее:
-        </div>
-        <div class="col-9 mb-2">
-            <div class="card shadow">
-                <div class="card-body">
-                    Доступ к обучающим материалам <span class="text-primary">24 \ 7</span>
+    <div class="container mb-5">
+        <h1 class="mb-4">Основные курсы летних смен</h1>
+        <div class="row gx-2 gy-2">
+            <div class="col-12 col-lg-6">
+                <div class="card ">
+                    <div class="card-body h-100">
+                        <div class="row">
+                            <div class="col-9 col-md-10 col-lg-9 d-flex flex-column">
+                                <div class="flex-grow-1 fs-5 fw-semibold">
+                                    Программирование на Python
+                                </div>
+                                <div class="flex-grow-1 fs-6">
+                                    Изучаем основы языка, решаем очень много задач! Упор на развитие мышления и навыков писать код
+                                </div>
+                                <span class="text-primary">3 - 11 класс</span>
+                            </div>
+                            <div class="col-3 col-md-2 col-lg-3">
+                                <a href="/promo/python" class="stretched-link"><img src="{% static 'summer_camp/python.png' %}" alt="" class="rounded img-fluid"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6">
+                <div class="card ">
+                    <div class="card-body h-100">
+                        <div class="row">
+                            <div class="col-9 col-md-10 col-lg-9 d-flex flex-column">
+                                <div class="flex-grow-1 fs-5 fw-semibold">
+                                    Алгоритмы и структуры данных на Python
+                                </div>
+                                <div class="flex-grow-1 fs-6">
+                                    Для тех, кто уже знаком с Python. Прокачиваем алгоритмическое решение, изучаем структуры данных и прокачиваем навык программирования
+                                </div>
+                                <span class="text-primary">7 - 11 класс</span>
+                            </div>
+                            <div class="col-3 col-md-2 col-lg-3">
+                                <a href="/promo/algorithms" class="stretched-link"><img src="{% static 'summer_camp/algorithms_logo_500x500.png' %}" alt="" class="rounded img-fluid"></a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-9 mb-2 offset-1">
-            <div class="card shadow">
-                <div class="card-body">
-                    Доступ к чату с преподавателем \ учениками \ помощником с 8:00 до 22:00 7 дней в неделю
+    </div>
+    <div class="container pt-5">
+        <h1 class="mb-4">Дополнительные курсы</h1>
+        <p>Что еще пройдем? Это дополнительные факультативные и бесплатные курсы, которые будут доступны учащимся. Но всегда можно взять любой курс за основу.</p>
+        <div class="row gx-2 gy-2">
+            <div class="col-12 col-lg-6">
+                <div class="card ">
+                    <div class="card-body h-100">
+                        <div class="row">
+                            <div class="col-9 col-md-10 col-lg-9 d-flex flex-column">
+                                <div class="flex-grow-1 fs-5 fw-semibold">
+                                    Информатика
+                                </div>
+                                <div class="flex-grow-1 fs-6">
+                                    Один из базовых предметов для будущего технаря. От систем счисления до устройства процессора.
+                                </div>
+                                <span class="text-primary">3 - 11 класс</span>
+                            </div>
+                            <div class="col-3 col-md-2 col-lg-3">
+                                <img src="{% static 'summer_camp/inf.png' %}" alt="" class="rounded img-fluid">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-9 mb-2 offset-2">
-            <div class="card shadow">
-                <div class="card-body">
-                    Одно онлайн - занятие раз в неделю в мини-группе продолжительностью 120 минут
+            <div class="col-12 col-lg-6">
+                <div class="card ">
+                    <div class="card-body h-100">
+                        <div class="row">
+                            <div class="col-9 col-md-10 col-lg-9 d-flex flex-column">
+                                <div class="flex-grow-1 fs-5 fw-semibold">
+                                    Математика
+                                </div>
+                                <div class="flex-grow-1 fs-6">
+                                    Связываем математику и программирование, решаем задачи. Можно выбрать повторение своего класса или немножко залезть вперед.
+                                </div>
+                                <span class="text-primary">3 - 11 класс</span>
+                            </div>
+                            <div class="col-3 col-md-2 col-lg-3">
+                                <img src="{% static 'summer_camp/math.png' %}" alt="" class="rounded img-fluid">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-9 mb-2 offset-3">
-            <div class="card shadow">
-                <div class="card-body">
-                    Подробная статистика успехов ребенка раз в 4 недели
+            <div class="col-12 col-lg-6">
+                <div class="card ">
+                    <div class="card-body h-100">
+                        <div class="row">
+                            <div class="col-9 col-md-10 col-lg-9 d-flex flex-column">
+                                <div class="flex-grow-1 fs-5 fw-semibold">
+                                    Система контроля версий
+                                </div>
+                                <div class="flex-grow-1 fs-6">
+                                    Изучаем GIT и как работает система хранения версий
+                                </div>
+                                <span class="text-primary">5 - 11 класс</span>
+                            </div>
+                            <div class="col-3 col-md-2 col-lg-3">
+                                <img src="{% static 'summer_camp/git.png' %}" alt="" class="rounded img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="card ">
+                    <div class="card-body h-100">
+                        <div class="row">
+                            <div class="col-9 col-md-10 col-lg-9 d-flex flex-column">
+                                <div class="flex-grow-1 fs-5 fw-semibold">
+                                    Большие данные
+                                </div>
+                                <div class="flex-grow-1 fs-6">
+                                    Учимся анализировать данные при помощи Python и Pandas
+                                </div>
+                                <span class="text-primary">7 - 11 класс</span>
+                            </div>
+                            <div class="col-3 col-md-2 col-lg-3">
+                                <img src="{% static 'summer_camp/data.jpg' %}" alt="" class="rounded img-fluid">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -131,34 +228,82 @@
 </div>
 <div class="py-5">
     <div class="container">
-        <h1 class="mb-4">Какие курсы преподаю?</h1>
-        <div class="row gx-2 gy-2">
-            {% for course in courses %}
-            <div class="col-12 col-lg-6">
-                <div class="card ">
-                    <div class="card-body h-100">
-                        <div class="row">
-                            <div class="col-9 col-md-10 col-lg-9 d-flex flex-column">
-                                <div class="flex-grow-1 fs-5 fw-semibold">
-                                    {{ course.title }}
-                                </div>
-                                <div class="flex-grow-1 fs-6">
-                                    {{ course.description|truncatechars:50 }}
-                                </div>
-                                <span class="text-primary">{{ course.min_age_students}} - {{ course.max_age_students}}
-                                    класс</span>
-                            </div>
-                            <div class="col-3 col-md-2 col-lg-3">
-                                <a href="{% url 'LandingPage' course.slug %}" class="stretched-link"><img src="{{ course.icon.url }}" alt="" class="rounded img-fluid"></a>
-                            </div>
-                        </div>
+
+        <div class="row g-2">
+            <div class="col">
+                <h1 class="mb-4">Тариф Junior</h1>
+                <div class="card shadow mb-2">
+                    <div class="card-body">
+                        Цена <span class="text-primary">5000</span> рублей за 4 недели
+                    </div>
+                </div>
+                <div class="card shadow mb-2">
+                    <div class="card-body">
+                        <span class="text-primary">Одно</span> онлайн занятие в неделю продолжительностью <span class="text-primary">120 минут</span>
+                    </div>
+                </div>
+                <div class="card shadow mb-2">
+                    <div class="card-body">
+                        Доступ к обучающим материалам <span class="text-primary">24 \ 7</span>
+                    </div>
+                </div>
+                <div class="card shadow mb-2">
+                    <div class="card-body">
+                        Доступ к <span class="text-primary">чату с преподавателем</span> для ответа на вопросы.
                     </div>
                 </div>
             </div>
-            {% endfor %}
+
+            <div class="col">
+                <h1 class="mb-4">Тариф Middle</h1>
+                <div class="card shadow mb-2">
+                    <div class="card-body">
+                        Цена <span class="text-primary">7500</span> рублей за 4 занятия (недели)
+                    </div>
+                </div>
+                <div class="card shadow mb-2">
+                    <div class="card-body">
+                        <span class="text-primary">Два</span> онлайн занятия в неделю продолжительностью <span class="text-primary">120 минут</span>
+                    </div>
+                </div>
+                <div class="card shadow mb-2">
+                    <div class="card-body">
+                        Доступ к обучающим материалам <span class="text-primary">24 \ 7</span>
+                    </div>
+                </div>
+                <div class="card shadow mb-2">
+                    <div class="card-body">
+                        Доступ к <span class="text-primary">чату с преподавателем</span> для ответа на вопросы.
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <h1 class="mb-4">Тариф Senior</h1>
+                <div class="card shadow mb-2">
+                    <div class="card-body">
+                        Цена <span class="text-primary">10000</span> рублей за 4 занятия (недели)
+                    </div>
+                </div>
+                <div class="card shadow mb-2">
+                    <div class="card-body">
+                        <span class="text-primary">Три</span> онлайн занятия в неделю продолжительностью <span class="text-primary">120 минут</span>
+                    </div>
+                </div>
+                <div class="card shadow mb-2">
+                    <div class="card-body">
+                        Доступ к обучающим материалам <span class="text-primary">24 \ 7</span>
+                    </div>
+                </div>
+                <div class="card shadow mb-2">
+                    <div class="card-body">
+                        Доступ к <span class="text-primary">чату с преподавателем</span> для ответа на вопросы.
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+{% comment %}
 <div class="py-5">
     <div class="container">
         <h1 class="mb-4">Расписание</h1>
@@ -270,6 +415,22 @@
                     <div class="card-body">
                         Если мест не хватит в других группах - будем заниматься и в Воскресенье :)
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endcomment %}
+<div class="py-5">
+    <div class="container">
+        <div class="row gx-2 mb-2 align-items-center">
+            <div class="col-12 col-lg-7 mb-4">
+                <h1 class="mb-2">А еще в течение недели собираемся и играем в игры!</h1>
+                <p>Отличный способ развить софт - скилы и пообщаться с коллегами по цеху</p>
+            </div>
+            <div class="col-12 col-lg-5">
+                <div class="ratio ratio-16x9">
+                    <img src="{% static 'summer_camp/game.png' %}" alt="" class="rounded img-fluid">
                 </div>
             </div>
         </div>

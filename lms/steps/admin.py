@@ -4,9 +4,44 @@ from polymorphic.admin import PolymorphicParentModelAdmin, PolymorphicChildModel
 from lms.steps.models import QuestionChoiceStep, Step, TestForQuestionChoiceStep, TextStep, UserAnswerForQuestionChoiceStep, VideoStep, QuestionStep, UserAnswerForQuestionStep, StepEnroll
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from django import forms
+from lms.problems.models import ProblemStep
+from lms.assignment.models import AssignmentStep
+from lms.steps.models import *
 
 
-class TextStepAdminForm(forms.ModelForm):
+class TextStepAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'slug', 'is_published', 'lesson', 'points')
+    list_display_links = ('id', 'title', 'slug',
+                          'is_published', 'lesson', 'points')
+    search_fields = ('id', 'title', 'slug', 'is_published', 'lesson', 'points')
+
+
+class VideoStepAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'slug', 'is_published', 'lesson', 'points')
+    list_display_links = ('id', 'title', 'slug',
+                          'is_published', 'lesson', 'points')
+    search_fields = ('id', 'title', 'slug', 'is_published', 'lesson', 'points')
+
+
+class QuestionStepAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'slug', 'is_published', 'lesson', 'points')
+    list_display_links = ('id', 'title', 'slug',
+                          'is_published', 'lesson', 'points')
+    search_fields = ('id', 'title', 'slug', 'is_published', 'lesson', 'points')
+
+
+class LessonStepConnectionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'lesson', 'step', 'number')
+    list_display_links = ('id', 'lesson', 'step', 'number')
+    search_fields = ('id', 'lesson', 'step', 'number')
+
+
+admin.site.register(TextStep, TextStepAdmin)
+admin.site.register(VideoStep, VideoStepAdmin)
+admin.site.register(QuestionStep, QuestionStepAdmin)
+admin.site.register(LessonStepConnection, LessonStepConnectionAdmin)
+
+'''class TextStepAdminForm(forms.ModelForm):
     text = forms.CharField(widget=CKEditorUploadingWidget())
 
     class Meta:
@@ -16,7 +51,7 @@ class TextStepAdminForm(forms.ModelForm):
 
 class StepAdmin(PolymorphicParentModelAdmin):
     base_model = Step
-    child_models = (TextStep, VideoStep)
+    child_models = (TextStep, VideoStep, QuestionStep, QuestionChoiceStep, AssignmentStep, ProblemStep)
     list_filter = (PolymorphicChildModelFilter,)
     list_display = ('id', 'title', 'slug', 'is_published', 'points')
     list_display_links = ('id', 'title', 'slug', 'is_published', 'points')
@@ -77,6 +112,7 @@ class StepEndrollAdmin(admin.ModelAdmin):
     search_fields = ('id', 'user', 'step', 'status')
 
 
+
 admin.site.register(Step, StepAdmin)
 admin.site.register(TextStep, TextStepAdmin)
 admin.site.register(VideoStep, VideoStepAdmin)
@@ -86,3 +122,5 @@ admin.site.register(QuestionChoiceStep, QuestionChoiceStepAdmin)
 admin.site.register(TestForQuestionChoiceStep, TestForQuestionChoiceStepAdmin)
 admin.site.register(UserAnswerForQuestionChoiceStep, UserAnswerForQuestionChoiceStepAdmin)
 admin.site.register(StepEnroll, StepEndrollAdmin)
+
+'''

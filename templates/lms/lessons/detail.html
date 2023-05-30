@@ -1,0 +1,68 @@
+{% extends 'lms/dashboard.html' %}{% load static %}
+{% block page_title %}{{ page_title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+    <a href="{% url 'UserProfile' %}" class="text-decoration-none">Аккаунт</a>
+</li>
+<li class="breadcrumb-item">
+    <a href="{% url 'LMS_UserCoursesList' %}" class="text-decoration-none">Мои курсы</a>
+</li>
+<li class="breadcrumb-item">
+    <a href="{{ lesson.get_course_lms_url }}" class="text-decoration-none">{{ lesson.topic.course.title }}</a>
+</li>
+<li class="breadcrumb-item">
+    {{ lesson.topic.title }}
+</li>
+<li class="breadcrumb-item active">
+    {{ lesson.title }}
+</li>
+{% endblock %}{% block user_info %}{% endblock %}
+{% block row %}
+<div class="card shadow mb-2">
+    {% block step_header %}
+    <div class="card-header bg-transparent p-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h4 class="m-0 text-truncate"><i class="bi bi-ui-checks-grid me-2"></i>{{ object.title }}</h4>
+            <nav class="navbar bg-white p-0 d-lg-none">
+                <div class="container-fluid p-0">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#course_menu" aria-controls="course_menu">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="offcanvas offcanvas-end border-0 w-75 rounded" tabindex="-1" id="course_menu" aria-labelledby="course_menuLabel">
+                        <div class="offcanvas-header border-bottom p-2">
+                            <a class="navbar-brand p-0 m-0" href="/">
+                                <img src="{% static 'picture/logo_500x500.png' %}" alt="" width="60" height="60" class="d-inline-block">
+                            </a>
+                            <h2 class="offcanvas-title">ИТ Полигон</h2>
+                            <button type="button" class="btn-close ms-auto me-2" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                            {% for step_ in steps %}
+                            <div class="card mb-1">
+                                <div class="card-body p-2">
+                                    <a href="{{ step_.get_absolute_url }}" class="text-decoration-none">
+                                        <span class="badge bg-{{ step_|step_color }} p-2 rounded me-2{% if step_ != step %} opacity-50{% endif %}"><i class="bi {{ step_.step_icon_class }}"></i></span>{{ step_.title }}
+                                    </a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <div class="d-none d-lg-flex">
+                {% include 'lms/steps/steps.html' %}
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    {% block step_body %}
+    <div class="card-body">
+        {{ lesson.description }}
+    </div>
+    {% endblock %}
+</div>
+{% block under_content %}{% endblock %}
+{% block buttons %}
+{% endblock %}
+{% endblock %}

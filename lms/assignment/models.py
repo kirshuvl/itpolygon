@@ -17,11 +17,7 @@ class AssignmentStep(Step):
         verbose_name_plural = 'Задания'
         ordering = ['title']
 
-    def step_icon_class(self):
-        return 'bi-clipboard-plus'
-
-    def type(self):
-        return 'assignment'
+    
 
     def get_absolute_url(self):
         return reverse(
@@ -56,6 +52,8 @@ class AssignmentStep(Step):
             },
         )
 
+    def get_type(self):
+        return 'assignment'
 
 class UserAnswerForAssignmentStep(models.Model):
     user_answer = models.TextField(

@@ -1,6 +1,7 @@
 from django.db import models
 from lms.courses.models import Course
 from users.models import CustomUser
+from django.urls import reverse
 
 
 class Topic(models.Model):
@@ -51,3 +52,67 @@ class Topic(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_cms_detail_url(self):
+        return None
+
+    def get_cms_update_url(self):
+        return reverse(
+            'CMS_TopicUpdate',
+            kwargs={
+                'course_slug': self.course.slug,
+                'topic_slug': self.slug,
+            },
+        )
+
+    def get_cms_delete_url(self):
+        return reverse(
+            'CMS_TopicDelete',
+            kwargs={
+                'course_slug': self.course.slug,
+                'topic_slug': self.slug,
+            },
+        )
+
+    def down(self):
+        return reverse(
+            'CMS_TopicDown',
+            kwargs={
+                'course_slug': self.course.slug,
+                'topic_slug': self.slug,
+            },
+        )
+
+    def up(self):
+        return reverse(
+            'CMS_TopicUp',
+            kwargs={
+                'course_slug': self.course.slug,
+                'topic_slug': self.slug,
+            },
+        )
+
+    def set_is_published(self):
+        return reverse(
+            'CMS_TopicPublish',
+            kwargs={
+                'topic_slug': self.slug,
+            },
+        )
+    
+    def get_cms_create_lesson_url(self):
+        return reverse(
+            'CMS_LessonCreate',
+            kwargs={
+                'course_slug': self.course.slug,
+                'topic_slug': self.slug,
+            },
+        )
+
+    def sort_lessons(self):
+        return reverse(
+            'lessons_sort',
+            kwargs={
+                'topic_slug': self.slug,
+            },
+        )

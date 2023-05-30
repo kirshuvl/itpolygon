@@ -1,0 +1,34 @@
+{% with request.resolver_match.url_name as url_name %}
+<ul class="nav flex-column nav-pills ">
+    <li class="nav-item p-0">
+        <a href="{% if course %}{{ course.get_cms_detail_url }}{% elif topic %}{{ topic.course.get_cms_detail_url }}{% endif %}" class="nav-link {% if url_name == 'CMS_CourseDetail' %}active{% endif %}"><i class="bi bi-ui-checks-grid me-2"></i>Контент</a>
+    </li>
+    <li class="nav-item">
+        <a href="" class="nav-link text-secondary"><i class="bi bi-device-ssd me-2"></i>Статистика</a>
+    </li>
+    <li class="nav-item disable">
+        <a href="#" class="nav-link text-secondary"><i class="bi bi-question-square me-2"></i>Все посылки</a>
+    </li>
+    <li class="nav-item disable">
+        <a href="#" class="nav-link text-secondary"><i class="bi bi-question-square me-2"></i>Работы</a>
+    </li>
+    <li class="nav-item disable">
+        <a href="#" class="nav-link text-secondary"><i class="bi bi-question-square me-2"></i>Группы</a>
+    </li>{% if course %}
+    <li>
+        <hr class="my-2">
+    </li>
+    <li class="nav-item ">
+        <a href="{{ course.get_cms_create_topic_url }}" class="nav-link {% if url_name == 'CMS_TopicCreate' %}active{% endif %}"><i class="bi bi-question-square me-2"></i>Добавить тему</a>
+    </li>
+    <li>
+        <hr class="my-2">
+    </li>
+    <li class="nav-item mb-1">
+        <a href="{{ course.get_cms_update_url }}" class="nav-link {% if url_name == 'CMS_CourseUpdate' %}active{% endif %}"><i class="bi bi-pencil me-2"></i>Редактировать курс</a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ course.get_cms_delete_url }}" class="nav-link {% if url_name == 'CMS_CourseDelete' %}active{% endif %}"><i class="bi bi-question-square me-2"></i>Удалить курс</a>
+    </li>{% endif %}
+</ul>
+{% endwith %}

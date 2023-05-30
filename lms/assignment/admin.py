@@ -1,8 +1,8 @@
 from django.contrib import admin
 from lms.assignment.models import AssignmentStep, ReviewForUserAnswerForAssignmentStep, UserAnswerForAssignmentStep
+from polymorphic.admin import PolymorphicChildModelAdmin
 
-
-class AssignmentStepAdmin(admin.ModelAdmin):
+class AssignmentStepAdmin(PolymorphicChildModelAdmin):
     base_model = AssignmentStep
     list_display = ('id', 'title', 'slug', 'is_published', 'lesson', 'points')
     list_display_links = ('id', 'title', 'slug',

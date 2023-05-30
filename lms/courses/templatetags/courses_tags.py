@@ -2,13 +2,8 @@ from django import template
 from django.utils.safestring import mark_safe
 register = template.Library()
 
+'''
 
-@register.filter
-def user_has_right_answer(user, attempts):
-    for attempt in attempts:
-        if attempt.is_correct:
-            return True
-    return False
 
 
 @register.filter
@@ -98,3 +93,7 @@ def is_problem_correct(attempts):
         if attempt.verdict == 'OK':
             return True
     return False
+
+
+# Новейшее'''
+

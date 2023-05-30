@@ -1,19 +1,17 @@
-{% extends 'cms/dashboard.html' %}
-{% block page_title %}{{ course.title }} - Редактирование курса{% endblock %}
+{% extends 'cms/dashboard.html' %}{% load static %}
 {% block breadcrumb %}
 <li class="breadcrumb-item">
     <a href="{% url 'CMS_Dashboard' %}" class="text-decoration-none">CMS</a>
 </li>
 <li class="breadcrumb-item">
-    <a href="{% url 'CMS_UserCoursesList' %}" class="text-decoration-none">Все курсы</a>
+    <a href="{% url 'CMS_CoursesList' %}" class="text-decoration-none">Курсы</a>
 </li>
 <li class="breadcrumb-item active">
     {{ course.title }}
 </li>
-{% endblock %}
-
-{% block left_sidebar %}
-<div class="d-none d-md-block mb-2">
+{% endblock breadcrumb %}
+{% block sidebar %}
+<div class="d-none d-lg-block mb-2">
     <div class="card shadow">
         <div class="card-body">
             <img src="{{ course.icon.url }}" class="col-12 rounded bg-light" alt="">
@@ -21,122 +19,117 @@
     </div>
 </div>
 <div class="card shadow">
-    <div class="card-body">
-        <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <a class="nav-link " id="course-info-tab" data-bs-toggle="pill" data-bs-target="#course-info" type="button" role="tab" aria-controls="course-info" aria-selected="false">О курсе</a>
-            <a class="nav-link active" id="course-content-tab" data-bs-toggle="pill" data-bs-target="#course-content" type="button" role="tab" aria-controls="course-content" aria-selected="true">Контент</a>
-        </div>
+    <div class="card-body d-none d-lg-block">
+        {% include 'cms/include/course_nav.html' %}
+    </div>
+    <div class="card-body d-block d-lg-none">
+        <nav class="navbar p-0">
+            <h4 class="m-0">Меню</h4>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#menu" aria-controls="menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end border-0 rounded-start " tabindex="-1" id="menu">
+                <div class="offcanvas-header border-bottom p-2">
+                    <a class="navbar-brand p-0 m-0" href="/">
+                        <img src="{% static 'picture/logo_500x500.png' %}" alt="" width="60" height="60" class="d-inline-block">
+                    </a>
+                    <h2 class="offcanvas-title">ИТ Полигон</h2>
+                    <button type="button" class="btn-close ms-auto me-2" data-bs-dismiss="offcanvas"></button>
+                </div>
+                <div class="offcanvas-body">
+                    {% include 'cms/include/course_nav.html' %}
+                </div>
+            </div>
+        </nav>
     </div>
 </div>
-{% endblock %}
-{% block right_sidebar %}
+{% endblock sidebar %}
+{% block content %}
 <div class="card shadow">
     <div class="card-header bg-transparent p-3">
-        <div class="row">
-            <div class="d-flex justify-content-between">
-                <div>
-                    <h4 class="m-0"><i class="bi bi-ui-checks-grid me-3"></i>{{ course.title }}</h4>
-                </div>
-                <div>
-                    <a href="{% url 'CMS_CourseSubmissions' course.slug %}" class="btn btn-secondary badge p-2 rounded opacity-50">
-                        <i class="bi bi-code-square me-2"></i>Все посылки
-                    </a>
-                    <a href="{% url 'CMS_CourseStatistics' course.slug %}" class="btn btn-secondary badge p-2 rounded opacity-50" target="_blank">
-                        <i class="bi bi-eye me-2"></i>Статистика курса
-                    </a>
-                    <a href="{% url 'topics_sort' course.slug %}" class="btn btn-secondary badge p-2 rounded opacity-50">
-                        Отсортировать темы
-                    </a>
-                    <a href="{% url 'CMS_TopicCreate' course.slug %}" class="btn btn-success badge p-2 rounded opacity-50">
-                        <i class="bi bi-plus-square me-2"></i>Добавить тему
-                    </a>
-                </div>
-            </div>
+        <div class="d-flex justify-content-between">
+            <h4 class="m-0 text-truncate me-1"><i class="bi bi-ui-checks-grid me-2"></i>{{ course.title }}</h4>
+            
         </div>
     </div>
-    <div class="card-body">
-        <div class="tab-content" id="v-pills-tabContent">
-            <div class="tab-pane fade" id="course-info" role="tabpanel" aria-labelledby="course-info-tab" tabindex="0">111</div>
-            <div class="tab-pane fade show active" id="course-content" role="tabpanel" aria-labelledby="course-content-tab" tabindex="0">
-                {% for topic in course.topics.all|dictsort:"number" %}
-                <div class="card mb-2">
-                    <div class="card-body p-2">
-                        <div class="row">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <a href="{% url 'topic_check_publish' topic.slug %}">
-                                        <span class="badge {% if topic.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50 me-2"># {{ topic.number }}</span></a>{{ topic.title }}
-                                </div>
-                                <div>
-                                    <a href="{% url 'topic_down' course.slug topic.slug %}" class="btn btn-outline-secondary badge p-1 rounded opacity-50 text-primary">
-                                        <i class="bi bi-arrow-down"></i>
-                                    </a>
-                                    <a href="{% url 'topic_up' course.slug topic.slug %}" class="btn btn-outline-secondary badge p-1 rounded opacity-50 text-primary">
-                                        <i class="bi bi-arrow-up"></i>
-                                    </a>
-                                    <div class="btn-group dropstart">
-                                        <a href="" class="text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <span class="badge bg-secondary p-2 dropdown-toggle opacity-50"><i class="ms-1 bi bi-pencil"></i></span>
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="{% url 'CMS_TopicUpdate' course.slug topic.slug %}">Редактировать</a></li>
-                                            <li><a class="dropdown-item" href="{% url 'CMS_TopicDelete' course.slug topic.slug %}">Удалить</a></li>
-                                            <li><a class="dropdown-item" href="{% url 'topic_check_publish' topic.slug %}">{% if topic.is_published %}Снять с публикации{% else %}Опубликовать{% endif %}</a></li>
-                                            <li>
-                                                <hr class="dropdown-divider">
-                                            </li>
-                                            <li><a class="dropdown-item" href="{% url 'lessons_sort' topic.slug %}">Отсортировать уроки</a></li>
-                                            <li>
-                                                <hr class="dropdown-divider">
-                                            </li>
-                                            <li><a class="dropdown-item" href="{% url 'CMS_LessonCreate' course.slug topic.slug %}">Добавить урок</a></li>
-                                            <li><a class="dropdown-item" href="{% url 'CMS_LessonQuizCreate' course.slug topic.slug %}">Добавить тест</a></li>
-                                            <li><a class="dropdown-item" href="{% url 'CMS_LessonContestCreate' course.slug topic.slug %}">Добавить контест</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+    <div class="card-body pb-2">
+        {% for topic in course.topics.all|dictsort:"number" %}
+        <div class="card mb-2">
+            <div class="card-body p-2">
+                <div class="row align-items-center">
+                    <div class="col-8 col-md-10 text-truncate">
+                        <a href="{{ topic.set_is_published }}">
+                            <span class="badge {% if topic.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50 me-2"># {{ topic.number }}</span></a>{{ topic.title }}
+                    </div>
+                    <div class="col-4 col-md-2 text-end">
+                        <div class="btn-group dropstart">
+                            <button type="button" class="badge btn btn-outline-secondary dropdown-toggle dropdown-toggle-split text-secondary" data-bs-toggle="dropdown" aria-expanded="false">
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ topic.get_cms_update_url }}">Редактировать</a></li>
+                                <li><a class="dropdown-item" href="{{ topic.get_cms_delete_url }}">Удалить</a></li>
+                                <li><a class="dropdown-item" href="{{ topic.set_is_published }}">{% if topic.is_published %}Снять с публикации{% else %}Опубликовать{% endif %}</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="{{ topic.sort_lessons }}">Отсортировать уроки</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="{{ topic.get_cms_create_lesson_url }}">Добавить урок</a></li>
+                            </ul>
+                            <a href="{{ topic.down }}" class="badge btn btn-outline-secondary text-danger p-1">
+                                <i class="bi bi-arrow-down"></i>
+                            </a>
+                            <a href="{{ topic.up }}" class="badge btn btn-outline-secondary text-danger p-1">
+                                <i class="bi bi-arrow-up"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
-                {% for lesson in topic.lessons.all|dictsort:"number" %}
-                <div class="card offset-1 mb-2">
-                    <div class="card-body p-2">
-                        <div class="row">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <a href="{% url 'lesson_check_publish' lesson.slug %}" class="text-decoration-none">
-                                        <span class="badge {% if lesson.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50 me-2"># {{ lesson.number }}</span></a>
-                                    <a href="{% url 'CMS_LessonDetail' lesson.topic.course.slug lesson.topic.slug lesson.slug %}" class="text-decoration-none">{{ lesson.title }}
-                                    </a>
-                                </div>
-                                <div>
-                                    <span class="small text-secondary me-2">Шагов: {{ lesson|steps_counter }}</span>
-                                    <a href="{% url 'lesson_down' course.slug topic.slug lesson.slug %}" class="btn btn-outline-secondary badge p-1 rounded opacity-25 text-danger">
-                                        <i class="bi bi-arrow-down"></i>
-                                    </a>
-                                    <a href="{% url 'lesson_up' course.slug topic.slug lesson.slug %}" class="btn btn-outline-secondary badge p-1 rounded opacity-25 text-danger">
-                                        <i class="bi bi-arrow-up"></i>
-                                    </a>
-                                    <div class="btn-group dropstart">
-                                        <a href="" class="text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <span class="badge bg-secondary p-2 dropdown-toggle opacity-50"><i class="ms-1 bi bi-pencil"></i></span>
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="{% url 'CMS_LessonUpdate' lesson.topic.course.slug lesson.topic.slug lesson.slug %}">Редактировать</a></li>
-                                            <li><a class="dropdown-item" href="{% url 'CMS_LessonDelete' lesson.topic.course.slug lesson.topic.slug lesson.slug %}">Удалить</a></li>
-                                            <li><a class="dropdown-item" href="{% url 'lesson_check_publish' lesson.slug %}">{% if lesson.is_published %}Снять с публикации{% else %}Опубликовать{% endif %}</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-                {% endfor %}
             </div>
         </div>
+        {% for lesson in topic.lessons.all|dictsort:"number" %}
+        <div class="card offset-1 mb-2">
+            <div class="card-body p-2">
+                <div class="row">
+                    <div class="col-8 text-truncate">
+                        <div class="d-flex align-items-center">
+                            <a href="{{ lesson.set_is_published }}">
+                                <span class="badge {% if lesson.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50 me-2"># {{ lesson.number }}</span>
+                            </a>
+                            <a href="{% url 'CMS_LessonDetail' lesson.topic.course.slug lesson.topic.slug lesson.slug %}" class="text-decoration-none">{{ lesson.title }}
+                            </a>
+                            
+                        </div>
+                    </div>
+                    <div class="col-4 text-end">
+                        <span class="d-none d-md-inline-block small text-secondary me-2">Шагов: {{ lesson.connections.count }}</span>
+                        <div class="btn-group dropstart">
+                            <button type="button" class="badge btn btn-outline-secondary dropdown-toggle dropdown-toggle-split text-secondary" data-bs-toggle="dropdown" aria-expanded="false">
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ lesson.get_cms_update_url }}">Редактировать</a></li>
+                                <li><a class="dropdown-item" href="{{ lesson.get_cms_delete_url }}">Удалить</a></li>
+                                <li><a class="dropdown-item" href="{{ lesson.set_is_published }}">{% if lesson.is_published %}Снять с публикации{% else %}Опубликовать{% endif %}</a></li>
+                            </ul>
+                            <a href="{{ lesson.down }}" class="badge btn btn-outline-secondary text-primary p-1">
+                                <i class="bi bi-arrow-down"></i>
+                            </a>
+                            <a href="{{ lesson.up }}" class="badge btn btn-outline-secondary text-primary p-1">
+                                <i class="bi bi-arrow-up"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% empty %}
+        <div class="card-body text-center text-danger">
+            Вы еще не <a href="{{ course.get_cms_create_topic_url }}" class="text-decoration-none">создали</a> ни одной темы в курса :(
+        </div>
+        {% endfor %}
     </div>
 </div>
-{% endblock %}
+{% endblock content %}

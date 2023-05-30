@@ -1,8 +1,11 @@
 from django.utils.safestring import mark_safe
 from django import template
+from lms.steps.models import Step
 register = template.Library()
 
-#устарело
+# устарело
+
+
 @register.simple_tag
 def step_get_steps(steps, current_step):
     string = ''
@@ -43,17 +46,6 @@ def previous_step(steps, current_step):
     button = '<div class="col"><a href="{}" class="btn btn-outline-secondary shadow col-12">{}</a></div>'.format(
         previous, text)
     return mark_safe(button)
-
-
-@register.simple_tag
-def user_end_step(current_step):
-    enroll = current_step.steps_enrolls.first()
-    if current_step.type() == 'text' or current_step.type() == 'video':
-        if enroll is None or enroll.status == 'PR':
-            return button(current_step.end_step(), 'success', 'Материал изучен!')
-        elif enroll.status == 'RP':
-            return button(current_step.end_step(), 'success', 'Материал повторен!')
-    return mark_safe('')
 
 
 @register.simple_tag
@@ -116,23 +108,44 @@ def get_step_position(steps, current_step):
             break
     return position
 
-@register.filter
+
+#
+
+@register.filter  # Delete
 def step_color(step):
-    enroll = step.steps_enrolls.first()
-    if enroll is None:
-        return 'secondary'
-    if enroll.status == 'OK':
-        return 'success'
-    if enroll.status == 'PR':
-        return 'primary'
-    elif enroll.status == 'RP':
-        return 'warning'
-    elif enroll.status == 'WA':
-        return 'danger'
-    return 'secondary'
+    return 'white'
 
 
-def button(next, color, text):
-    return mark_safe('<div class="col"><a href="{}" class="btn btn-{} shadow col-12">{}</a></div>'.
-                     format(next, color, text)
-                     )
+# Новое
+def button(href, color, text):
+    return mark_safe('<div class="col"><a href="{}" class="btn btn-{} shadow col-12">{}</a></div>'.format(href, color, text))
+
+
+@register.simple_tag
+def user_end_step(current_step: Step):
+    enroll = current_step.steps_enrolls.first()
+    if current_step.get_type() == 'textstep' or current_step.get_type() == 'video':
+        if enroll is None or enroll.status == 'PR':
+            return button(current_step.end_step(), 'success', 'Материал изучен!')
+        elif enroll.status == 'RP':
+            return button(current_step.end_step(), 'success', 'Материал повторен!')
+    return mark_safe('')
+
+@register.simple_tag
+def get_step(steps, step_slug):
+    for step in steps:
+        if step.slug == step_slug:
+            return step
+            return 'test_case'
+        
+@register.simple_tag
+def questionstep(step):
+
+    return step.questionstep
+
+@register.filter
+def user_has_right_answer(user, attempts):
+    for attempt in attempts:
+        if attempt.is_correct:
+            return True
+    return False

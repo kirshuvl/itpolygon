@@ -1,0 +1,38 @@
+{% csrf_token %}
+<div class="input-group mb-2">
+    {{ form.title }}
+</div>
+{% for error in form.title.errors %}
+<div class="text-danger small mb-2">
+    {{ error }}
+</div>
+{% endfor %}
+<div class="input-group mb-2">
+    {{ form.slug }}
+</div>
+{% for error in form.slug.errors %}
+<div class="text-danger small mb-2">
+    {{ error }}
+</div>
+{% endfor %}
+<div class="input-group mb-2">
+    {{ form.description }}
+</div>
+{% for error in form.description.errors %}
+<div class="text-danger small mb-2">
+    {{ error }}
+</div>
+{% endfor %}
+<div class="input-group mb-2">
+    <div class="form-check form-switch">
+        {{ form.is_published }}</div>
+    <label class="form-check-label" for="id_is_published">Опубликовать</label>
+</div>
+<div class="input-group mb-2">
+    {{ form.type }}
+</div>
+{% for error in form.type.errors %}
+<div class="text-danger small mb-2">
+    {{ error }}
+</div>
+{% endfor %}

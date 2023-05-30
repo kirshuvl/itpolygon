@@ -5,6 +5,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'polymorphic',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -24,6 +25,8 @@ INSTALLED_APPS = [
     'lms.assignment.apps.AssignmentConfig',
     'crm.lead.apps.LeadConfig',
     'cms.other.apps.OtherConfig',
+    'cms.course_builder.apps.CourseBuilderConfig',
+    #'cms.feedback.apps.FeedbackConfig',
     'django_cleanup.apps.CleanupConfig',
 ]
 

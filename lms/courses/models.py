@@ -2,7 +2,6 @@ from PIL import Image
 from django.db import models
 from django.urls import reverse
 from cms.other.models import Category, Tag
-from ckeditor_uploader.fields import RichTextUploadingField
 from users.models import CustomUser
 
 
@@ -32,6 +31,10 @@ class Course(models.Model):
     )
     is_published = models.BooleanField(
         verbose_name='Опубликовать?',
+        default=False,
+    )
+    is_search = models.BooleanField(
+        verbose_name='На главную страницу?',
         default=False,
     )
     date_create = models.DateTimeField(
@@ -98,6 +101,38 @@ class Course(models.Model):
     def __str__(self):
         return self.title
 
+    def get_cms_detail_url(self):  # Проверить, обновить
+        return reverse(
+            'CMS_CourseDetail',
+            kwargs={
+                'course_slug': self.slug,
+            },
+        )
+
+    def get_cms_update_url(self):
+        return reverse(
+            'CMS_CourseUpdate',
+            kwargs={
+                'course_slug': self.slug,
+            },
+        )
+
+    def get_cms_delete_url(self):  # Проверить, обновить
+        return reverse(
+            'CMS_CourseDelete',
+            kwargs={
+                'course_slug': self.slug,
+            },
+        )
+
+    def get_cms_create_topic_url(self):
+        return reverse(
+            'CMS_TopicCreate',
+            kwargs={
+                'course_slug': self.slug,
+            },
+        )
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         image = Image.open(self.icon.path)
@@ -105,24 +140,49 @@ class Course(models.Model):
             image = image.resize((500, 500), Image.ANTIALIAS)
             image.save(self.icon.path)
 
-    def get_absolute_url(self):
+    def get_lms_url(self):  # Проверить, обновить
         return reverse(
-            'CourseDetail',
+            'LMS_CourseDetail',
             kwargs={
                 'course_slug': self.slug,
             },
         )
 
-    def get_object_type(self):
-        return 'course'
-    
-    def get_cms_url(self):
+    '''
+
+    def get_stat_url(self): # Проверить, обновить
         return reverse(
-            'CMS_CourseDetail',
+            'CMS_CourseStatistics',
             kwargs={
                 'course_slug': self.slug,
-            }
+            },
         )
+
+    def set_is_published(self): # Проверить, обновить
+        return reverse(
+            'course_check_publish',
+            kwargs={
+                'course_slug': self.slug,
+            },
+        )
+
+    def create_topic(self): # Проверить, обновить
+        return reverse(
+            'CMS_TopicCreate',
+            kwargs={
+                'course_slug': self.slug,
+            },
+        )
+
+    
+
+    def get_delete_url(self): # Проверить, обновить
+        return reverse(
+            'CMS_CourseDelete',
+            kwargs={
+                'course_slug': self.slug,
+            },
+        )'''
 
 
 class CourseEnroll(models.Model):

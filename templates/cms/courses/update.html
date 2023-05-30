@@ -1,167 +1,28 @@
-{% extends 'cms/dashboard.html' %}
-{% block page_title %}{{ page_title }}{% endblock %}
+{% extends 'cms/courses/detail.html' %}{% load static %}
 {% block breadcrumb %}
 <li class="breadcrumb-item">
     <a href="{% url 'CMS_Dashboard' %}" class="text-decoration-none">CMS</a>
 </li>
 <li class="breadcrumb-item">
-    <a href="{% url 'CMS_UserCoursesList' %}" class="text-decoration-none">Все курсы</a>
+    <a href="{% url 'CMS_CoursesList' %}" class="text-decoration-none">Курсы</a>
 </li>
-{% if course %}
 <li class="breadcrumb-item">
-    <a href="{% url 'CMS_UserCoursesList' %}" class="text-decoration-none">{{ course.title }}</a>
+    <a href="{{ course.get_cms_detail_url }}" class="text-decoration-none">{{ course.title }}</a>
 </li>
-{% endif %}
 <li class="breadcrumb-item active">
-    {{ page_title }}
+    Редактировать курс
 </li>
-{% endblock %}
-{% block right_sidebar %}
+{% endblock breadcrumb %}
+{% block content %}
 <div class="card shadow">
     <div class="card-header bg-transparent p-3">
-        <div class="row">
-            <div class="d-flex justify-content-between">
-                <div>
-                    <h4 class="m-0"><i class="bi bi-ui-checks-grid me-3"></i>{{ page_title }}</h4>
-                </div>
-            </div>
+        <div class="d-flex justify-content-between">
+            <h4 class="m-0 text-truncate"><i class="bi bi-ui-checks-grid me-2"></i>{{ course.title }}</h4>
+            <a href="{{ course.get_cms_detail_url }}"><span class="badge bg-secondary p-2 opacity-50 text-white"><i class="bi bi-arrow-bar-left"></i></span></a>
         </div>
     </div>
     <div class="card-body">
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.media }}
-
-            <label class="form-label" for="id_title">Название и </label>
-            <label class="form-label" for="id_slug">Slug курса</label>
-            <div class="input-group mb-2">
-                {{ form.title }}
-                {{ form.slug }}
-            </div>
-            {% for error in form.title.errors %}
-            <div class="text-danger small mb-2">
-                {{ error }}
-            </div>
-            {% endfor %}
-            {% for error in form.slug.errors %}
-            <div class="text-danger small mb-2">
-                {{ error }}
-            </div>
-            {% endfor %}
-
-            <label class="form-label" for="id_icon">Иконка курса</label>
-            <div class="input-group mb-2">
-                {{ form.icon }}
-            </div>
-            {% for error in form.icon.errors %}
-            <div class="text-danger small mb-2">
-                {{ error }}
-            </div>
-            {% endfor %}
-            <label class="form-label" for="id_description">Краткое описание курса</label>
-            <div class="input-group mb-2">
-                {{ form.description }}
-            </div>
-            {% for error in form.description.errors %}
-            <div class="text-danger small mb-2">
-                {{ error }}
-            </div>
-            {% endfor %}
-            <label class="form-label" for="id_full_description">Полное описание курса</label>
-            <div class="input-group mb-2">
-                {{ form.full_description }}
-            </div>
-            {% for error in form.full_description.errors %}
-            <div class="text-danger small mb-2">
-                {{ error }}
-            </div>
-            {% endfor %}
-
-
-            <div class="input-group mb-2">
-                <div class="form-check form-switch">
-                    {{ form.is_published }}</div>
-                <label class="form-check-label" for="id_is_published">Опубликовать</label>
-            </div>
-
-
-            <label class="form-label" for="id_price">Стоимость курса</label>
-            <div class="input-group mb-2">
-                <span class="input-group-text"><i class="bi bi-person"></i></span>
-                {{ form.price }}
-            </div>
-            {% for error in form.price.errors %}
-            <div class="text-danger small mb-2">
-                {{ error }}
-            </div>
-            {% endfor %}
-
-            <label class="form-label" for="id_course_level">Уровень курса</label>
-            <div class="input-group mb-2">
-                <span class="input-group-text"><i class="bi bi-person"></i></span>
-                {{ form.course_level }}
-            </div>
-            {% for error in form.course_level.errors %}
-            <div class="text-danger small mb-2">
-                {{ error }}
-            </div>
-            {% endfor %}
-            <label class="form-label" for="id_category">Категория</label>
-            <div class="input-group mb-2">
-                <span class="input-group-text"><i class="bi bi-person"></i></span>
-                {{ form.category }}
-            </div>
-
-            {% for error in form.category.errors %}
-            <div class="text-danger small mb-2">
-                {{ error }}
-            </div>
-            {% endfor %}
-
-            <div class="input-group mb-2">
-                {{ form.tags}}
-            </div>
-            {% for error in form.tags.errors %}
-            <div class="text-danger small mb-2">
-                {{ error }}
-            </div>
-            {% endfor %}
-
-
-            <label class="form-label" for="id_min_age_students">Минимальный и</label>
-            <label class="form-label" for="id_max_age_students">минимальный класс учеников</label>
-            <div class="input-group mb-2">
-                <span class="input-group-text"><i class="bi bi-person"></i></span>
-                {{ form.min_age_students }}
-                {{ form.max_age_students }}
-            </div>
-
-            {% for error in form.min_age_students.errors %}
-            <div class="text-danger small mb-2">
-                {{ error }}
-            </div>
-            {% endfor %}
-            {% for error in form.max_age_students.errors %}
-            <div class="text-danger small mb-2">
-                {{ error }}
-            </div>
-            {% endfor %}
-            <label class="form-label" for="id_video_url">Видео о курсе</label>
-            <div class="input-group mb-2">
-                <span class="input-group-text"><i class="bi bi-person"></i></span>
-                {{ form.video_url }}
-            </div>
-            {% for error in form.video_url.errors %}
-            <div class="text-danger small mb-2">
-                {{ error }}
-            </div>
-            {% endfor %}
-
-            <div class="btn-group col-12">
-                <a href="{% url 'CMS_CoursesList' %}" class="btn btn-secondary col-12">Отмена</a>
-                <button type="submit" class="btn btn-primary col-12">{% if course %}Сохранить изменения{% else %}Создать курс{% endif %}</button>
-            </div>
-        </form>
+        {% include 'cms/courses/form.html' %}
     </div>
 </div>
-{% endblock %}
+{% endblock content %}

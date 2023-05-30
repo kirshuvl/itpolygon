@@ -5,16 +5,16 @@ from lms.steps.models import QuestionChoiceStep, UserAnswerForQuestionChoiceStep
 from django.views.generic import CreateView
 
 
-class TextStepDetail(BaseStepMixin):
-    template_name = 'lms/steps/text_step_detail.html'
+class LMS_TextStepDetail(BaseStepMixin):
+    template_name = 'lms/steps/text_step/detail.html'
 
 
-class VideoStepDetail(BaseStepMixin):
-    template_name = 'lms/steps/video_step_detail.html'
+class LMS_VideoStepDetail(BaseStepMixin):
+    template_name = 'lms/steps/video_step/detail.html'
 
 
-class QuestionStepDetail(BaseStepMixin, CreateView):
-    template_name = 'lms/steps/question_step_detail.html'
+class LMS_QuestionStepDetail(BaseStepMixin, CreateView):
+    template_name = 'lms/steps/question_step/detail.html'
     form_class = UserAnswerForQuestionStepForm
 
     def get_context_data(self, **kwargs):
@@ -38,10 +38,10 @@ class QuestionStepDetail(BaseStepMixin, CreateView):
             step_enroll.status = 'WA'
         step_enroll.save()
 
-        return super(QuestionStepDetail, self).form_valid(form)
+        return super(LMS_QuestionStepDetail, self).form_valid(form)
 
 
-class QuestionChoiceStepDetail(BaseStepMixin, CreateView):
+class LMS_QuestionChoiceStepDetail(BaseStepMixin, CreateView):
     template_name = 'lms/steps/question_choice_step_detail.html'
     form_class = UserAnswerForQuestionChoiceStepForm
 
@@ -66,4 +66,4 @@ class QuestionChoiceStepDetail(BaseStepMixin, CreateView):
         step_enroll.save()
 
 
-        return super(QuestionChoiceStepDetail, self).form_valid(form)
+        return super(LMS_QuestionChoiceStepDetail, self).form_valid(form)
