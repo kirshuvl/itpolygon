@@ -114,10 +114,10 @@ class Step(models.Model):
             url = 'LMS_QuestionStepDetail'
         elif hasattr(self, 'questionchoicestep'):
             url = 'LMS_QuestionChoiceStepDetail'
-        elif hasattr(self, 'assignmentstep'):
-            url = 'ProblemStepDetail'
         elif hasattr(self, 'problemstep'):
-            url = 'AssignmentStepDetail'
+            url = 'LMS_ProblemStepDetail'
+        elif hasattr(self, 'assignmentstep'):
+            url = 'LMS_AssignmentStepDetail'
         else:
             return '#'
 
@@ -205,6 +205,12 @@ class LessonStepConnection(models.Model):
     is_published = models.BooleanField(
         verbose_name='Опубликовать?',
         default=False,
+    )
+    date_create = models.DateTimeField(
+        auto_now_add=True,
+    )
+    date_update = models.DateTimeField(
+        auto_now=True,
     )
     objects = LessonStepConnectionManager()
 

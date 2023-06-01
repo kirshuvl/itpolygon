@@ -5,7 +5,7 @@ from lms.steps.models import Step, StepEnroll
 from django.db.models import Prefetch
 
 
-class AssignmentStepDetail(CreateView):
+class LMS_AssignmentStepDetail(CreateView):
     template_name = 'lms/steps/assignment_detail.html'
     form_class = UserAnswerForAssignmentStepForm
 
