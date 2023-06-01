@@ -10,22 +10,22 @@
             <h4>Условие задачи</h4>
             {{ step.description|safe }}
         </div>
-        {% if step.input_format %}
+        {% if step.problemstep.input_format %}
         <div class="card-body border-bottom pb-0">
             <h4>Формат ввода</h4>
-            {{ step.input_format|safe }}
+            {{ step.problemstep.input_format|safe }}
         </div>
         {% endif %}
-        {% if step.output_format %}
+        {% if step.problemstep.output_format %}
         <div class="card-body pb-0">
             <h4>Формат вывода</h4>
-            {{ step.output_format|safe }}
+            {{ step.problemstep.output_format|safe }}
         </div>
         {% endif %}
-        {% if step.notes %}
+        {% if step.problemstep.notes %}
         <div class="card-body border-top pb-0">
             <h4>Примечания</h4>
-            {{ step.notes|safe }}
+            {{ step.problemstep.notes|safe }}
         </div>
         {% endif %}
     </div>
@@ -136,7 +136,7 @@
                         {{ attempt.date_create|date:'d.m.Y H:i:s' }}
                     </div>
                     <div class="col-3 col-xl-2 text-center border-end text-truncate d-none d-md-block">
-                        <a href="{{ attempt.problem.get_absolute_url }}" class="text-decoration-none">{{ attempt.problem }}</a>
+                        <a href="" class="text-decoration-none">{{ attempt.problem }}</a>
                     </div>
                     <div class="col-5 col-md-3 col-xl-2 text-center border-end text-truncate">
                         <a href="{% url 'UserStatistics' attempt.user.nickname %}" class="text-decoration-none">{{ attempt.user }}</a>

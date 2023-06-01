@@ -6,16 +6,16 @@ from lms.problems.forms import ProblemUpload
 from django.shortcuts import get_object_or_404
 from lms.steps.models import Step
 
-class ProblemStepDetail(BaseStepMixin, CreateView):
-    template_name = 'lms/problems/problem_step_detail.html'
+class LMS_ProblemStepDetail(BaseStepMixin, CreateView):
+    template_name = 'lms/problems/detail.html'
     form_class = ProblemUpload
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(self)
-        context['tests'] = TestForProblemStep.objects.filter(number__lte=self.object.last_sample,
-                                                             number__gte=self.object.problem.first_sample,
-                                                             problem=self.object.problem).order_by('number')
+        
+        context['tests'] = TestForProblemStep.objects.filter(number__lte=self.object.problemstep.last_sample,
+                                                             number__gte=self.object.problemstep.first_sample,
+                                                             problem=self.object.problemstep).order_by('number')
         
         if self.request.user.is_superuser:
             context['users_attempts'] = UserAnswerForProblemStep.objects.select_related('problem__lesson__topic__course', 'user').filter(
@@ -31,7 +31,7 @@ class ProblemStepDetail(BaseStepMixin, CreateView):
         form.instance.problem = ProblemStep.objects.get(
             slug=self.kwargs['step_slug'])
 
-        return super(ProblemStepDetail, self).form_valid(form)
+        return super(LMS_ProblemStepDetail, self).form_valid(form)
 
 
 class UserCodeDetail(DetailView):

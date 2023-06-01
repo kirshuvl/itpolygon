@@ -42,7 +42,7 @@
                 {{ attempt.date_create|date:'d.m.Y H:i:s' }}
             </div>
             <div class="col-3 col-xl-2 text-center border-end text-truncate d-none d-md-block">
-                <a href="{{ attempt.problem.get_absolute_url }}" class="text-decoration-none">{{ attempt.problem }}</a>
+                <a href="" class="text-decoration-none">{{ attempt.problem }}</a>
             </div>
             <div class="col-5 col-md-3 col-xl-2 text-center border-end text-truncate">
                 <a href="{% url 'UserStatistics' attempt.user.nickname %}" class="text-decoration-none">{{ attempt.user }}</a>

@@ -1,11 +1,9 @@
 from django.urls import path, include
 from lms.achievements.views import UserAchievements
-from lms.assignment.views import AssignmentStepDetail
 
 from lms.homeworks.views import UserHomeworkList, UserHomeworkDetail
-from lms.lessons.views import LessonStatistics
 from lms.steps.mixins import BaseStepMixin
-from lms.problems.views import ProblemStepDetail, UserCodeDetail
+from lms.problems.views import  UserCodeDetail
 
 
 urlpatterns = [

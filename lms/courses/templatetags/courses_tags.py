@@ -5,12 +5,6 @@ register = template.Library()
 '''
 
 
-
-@register.filter
-def point(time):
-    return str(time).replace(',', '.')
-
-
 # Новое и используемое
 
 @register.filter
@@ -87,6 +81,11 @@ def get_width_col(lesson):
 
 
 
+
+# Новейшее'''
+
+
+
 @register.simple_tag
 def is_problem_correct(attempts):
     for attempt in attempts:
@@ -95,5 +94,8 @@ def is_problem_correct(attempts):
     return False
 
 
-# Новейшее'''
+
+@register.filter
+def point(time):
+    return str(time).replace(',', '.')
 
