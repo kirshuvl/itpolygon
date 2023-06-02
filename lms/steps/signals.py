@@ -1,9 +1,9 @@
 from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
 from lms.assignment.models import UserAnswerForAssignmentStep
-from lms.steps.models import Step, StepEnroll
+from lms.steps.models import Step, StepEnroll,LessonStepConnection, TextStep
 from lms.achievements.models import StepAchievement
-
+from lms.lessons.models import Lesson
 
 @receiver(post_save, sender=StepEnroll)
 def create_achievement(sender, instance, **kwargs):
@@ -31,3 +31,8 @@ def change_status(sender, instance, **kwargs):
                                              step=instance.assignment)
         step_enroll.status = 'OK'
         step_enroll.save()
+
+@receiver(post_save, sender=TextStep)
+def create_connection(sender, instance, created, **kwargs):
+    print(kwargs)
+    

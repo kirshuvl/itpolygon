@@ -17,7 +17,9 @@ from lms.problems.models import ProblemStep, TestForProblemStep, TestUserAnswer,
 from lms.assignment.models import AssignmentStep, UserAnswerForAssignmentStep
 from cms.course_builder.forms.forms import \
     TestForProblemStepForm, \
-    TextStepCreateForm, VideoStepCreateForm, QuestionStepCreateForm, ProblemStepCreateForm, AssignmentStepCreateForm
+    VideoStepCreateForm, QuestionStepCreateForm, ProblemStepCreateForm, AssignmentStepCreateForm
+
+from cms.course_builder.forms.steps.text_step import TextStepCreateForm
 from lms.problems.tasks import run_user_code
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
@@ -32,14 +34,23 @@ class CMS_StepCreate(CreateView):  # Запросов: 3
         return context
 
     def form_valid(self, form):
-        lesson = Lesson.objects.get(slug=self.kwargs['lesson_slug'])
-        form.instance.number = Step.objects.filter(connections__lesson=lesson).count() + 1
         form.instance.author = self.request.user
-        form.instance.lesson = lesson
-
-        
+        self.object = form.save()
+        self.create_connect(form)
 
         return super().form_valid(form)
+
+    def create_connect(self, form):
+
+        connect = LessonStepConnection(
+            number=LessonStepConnection.objects.filter(
+                lesson__slug=self.kwargs['lesson_slug']).count() + 1,
+            author=self.request.user,
+            lesson=Lesson.objects.get(slug=self.kwargs['lesson_slug']),
+            step=self.object,
+            is_published=form.instance.is_published,
+        )
+        connect.save()
 
     def get_success_url(self):
         return reverse(
@@ -83,6 +94,19 @@ class CMS_QuestionStepCreate(CMS_StepCreate):  # Запросов: 3
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Добавить вопрос'
         return context
+
+    def create_connect(self, form):
+
+        connect = LessonStepConnection(
+            number=LessonStepConnection.objects.filter(
+                lesson__slug=self.kwargs['lesson_slug']).count() + 1,
+            author=self.request.user,
+            lesson=Lesson.objects.get(slug=self.kwargs['lesson_slug']),
+            step=self.object,
+            is_published=form.instance.is_published,
+            num_attempts=form.instance.num_attempts
+        )
+        connect.save()
 
 
 class CMS_ProblemStepCreate(CMS_StepCreate):  # Запросов: 3
@@ -308,7 +332,8 @@ class CMS_ProblemStepCreateTests(FormView):
                 'step_slug': self.kwargs['step_slug'],
             },
         )
-    
+
+
 def connect_up(request, lesson_slug, pk):
     connections = LessonStepConnection.objects.filter(lesson__slug=lesson_slug)
     current_connection = connections.get(pk=pk)

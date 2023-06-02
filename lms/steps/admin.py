@@ -10,24 +10,21 @@ from lms.steps.models import *
 
 
 class TextStepAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'slug', 'is_published', 'lesson', 'points')
-    list_display_links = ('id', 'title', 'slug',
-                          'is_published', 'lesson', 'points')
-    search_fields = ('id', 'title', 'slug', 'is_published', 'lesson', 'points')
+    list_display = ('id', 'title', 'slug', 'is_published', 'points')
+    list_display_links = ('id', 'title', 'slug', 'is_published', 'points')
+    search_fields = ('id', 'title', 'slug', 'is_published', 'points')
 
 
 class VideoStepAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'slug', 'is_published', 'lesson', 'points')
-    list_display_links = ('id', 'title', 'slug',
-                          'is_published', 'lesson', 'points')
-    search_fields = ('id', 'title', 'slug', 'is_published', 'lesson', 'points')
+    list_display = ('id', 'title', 'slug', 'is_published', 'points')
+    list_display_links = ('id', 'title', 'slug', 'is_published', 'points')
+    search_fields = ('id', 'title', 'slug', 'is_published', 'points')
 
 
 class QuestionStepAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'slug', 'is_published', 'lesson', 'points')
-    list_display_links = ('id', 'title', 'slug',
-                          'is_published', 'lesson', 'points')
-    search_fields = ('id', 'title', 'slug', 'is_published', 'lesson', 'points')
+    list_display = ('id', 'title', 'slug', 'is_published', 'points')
+    list_display_links = ('id', 'title', 'slug', 'is_published', 'points')
+    search_fields = ('id', 'title', 'slug', 'is_published', 'points')
 
 
 class LessonStepConnectionAdmin(admin.ModelAdmin):
@@ -36,10 +33,17 @@ class LessonStepConnectionAdmin(admin.ModelAdmin):
     search_fields = ('id', 'lesson', 'step', 'number')
 
 
+class StepEndrollAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'step', 'status')
+    list_display_links = ('id', 'user', 'step', 'status')
+    search_fields = ('id', 'user', 'step', 'status')
+
+
 admin.site.register(TextStep, TextStepAdmin)
 admin.site.register(VideoStep, VideoStepAdmin)
 admin.site.register(QuestionStep, QuestionStepAdmin)
 admin.site.register(LessonStepConnection, LessonStepConnectionAdmin)
+admin.site.register(StepEnroll, StepEndrollAdmin)
 
 '''class TextStepAdminForm(forms.ModelForm):
     text = forms.CharField(widget=CKEditorUploadingWidget())
@@ -106,11 +110,6 @@ class UserAnswerForQuestionChoiceStepAdmin(admin.ModelAdmin):
     search_fields = ('id', 'user', 'is_correct', 'question')
 
 
-class StepEndrollAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'step', 'status')
-    list_display_links = ('id', 'user', 'step', 'status')
-    search_fields = ('id', 'user', 'step', 'status')
-
 
 
 admin.site.register(Step, StepAdmin)
@@ -121,6 +120,6 @@ admin.site.register(UserAnswerForQuestionStep, UserAnswerForQuestionStepAdmin)
 admin.site.register(QuestionChoiceStep, QuestionChoiceStepAdmin)
 admin.site.register(TestForQuestionChoiceStep, TestForQuestionChoiceStepAdmin)
 admin.site.register(UserAnswerForQuestionChoiceStep, UserAnswerForQuestionChoiceStepAdmin)
-admin.site.register(StepEnroll, StepEndrollAdmin)
+
 
 '''

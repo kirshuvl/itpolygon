@@ -16,7 +16,70 @@ class DefaultStepManager(models.Manager):
         return super().get_queryset()
 
 
-class Step(models.Model):
+class VideoStepMixin():
+    def video_url(self):
+        if hasattr(self, 'videostep'):
+            return self.videostep.video_url
+        return None
+
+
+class QuestionStepMixin():
+    pass
+
+
+class ProblemStepMixin:
+    def get_problem(self):
+        if hasattr(self, 'problemstep'):
+            return self.problemstep
+        return None
+
+    def get_input_format(self):
+        if hasattr(self, 'problemstep'):
+            return self.problemstep.input_format
+        return None
+
+    def get_output_format(self):
+        if hasattr(self, 'problemstep'):
+            return self.problemstep.output_format
+        return None
+
+    def get_notes(self):
+        if hasattr(self, 'problemstep'):
+            return self.problemstep.notes
+        return None
+
+    def get_first_sample(self):
+        if hasattr(self, 'problemstep'):
+            return self.problemstep.first_sample
+        return None
+
+    def get_last_sample(self):
+        if hasattr(self, 'problemstep'):
+            return self.problemstep.last_sample
+        return None
+
+    def get_first_test(self):
+        if hasattr(self, 'problemstep'):
+            return self.problemstep.first_test
+        return None
+
+    def get_cputime(self):
+        if hasattr(self, 'problemstep'):
+            return self.problemstep.cputime
+        return None
+
+    def get_memory(self):
+        if hasattr(self, 'problemstep'):
+            return self.problemstep.memory
+        return None
+
+
+class StepsMixin(VideoStepMixin, QuestionStepMixin, ProblemStepMixin):
+    def get_num_attempts(self):
+        return self.connections.first().num_attempts
+
+
+class Step(models.Model, StepsMixin):
     title = models.CharField(
         verbose_name='Название шага',
         max_length=50,
@@ -40,10 +103,6 @@ class Step(models.Model):
     date_update = models.DateTimeField(
         auto_now=True,
     )
-    number = models.IntegerField(
-        verbose_name='№ шага в уроке',
-        default=1000,
-    )
     author = models.ForeignKey(
         CustomUser,
         related_name='steps',
@@ -54,22 +113,10 @@ class Step(models.Model):
         verbose_name='Баллы за пройденный шаг',
         default=1,
     )
-    lesson = models.ForeignKey(
-        Lesson,
-        related_name='steps',
-        verbose_name='Урок',
-        on_delete=models.CASCADE,
-    )
     objects = StepManager()
 
     def __str__(self):
         return self.title
-
-    # @property
-    def video_url(self):
-        if hasattr(self, 'videostep'):
-            return self.videostep.video_url
-        return None
 
     class Meta:
         verbose_name = 'Шаг урока'
@@ -212,6 +259,10 @@ class LessonStepConnection(models.Model):
     date_update = models.DateTimeField(
         auto_now=True,
     )
+    num_attempts = models.IntegerField(
+        verbose_name='Количество попыток',
+        default=-1,
+    )
     objects = LessonStepConnectionManager()
 
     class Meta:
@@ -240,9 +291,9 @@ class LessonStepConnection(models.Model):
 
 
 class TextStep(Step):
-    text = models.TextField(
-        verbose_name='Текст'
-    )
+    # text = models.TextField(
+    #    verbose_name='Текст'
+    # )
     objects = DefaultStepManager()
 
     class Meta:
@@ -253,7 +304,7 @@ class TextStep(Step):
     def get_lms_url(self, **kwargs):
         lesson: Lesson = self.connections.first().lesson
         return reverse(
-            'LMS_TextStepDetail',
+            'LMS_ProblemStepDetail',
             kwargs={
                 'course_slug': lesson.topic.course.slug,
                 'topic_slug': lesson.topic.slug,
@@ -358,13 +409,14 @@ class QuestionStep(Step):
         verbose_name_plural = '3. Вопросы'
         ordering = ['title']
 
-    def get_absolute_url(self):
+    def get_lms_url(self, **kwargs):
+        lesson: Lesson = self.connections.first().lesson
         return reverse(
-            'QuestionStepDetail',
+            'LMS_QuestionStepDetail',
             kwargs={
-                'course_slug': self.lesson.topic.course.slug,
-                'topic_slug': self.lesson.topic.slug,
-                'lesson_slug': self.lesson.slug,
+                'course_slug': lesson.topic.course.slug,
+                'topic_slug': lesson.topic.slug,
+                'lesson_slug': lesson.slug,
                 'step_slug': self.slug,
             },
         )
@@ -464,7 +516,7 @@ class QuestionChoiceStep(Step):
 
 
 class TestForQuestionChoiceStep(models.Model):
-    title = models.CharField(
+    answer = models.CharField(
         verbose_name='Ответ',
         max_length=250,
     )

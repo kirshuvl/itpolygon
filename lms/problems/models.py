@@ -2,8 +2,8 @@ from django.db import models
 from lms.steps.models import Step
 from django.urls import reverse
 from users.models import CustomUser
-
-
+from lms.steps.models import DefaultStepManager
+from lms.lessons.models import Lesson
 class ProblemStep(Step):
     input_format = models.TextField(
         verbose_name='Формат ввода',
@@ -50,11 +50,13 @@ class ProblemStep(Step):
         verbose_name='Количество попыток',
         default=-1,
     )
-
+    objects = DefaultStepManager()
     class Meta:
         verbose_name = 'Задача на программирование'
         verbose_name_plural = 'Задачи на программирование'
         ordering = ['pk']
+
+    
 
     def get_absolute_url(self):
         return reverse(

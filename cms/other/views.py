@@ -12,7 +12,7 @@ from lms.assignment.models import AssignmentStep, UserAnswerForAssignmentStep
 from users.models import CustomUser
 from cms.course_builder.forms.forms import \
     TestForProblemStepForm, \
-    TextStepCreateForm, VideoStepCreateForm, QuestionStepCreateForm, ProblemStepCreateForm, AssignmentStepCreateForm
+    VideoStepCreateForm, QuestionStepCreateForm, ProblemStepCreateForm, AssignmentStepCreateForm
 from lms.problems.tasks import run_user_code
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 

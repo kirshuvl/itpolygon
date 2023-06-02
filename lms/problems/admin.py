@@ -1,10 +1,8 @@
 from django.contrib import admin
 from lms.problems.models import ProblemStep, TestUserAnswer, UserAnswerForProblemStep, TestForProblemStep
-from polymorphic.admin import PolymorphicChildModelAdmin
 
 
-class ProblemStepAdmin(PolymorphicChildModelAdmin):
-    base_model = ProblemStep
+class ProblemStepAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'slug', 'is_published', 'points')
     list_display_links = ('id', 'title', 'slug', 'is_published', 'points')
     search_fields = ('id', 'title', 'slug', 'is_published', 'points')

@@ -2,12 +2,10 @@ from django.contrib import admin
 from lms.assignment.models import AssignmentStep, ReviewForUserAnswerForAssignmentStep, UserAnswerForAssignmentStep
 from polymorphic.admin import PolymorphicChildModelAdmin
 
-class AssignmentStepAdmin(PolymorphicChildModelAdmin):
-    base_model = AssignmentStep
-    list_display = ('id', 'title', 'slug', 'is_published', 'lesson', 'points')
-    list_display_links = ('id', 'title', 'slug',
-                          'is_published', 'lesson', 'points')
-    search_fields = ('id', 'title', 'slug', 'is_published', 'lesson', 'points')
+class AssignmentStepAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'slug', 'is_published', 'points')
+    list_display_links = ('id', 'title', 'slug', 'is_published', 'points')
+    search_fields = ('id', 'title', 'slug', 'is_published', 'points')
 
 
 class UserAnswerForAssignmentStepAdmin(admin.ModelAdmin):
