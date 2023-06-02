@@ -6,24 +6,25 @@ from lms.problems.forms import ProblemUpload
 from django.shortcuts import get_object_or_404
 from lms.steps.models import Step
 
+
 class LMS_ProblemStepDetail(BaseStepMixin, CreateView):
-    template_name = 'lms/problems/detail.html'
+    template_name = 'lms/steps/problem_step/detail.html'
     form_class = ProblemUpload
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
-        context['tests'] = TestForProblemStep.objects.filter(number__lte=self.object.problemstep.last_sample,
-                                                             number__gte=self.object.problemstep.first_sample,
-                                                             problem=self.object.problemstep).order_by('number')
-        
-        if self.request.user.is_superuser:
-            context['users_attempts'] = UserAnswerForProblemStep.objects.select_related('problem__lesson__topic__course', 'user').filter(
+
+        context['tests'] = self.get_tests()
+        context['user_attempts'] = self.get_user_attempts()
+        context['all_attempts'] = self.get_all_attempts()
+
+        '''if self.request.user.is_superuser:
+            context['users_attempts'] = UserAnswerForProblemStep.objects.select_related( 'user').filter(
                 problem=self.object)
             context['attempts'] = context['users_attempts'].filter(user=self.request.user)
         else:
             context['attempts'] = UserAnswerForProblemStep.objects.select_related('problem__lesson__topic__course', 'user').filter(
-                problem=self.object, user=self.request.user)
+                problem=self.object, user=self.request.user)'''
         return context
 
     def form_valid(self, form):
@@ -32,6 +33,26 @@ class LMS_ProblemStepDetail(BaseStepMixin, CreateView):
             slug=self.kwargs['step_slug'])
 
         return super(LMS_ProblemStepDetail, self).form_valid(form)
+
+    def get_tests(self):
+        queryset = TestForProblemStep.objects.filter(number__lte=self.object.get_last_sample(),
+                                                     number__gte=self.object.get_first_sample(),
+                                                     problem=self.object.get_problem()).order_by('number')
+
+        return queryset
+
+    def get_all_attempts(self):
+        if self.request.user == self.object.author:
+            return UserAnswerForProblemStep.objects.filter(problem=self.object.get_problem()).select_related('user', 'problem')
+
+        return None
+
+    def get_user_attempts(self):
+
+        return UserAnswerForProblemStep.objects.filter(user=self.request.user, problem=self.object.get_problem()).select_related('user', 'problem')
+
+    def get_success_url(self):
+        return self.object.problem.get_lms_url()
 
 
 class UserCodeDetail(DetailView):

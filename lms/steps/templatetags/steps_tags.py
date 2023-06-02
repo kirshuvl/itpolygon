@@ -124,7 +124,7 @@ def button(href, color, text):
 @register.simple_tag
 def user_end_step(current_step: Step):
     enroll = current_step.steps_enrolls.first()
-    if current_step.get_type() == 'textstep' or current_step.get_type() == 'video':
+    if current_step.get_type() == 'textstep' or current_step.get_type() == 'videostep':
         if enroll is None or enroll.status == 'PR':
             return button(current_step.end_step(), 'success', 'Материал изучен!')
         elif enroll.status == 'RP':
@@ -138,14 +138,14 @@ def get_step(steps, step_slug):
             return step
             return 'test_case'
         
-@register.simple_tag
+'''@register.simple_tag
 def questionstep(step):
 
-    return step.questionstep
-
-@register.filter
-def user_has_right_answer(user, attempts):
-    for attempt in attempts:
+    return step.questionstep'''
+# New
+@register.simple_tag
+def user_has_right_answer(user_attempts):
+    for attempt in user_attempts:
         if attempt.is_correct:
             return True
     return False

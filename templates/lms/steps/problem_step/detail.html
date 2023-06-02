@@ -4,7 +4,7 @@
 <div class="card-body">
     <div class="card mb-2">
         <div class="card-header bg-transparent px-3">
-            Ограничение времени: {{ step.cputime }} секунда | Ограничение памяти: {{ step.memory }} Мб | Всего попыток: {% if step.num_attempts == -1 %}не ограничено{% else %}{{ step.num_attempts }}{% endif %}
+            Ограничение времени: {{ step.get_cputime }} секунда | Ограничение памяти: {{ step.get_memory }} Мб | Всего попыток: {% if step.get_num_attempts == -1 %}не ограничено{% else %}{{ step.get_num_attempts }}{% endif %}
         </div>
         <div class="card-body border-bottom pb-0">
             <h4>Условие задачи</h4>
@@ -13,19 +13,19 @@
         {% if step.problemstep.input_format %}
         <div class="card-body border-bottom pb-0">
             <h4>Формат ввода</h4>
-            {{ step.problemstep.input_format|safe }}
+            {{ step.get_input_format|safe }}
         </div>
         {% endif %}
-        {% if step.problemstep.output_format %}
+        {% if step.get_output_format %}
         <div class="card-body pb-0">
             <h4>Формат вывода</h4>
-            {{ step.problemstep.output_format|safe }}
+            {{ step.get_output_format|safe }}
         </div>
         {% endif %}
-        {% if step.problemstep.notes %}
+        {% if step.get_notes %}
         <div class="card-body border-top pb-0">
             <h4>Примечания</h4>
-            {{ step.problemstep.notes|safe }}
+            {{ step.get_notes|safe }}
         </div>
         {% endif %}
     </div>
@@ -48,43 +48,43 @@
         </div>
         {% endfor %}
     </div>
-    {% is_problem_correct attempts as is_user_pass_problem %}
-    {% if is_user_pass_problem and step.num_attempts != -1%}
-    <div class="card">
-        <div class="card-body text-success text-center">
-            Отлично! Это задача сделана
-        </div>
-    </div>
-    {% elif step.num_attempts > attempts.count or step.num_attempts == -1 %}
-    <div class="card">
-        <div class="card-body">
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="input-group">
-                    <div class="input-group">
-                        {{ form.code }}
-                        <button type="submit" class="btn btn-outline-secondary">Отправить</button>
-                    </div>
-                </div>
-            </form>
-            {% for error in form.user_code.errors %}
-            <div class="text-danger small mb-2">
-                {{ error }}
+
+    {% if step.get_num_attempts == -1 or step.get_num_attempts > user_attempts.count %}
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="input-group">
+            <div class="input-group">
+                {{ form.code }}
+                <button type="submit" class="btn btn-outline-secondary">Отправить</button>
             </div>
-            {% endfor %}
+        </div>
+    </form>
+    {% for error in form.user_code.errors %}
+    <div class="text-danger small mb-2">
+        {{ error }}
+    </div>
+    {% endfor %}
+
+    {% elif correct %}
+    <div class="card">
+        <div class="card-body text-center text-success">
+            Уже есть правильный ответ
         </div>
     </div>
     {% else %}
     <div class="card">
-        <div class="card-body text-danger text-center">
-            К сожалению, попытки закончились :(
+        <div class="card-body text-center text-danger">
+            Вы исчерпали все попытки
         </div>
     </div>
     {% endif %}
+
+
 </div>
 {% endblock %}
 {% block under_content %}
-{% if attempts %}
+{% if user_attempts %}
 <div class="card shadow">
     <div class="card-header bg-transparent p-3">
         <div class="d-flex justify-content-between align-items-center">
@@ -125,7 +125,7 @@
                 </div>
             </div>
         </div>
-        {% for attempt in attempts %}
+        {% for attempt in user_attempts %}
         <div class="card {% if not forloop.last %}mb-1{% endif %}">
             <div class="card-body">
                 <div class="row align-items-center small">
@@ -136,10 +136,10 @@
                         {{ attempt.date_create|date:'d.m.Y H:i:s' }}
                     </div>
                     <div class="col-3 col-xl-2 text-center border-end text-truncate d-none d-md-block">
-                        <a href="" class="text-decoration-none">{{ attempt.problem }}</a>
+                        <a href="#" class="text-decoration-none">{{ attempt.problem }}</a>
                     </div>
                     <div class="col-5 col-md-3 col-xl-2 text-center border-end text-truncate">
-                        <a href="{% url 'UserStatistics' attempt.user.nickname %}" class="text-decoration-none">{{ attempt.user }}</a>
+                        <a href="#" class="text-decoration-none">{{ attempt.user }}</a>
                     </div>
                     <div class="col-2 col-lg-1 text-center border-end {% if attempt.verdict == 'OK' %}text-success{% elif attempt.verdict == 'PR' %}{% else %}text-danger{% endif %}">
                         {% if attempt.verdict == 'PR' %}-{% else %}{{ attempt.verdict }}{% endif %}
@@ -154,7 +154,7 @@
                         Python
                     </div>
                     <div class="col-3 col-md-2 col-lg-1 pe-2">
-                        <a href="{{ attempt.get_detail }}"><span class="badge btn btn-primary p-2 col-12 opacity-50"><i class="bi bi-eye"></i></span></a>
+                        <a href="#"><span class="badge btn btn-primary p-2 col-12 opacity-50"><i class="bi bi-eye"></i></span></a>
                     </div>
                 </div>
             </div>
@@ -164,7 +164,7 @@
     </div>
 </div>
 {% endif %}
-{% if users_attempts %}
+{% if all_attempts %}
 <div class="card shadow mt-2">
     <div class="card-header bg-transparent p-3">
         <div class="d-flex justify-content-between align-items-center">

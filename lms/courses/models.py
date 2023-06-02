@@ -174,7 +174,7 @@ class Course(models.Model):
             },
         )
 
-    
+
 
     def get_delete_url(self): # Проверить, обновить
         return reverse(

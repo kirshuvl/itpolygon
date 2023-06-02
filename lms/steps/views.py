@@ -19,8 +19,8 @@ class LMS_QuestionStepDetail(BaseStepMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['attempts'] = UserAnswerForQuestionStep.objects.filter(
-            user=self.request.user, question=self.object)
+        context['user_attempts'] = self.get_user_attempts()
+        context['all_attempts'] = self.get_all_attempts()
         return context
 
     def form_valid(self, form):
@@ -39,6 +39,19 @@ class LMS_QuestionStepDetail(BaseStepMixin, CreateView):
         step_enroll.save()
 
         return super(LMS_QuestionStepDetail, self).form_valid(form)
+
+    def get_success_url(self):
+        return self.object.question.get_lms_url()
+
+    def get_all_attempts(self):
+        if self.request.user == self.object.author:
+            return UserAnswerForQuestionStep.objects.filter(question=self.object).select_related('user', 'question')
+
+        return None
+
+    def get_user_attempts(self):
+
+        return UserAnswerForQuestionStep.objects.filter(user=self.request.user, question=self.object).select_related('user', 'question')
 
 
 class LMS_QuestionChoiceStepDetail(BaseStepMixin, CreateView):
@@ -64,6 +77,5 @@ class LMS_QuestionChoiceStepDetail(BaseStepMixin, CreateView):
             form.instance.is_correct = False
             step_enroll.status = 'WA'
         step_enroll.save()
-
 
         return super(LMS_QuestionChoiceStepDetail, self).form_valid(form)
