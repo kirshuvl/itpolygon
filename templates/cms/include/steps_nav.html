@@ -1,0 +1,15 @@
+{% with request.resolver_match.url_name as url_name %}
+<ul class="nav flex-column nav-pills ">
+    <li class="nav-item p-0">
+        <a href="{{ step.get_cms_detail_url }}" class="nav-link {% if url_name == 'CMS_TextStepDetail' or url_name == 'CMS_VideoStepDetail' or url_name == 'CMS_QuestionStepDetail' or url_name == 'CMS_QuestionChoiceStepDetail' or url_name == 'CMS_ProblemStepDetail'  or url_name == 'CMS_AssignmentStepDetail' %}active{% endif %}"><i class="bi bi-ui-checks-grid me-2"></i>Просмотр</a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ step.get_cms_update_url }}" class="nav-link {% if url_name == 'CMS_TextStepUpdate' or url_name == 'CMS_VideoStepUpdate' or url_name == 'CMS_QuestionStepUpdate' or url_name == 'CMS_QuestionChoiceStepUpdate' or url_name == 'CMS_ProblemStepUpdate'  or url_name == 'CMS_AssignmentStepUpdate' %}active{% endif %}"><i class="bi bi-device-ssd me-2"></i>Редактировать</a>
+    </li>
+    <li class="nav-item disable">
+        <a href="{{ step.get_cms_delete_url }}" class="nav-link {% if url_name == 'CMS_StepDelete' %}active{% endif %}"><i class="bi bi-question-square me-2"></i>Удалить</a>
+    </li>
+</ul>
+{% endwith %}
+
+

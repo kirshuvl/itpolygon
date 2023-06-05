@@ -1,57 +1,75 @@
-{% extends 'cms/dashboard.html' %}
-{% block page_title %}{{ page_title }}{% endblock %}
+{% extends 'cms/dashboard.html' %}{% load static %}
 {% block breadcrumb %}
 <li class="breadcrumb-item">
     <a href="{% url 'CMS_Dashboard' %}" class="text-decoration-none">CMS</a>
 </li>
 <li class="breadcrumb-item">
-    <a href="{% url 'CMS_CoursesList' %}" class="text-decoration-none">Мои курсы</a>
+    <a href="{% url 'CMS_CoursesList' %}" class="text-decoration-none">Курсы</a>
 </li>
 <li class="breadcrumb-item">
-    <a href="{{ step.lesson.topic.course.get_cms_url }}" class="text-decoration-none">{{ step.lesson.topic.course.title }}</a>
+    <a href="{{ lesson.topic.course.get_cms_detail_url }}" class="text-decoration-none">{{ lesson.topic.course.title }}</a>
 </li>
 <li class="breadcrumb-item">
-    {{ step.lesson.topic.title }}
+    {{ lesson.topic.title }}
 </li>
 <li class="breadcrumb-item">
-    <a href="{{ step.lesson.get_cms_url }}" class="text-decoration-none">{{ step.lesson.title }}</a>
+    <a href="{{ lesson.get_cms_detail_url }}" class="text-decoration-none">{{ lesson.title }}</a>
 </li>
-<li class="breadcrumb-item active">
-    {{ step.title }}
+<li class="breadcrumb-item">
+    <a href="{{ step.get_cms_detail_url }}" class="text-decoration-none">{{ step.title }}</a>
 </li>
 <li class="breadcrumb-item active">
     Просмотр
 </li>
-{% endblock %}
-{% block main_content %}
-<div class="card shadow mb-4">
-    {% block step_header %}
+{% endblock breadcrumb %}
+{% block sidebar %}
+<div class="d-none d-lg-block mb-2">
+    <div class="card shadow">
+        <div class="card-body">
+            <img src="{{ lesson.topic.course.icon.url }}" class="col-12 rounded bg-light" alt="">
+        </div>
+    </div>
+</div>
+<div class="card shadow">
+    <div class="card-body d-none d-lg-block">
+        {% include 'cms/include/steps_nav.html' %}
+    </div>
+    <div class="card-body d-block d-lg-none">
+        <nav class="navbar p-0">
+            <h4 class="m-0">Меню</h4>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#menu" aria-controls="menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end border-0 rounded-start " tabindex="-1" id="menu">
+                <div class="offcanvas-header border-bottom p-2">
+                    <a class="navbar-brand p-0 m-0" href="/">
+                        <img src="{% static 'picture/logo_500x500.png' %}" alt="" width="60" height="60" class="d-inline-block">
+                    </a>
+                    <h2 class="offcanvas-title">ИТ Полигон</h2>
+                    <button type="button" class="btn-close ms-auto me-2" data-bs-dismiss="offcanvas"></button>
+                </div>
+                <div class="offcanvas-body">
+                    {% include 'cms/include/steps_nav.html' %}
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+{% endblock sidebar %}
+{% block content %}
+<div class="card shadow">
     <div class="card-header bg-transparent p-3">
-        <div class="row">
-            <div class="d-flex justify-content-between">
-                <div>
-                    <h4 class="m-0">
-                        <i class="bi bi-ui-checks-grid me-3"></i>{{ step.title }}
-                    </h4>
-                </div>
-                {% if step.type == 'problem' %}
-                <div>
-                    <a href="" class="btn btn-success badge p-2 rounded opacity-25">
-                        <i class="bi bi-plus-square me-2"></i>Добавить тест
-                    </a>
-                    <a href="{% url 'CMS_ProblemStepCreateTests' step.lesson.topic.course.slug step.lesson.topic.slug step.lesson.slug step.slug %}" class="btn btn-success badge p-2 rounded opacity-25">
-                        <i class="bi bi-plus-square me-2"></i>Добавить тесты
-                    </a>
-                </div>
-                {% endif %}
+        <div class="d-flex justify-content-between">
+            <h4 class="m-0 text-truncate"><i class="bi bi-ui-checks-grid me-2"></i>{{ step.title }}</h4>
+            <div>
+                <a href="{{ lesson.get_cms_detail_url }}"><span class="badge bg-secondary p-2 opacity-50 text-white"><i class="bi bi-arrow-bar-left"></i></span></a>
             </div>
         </div>
     </div>
-    {% endblock %}
     {% block step_body %}
     <div class="card-body">
         Вы не заполнили блок
     </div>
     {% endblock %}
 </div>
-{% endblock %}
+{% endblock content %}

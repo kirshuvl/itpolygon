@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
-
-from lms.steps.models import Step
+from lms.lessons.models import Lesson
+from lms.steps.models import Step, DefaultStepManager
 from users.models import CustomUser
 
 
@@ -11,49 +11,39 @@ class AssignmentStep(Step):
         upload_to='assignment/%Y/%m/%d/',
         blank=True,
     )
+    objects = DefaultStepManager()
 
     class Meta:
         verbose_name = 'Задание'
-        verbose_name_plural = 'Задания'
+        verbose_name_plural = '1. Задания'
         ordering = ['title']
 
-    
-
-    def get_absolute_url(self):
-        return reverse(
-            'AssignmentStepDetail',
-            kwargs={
-                'course_slug': self.lesson.topic.course.slug,
-                'topic_slug': self.lesson.topic.slug,
-                'lesson_slug': self.lesson.slug,
-                'step_slug': self.slug,
-            },
-        )
-
-    def get_cms_url(self):
+    def get_cms_detail_url(self):
+        lesson: Lesson = self.connections.first().lesson
+        
         return reverse(
             'CMS_AssignmentStepDetail',
             kwargs={
-                'course_slug': self.lesson.topic.course.slug,
-                'topic_slug': self.lesson.topic.slug,
-                'lesson_slug': self.lesson.slug,
+                'course_slug': lesson.topic.course.slug,
+                'topic_slug': lesson.topic.slug,
+                'lesson_slug': lesson.slug,
                 'step_slug': self.slug,
             },
         )
 
-    def cms_update(self):
+    def get_cms_update_url(self):
+        lesson: Lesson = self.connections.first().lesson
+
         return reverse(
             'CMS_AssignmentStepUpdate',
             kwargs={
-                'course_slug': self.lesson.topic.course.slug,
-                'topic_slug': self.lesson.topic.slug,
-                'lesson_slug': self.lesson.slug,
+                'course_slug': lesson.topic.course.slug,
+                'topic_slug': lesson.topic.slug,
+                'lesson_slug': lesson.slug,
                 'step_slug': self.slug,
             },
         )
 
-    def get_type(self):
-        return 'assignment'
 
 class UserAnswerForAssignmentStep(models.Model):
     user_answer = models.TextField(
@@ -103,19 +93,8 @@ class UserAnswerForAssignmentStep(models.Model):
 
     class Meta:
         verbose_name = 'Ответ на задание'
-        verbose_name_plural = 'Ответы на задания'
+        verbose_name_plural = '2. Ответы на задания'
         ordering = ['pk']
-
-    def get_absolute_url(self):
-        return reverse(
-            'AssignmentStepDetail',
-            kwargs={
-                'course_slug': self.assignment.lesson.topic.course.slug,
-                'topic_slug': self.assignment.lesson.topic.slug,
-                'lesson_slug': self.assignment.lesson.slug,
-                'step_slug': self.assignment.slug,
-            },
-        )
 
 
 class ReviewForUserAnswerForAssignmentStep(models.Model):
@@ -149,5 +128,5 @@ class ReviewForUserAnswerForAssignmentStep(models.Model):
 
     class Meta:
         verbose_name = 'Ревью задания'
-        verbose_name_plural = 'Ревью заданий'
+        verbose_name_plural = '3. Ревью заданий'
         ordering = ['pk']

@@ -1,0 +1,59 @@
+{% extends 'cms/steps/update.html' %}
+{% block form %}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.media }}
+    <div class="input-group mb-2">
+        {{ form.title }}
+    </div>
+    {% for error in form.title.errors %}
+    <div class="text-danger small mb-2">
+        {{ error }}
+    </div>
+    {% endfor %}
+    <div class="input-group mb-2">
+        {{ form.slug }}
+    </div>
+    {% for error in form.slug.errors %}
+    <div class="text-danger small mb-2">
+        {{ error }}
+    </div>
+    {% endfor %}
+    <div class="input-group mb-2">
+        {{ form.description }}
+    </div>
+    {% for error in form.description.errors %}
+    <div class="text-danger small mb-2">
+        {{ error }}
+    </div>
+    {% endfor %}
+    <div class="input-group mb-2">
+        <div class="form-check form-switch">
+            {{ form.is_published }}
+        </div>
+        <label class="form-check-label" for="id_is_published">Опубликовать</label>
+    </div>
+    <label for="id_points" class="form-label">Баллов за шаг</label>
+    <div class="input-group mb-2">
+        {{ form.points }}
+    </div>
+    {% for error in form.points.errors %}
+    <div class="text-danger small mb-2">
+        {{ error }}
+    </div>
+    {% endfor %}
+    <label for="id_num_attempts" class="form-label">Количество попыток</label>
+    <div class="input-group mb-2">
+        {{ form.num_attempts }}
+    </div>
+    {% for error in form.num_attempts.errors %}
+    <div class="text-danger small mb-2">
+        {{ error }}
+    </div>
+    {% endfor %}
+    <div class="btn-group col-12">
+        <a href="{{ lesson.get_cms_url }}" class="btn btn-secondary col-12">Отмена</a>
+        <button type="submit" class="btn btn-primary col-12">Сохранить</button>
+    </div>
+</form>
+{% endblock %}

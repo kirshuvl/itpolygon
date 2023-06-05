@@ -55,7 +55,7 @@ class LMS_QuestionStepDetail(BaseStepMixin, CreateView):
 
 
 class LMS_QuestionChoiceStepDetail(BaseStepMixin, CreateView):
-    template_name = 'lms/steps/question_choice_step_detail.html'
+    template_name = 'lms/steps/question_choice_step/detail.html'
     form_class = UserAnswerForQuestionChoiceStepForm
 
     def get_context_data(self, **kwargs):

@@ -1,4 +1,3 @@
-from typing import Any, Optional
 from django.db import models
 from django.views.generic import DetailView, ListView, TemplateView
 from lms.achievements.models import StepAchievement

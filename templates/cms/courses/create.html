@@ -10,14 +10,14 @@
     <a href="{{ course.get_cms_url }}" class="text-decoration-none">{{ course.title }}</a>
 </li>{% endif %}
 <li class="breadcrumb-item active">
-    {{ page_title }}
+    Создать курс
 </li>
 {% endblock breadcrumb %}
 {% block content %}
 <div class="card shadow">
     <div class="card-header bg-transparent p-3">
         <div class="d-flex justify-content-between">
-            <h4 class="m-0 text-truncate"><i class="bi bi-ui-checks-grid me-2"></i>{{ page_title }}</h4>
+            <h4 class="m-0 text-truncate"><i class="bi bi-ui-checks-grid me-2"></i>Создать курс</h4>
             <a href="{% url 'CMS_CoursesList' %}"><span class="badge bg-secondary p-2 opacity-50 text-white"><i class="bi bi-arrow-bar-left"></i></span></a>
         </div>
     </div>

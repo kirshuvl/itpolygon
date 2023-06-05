@@ -10,12 +10,11 @@ from lms.steps.models import Step, StepEnroll, TextStep, VideoStep, QuestionStep
 from lms.problems.models import ProblemStep, TestForProblemStep, TestUserAnswer, UserAnswerForProblemStep
 from lms.assignment.models import AssignmentStep, UserAnswerForAssignmentStep
 from users.models import CustomUser
-from cms.course_builder.forms.forms import \
-    TestForProblemStepForm, \
-    VideoStepCreateForm, QuestionStepCreateForm, ProblemStepCreateForm, AssignmentStepCreateForm
 from lms.problems.tasks import run_user_code
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
+
+from cms.constructor.text_step.forms import TextStepCreateForm
 
 class CMS_Dashboard(LoginRequiredMixin, TemplateView):
     '''Главная страница CMS'''

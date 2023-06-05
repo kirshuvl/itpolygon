@@ -4,6 +4,8 @@ from django.urls import reverse
 from users.models import CustomUser
 from lms.steps.models import DefaultStepManager
 from lms.lessons.models import Lesson
+
+
 class ProblemStep(Step):
     input_format = models.TextField(
         verbose_name='Формат ввода',
@@ -51,51 +53,36 @@ class ProblemStep(Step):
         default=-1,
     )
     objects = DefaultStepManager()
+
     class Meta:
         verbose_name = 'Задача на программирование'
-        verbose_name_plural = 'Задачи на программирование'
+        verbose_name_plural = '1. Задачи на программирование'
         ordering = ['pk']
 
-    
-
-    def get_absolute_url(self):
-        return reverse(
-            'ProblemStepDetail',
-            kwargs={
-                'course_slug': self.lesson.topic.course.slug,
-                'topic_slug': self.lesson.topic.slug,
-                'lesson_slug': self.lesson.slug,
-                'step_slug': self.slug,
-            },
-        )
-
-    def get_cms_url(self):
+    def get_cms_detail_url(self):
+        lesson: Lesson = self.connections.first().lesson
         return reverse(
             'CMS_ProblemStepDetail',
             kwargs={
-                'course_slug': self.lesson.topic.course.slug,
-                'topic_slug': self.lesson.topic.slug,
-                'lesson_slug': self.lesson.slug,
+                'course_slug': lesson.topic.course.slug,
+                'topic_slug': lesson.topic.slug,
+                'lesson_slug': lesson.slug,
                 'step_slug': self.slug,
             },
         )
 
-    def cms_update(self):
+    def get_cms_update_url(self):
+        lesson: Lesson = self.connections.first().lesson
+
         return reverse(
             'CMS_ProblemStepUpdate',
             kwargs={
-                'course_slug': self.lesson.topic.course.slug,
-                'topic_slug': self.lesson.topic.slug,
-                'lesson_slug': self.lesson.slug,
+                'course_slug': lesson.topic.course.slug,
+                'topic_slug': lesson.topic.slug,
+                'lesson_slug': lesson.slug,
                 'step_slug': self.slug,
             },
         )
-
-    #def step_icon_class(self):
-    #    return 'bi-code-square'
-
-    #def get_type(self):
-    #    return 'problem'
 
 
 class TestForProblemStep(models.Model):
@@ -122,7 +109,7 @@ class TestForProblemStep(models.Model):
 
     class Meta:
         verbose_name = 'Тест для задач'
-        verbose_name_plural = 'Тесты для задач'
+        verbose_name_plural = '2. Тесты для задач'
         ordering = ['pk']
         unique_together = ('problem', 'number')
 
@@ -194,7 +181,7 @@ class UserAnswerForProblemStep(models.Model):
 
     class Meta:
         verbose_name = 'Попытка пользователя'
-        verbose_name_plural = 'Попытки пользователей'
+        verbose_name_plural = '3. Попытки пользователей'
         ordering = ['pk']
 
     def get_absolute_url(self):
@@ -285,5 +272,5 @@ class TestUserAnswer(models.Model):
 
     class Meta:
         verbose_name = 'Результат теста'
-        verbose_name_plural = 'Результаты тестов'
+        verbose_name_plural = '4. Результаты тестов'
         ordering = ['pk']

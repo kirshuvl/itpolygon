@@ -9,26 +9,50 @@ from lms.assignment.models import AssignmentStep
 from lms.steps.models import *
 
 
-class TextStepAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'slug', 'is_published', 'points')
-    list_display_links = ('id', 'title', 'slug', 'is_published', 'points')
-    search_fields = ('id', 'title', 'slug', 'is_published', 'points')
+class StepAdminMixin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'slug', 'is_published', 'points', 'author')
+    list_display_links = ('id', 'title', 'slug',
+                          'is_published', 'points', 'author')
+    search_fields = ('id', 'title', 'slug', 'is_published', 'points', 'author')
 
 
-class VideoStepAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'slug', 'is_published', 'points')
-    list_display_links = ('id', 'title', 'slug', 'is_published', 'points')
-    search_fields = ('id', 'title', 'slug', 'is_published', 'points')
+class TextStepAdmin(StepAdminMixin):
+    pass
 
 
-class QuestionStepAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'slug', 'is_published', 'points')
-    list_display_links = ('id', 'title', 'slug', 'is_published', 'points')
-    search_fields = ('id', 'title', 'slug', 'is_published', 'points')
+class VideoStepAdmin(StepAdminMixin):
+    pass
+
+
+class QuestionStepAdmin(StepAdminMixin):
+    pass
+
+
+class QuestionChoiceStepAdmin(StepAdminMixin):
+    pass
+
+
+class UserAnswerForQuestionStepAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'is_correct', 'question')
+    list_display_links = ('id', 'user', 'is_correct', 'question')
+    search_fields = ('id', 'user', 'is_correct', 'question')
+
+
+class TestForQuestionChoiceStepAdmin(admin.ModelAdmin):
+    list_display = ('id', 'is_correct', 'question')
+    list_display_links = ('id', 'is_correct', 'question')
+    search_fields = ('id', 'is_correct', 'question')
+
+
+class UserAnswerForQuestionChoiceStepAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'is_correct', 'question')
+    list_display_links = ('id', 'user', 'is_correct', 'question')
+    search_fields = ('id', 'user', 'is_correct', 'question')
 
 
 class LessonStepConnectionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'lesson', 'step', 'number')
+    list_display = ('id', 'is_published', 'num_attempts',
+                    'lesson', 'step', 'number')
     list_display_links = ('id', 'lesson', 'step', 'number')
     search_fields = ('id', 'lesson', 'step', 'number')
 
@@ -42,6 +66,10 @@ class StepEndrollAdmin(admin.ModelAdmin):
 admin.site.register(TextStep, TextStepAdmin)
 admin.site.register(VideoStep, VideoStepAdmin)
 admin.site.register(QuestionStep, QuestionStepAdmin)
+admin.site.register(QuestionChoiceStep, QuestionChoiceStepAdmin)
+admin.site.register(UserAnswerForQuestionStep, UserAnswerForQuestionStepAdmin)
+admin.site.register(TestForQuestionChoiceStep, TestForQuestionChoiceStepAdmin)
+admin.site.register(UserAnswerForQuestionChoiceStep, UserAnswerForQuestionChoiceStepAdmin)
 admin.site.register(LessonStepConnection, LessonStepConnectionAdmin)
 admin.site.register(StepEnroll, StepEndrollAdmin)
 
@@ -85,29 +113,10 @@ class QuestionStepAdmin(PolymorphicChildModelAdmin):
     search_fields = ('id', 'title', 'slug', 'is_published', 'points')
 
 
-class UserAnswerForQuestionStepAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'is_correct', 'question')
-    list_display_links = ('id', 'user', 'is_correct', 'question')
-    search_fields = ('id', 'user', 'is_correct', 'question')
 
 
-class QuestionChoiceStepAdmin(PolymorphicChildModelAdmin):
-    base_model = QuestionChoiceStep
-    list_display = ('id', 'title', 'slug', 'is_published', 'points')
-    list_display_links = ('id', 'title', 'slug', 'is_published', 'points')
-    search_fields = ('id', 'title', 'slug', 'is_published', 'points')
 
 
-class TestForQuestionChoiceStepAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'is_correct', 'question')
-    list_display_links = ('id', 'title', 'is_correct', 'question')
-    search_fields = ('id', 'title', 'is_correct', 'question')
-
-
-class UserAnswerForQuestionChoiceStepAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'is_correct', 'question')
-    list_display_links = ('id', 'user', 'is_correct', 'question')
-    search_fields = ('id', 'user', 'is_correct', 'question')
 
 
 
@@ -115,11 +124,12 @@ class UserAnswerForQuestionChoiceStepAdmin(admin.ModelAdmin):
 admin.site.register(Step, StepAdmin)
 admin.site.register(TextStep, TextStepAdmin)
 admin.site.register(VideoStep, VideoStepAdmin)
+
+
 admin.site.register(QuestionStep, QuestionStepAdmin)
-admin.site.register(UserAnswerForQuestionStep, UserAnswerForQuestionStepAdmin)
-admin.site.register(QuestionChoiceStep, QuestionChoiceStepAdmin)
-admin.site.register(TestForQuestionChoiceStep, TestForQuestionChoiceStepAdmin)
-admin.site.register(UserAnswerForQuestionChoiceStep, UserAnswerForQuestionChoiceStepAdmin)
+
+
+
 
 
 '''

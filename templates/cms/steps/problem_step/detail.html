@@ -3,6 +3,11 @@
 {% block step_body %}
 <div class="card-body">
     <div class="card mb-2">
+        <div class="card-body">
+            <a href="{% url 'CMS_ProblemStepCreateTests' lesson.topic.course.slug lesson.topic.slug lesson.slug step.slug %}">Добавить тесты</a>
+        </div>
+    </div>
+    <div class="card mb-2">
         <div class="card-header bg-transparent px-3">
             Ограничение времени: {{ step.cputime }} секунда | Ограничение памяти: {{ step.memory }} Мб
         </div>
@@ -43,11 +48,11 @@
                     <div class="row">
                         <div class="col-6">
                             <h6>Ввод</h6>
-                                <pre class="mb-0"><code>{{ sample.input }}</code></pre>
+                            <pre class="mb-0"><code>{{ sample.input }}</code></pre>
                         </div>
                         <div class="col-6">
                             <h6>Вывод</h6>
-                                <pre class="mb-0"><code>{{ sample.output }}</code></pre>
+                            <pre class="mb-0"><code>{{ sample.output }}</code></pre>
                         </div>
                     </div>
                 </div>
@@ -73,11 +78,11 @@
                     <div class="row">
                         <div class="col-6">
                             <h6>Ввод</h6>
-                                <pre class="mb-0"><code>{{ test.input }}</code></pre>
+                            <pre class="mb-0"><code>{{ test.input }}</code></pre>
                         </div>
                         <div class="col-6">
                             <h6>Вывод</h6>
-                                <pre class="mb-0"><code>{{ test.output }}</code></pre>
+                            <pre class="mb-0"><code>{{ test.output }}</code></pre>
                         </div>
                     </div>
                 </div>

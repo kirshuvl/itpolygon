@@ -74,32 +74,6 @@ class Topic(models.Model):
             },
         )
 
-    def down(self):
-        return reverse(
-            'CMS_TopicDown',
-            kwargs={
-                'course_slug': self.course.slug,
-                'topic_slug': self.slug,
-            },
-        )
-
-    def up(self):
-        return reverse(
-            'CMS_TopicUp',
-            kwargs={
-                'course_slug': self.course.slug,
-                'topic_slug': self.slug,
-            },
-        )
-
-    def set_is_published(self):
-        return reverse(
-            'CMS_TopicPublish',
-            kwargs={
-                'topic_slug': self.slug,
-            },
-        )
-    
     def get_cms_create_lesson_url(self):
         return reverse(
             'CMS_LessonCreate',
@@ -109,10 +83,37 @@ class Topic(models.Model):
             },
         )
 
-    def sort_lessons(self):
+    def get_cms_up_url(self):
         return reverse(
-            'lessons_sort',
+            'CMS_TopicUp',
             kwargs={
+                'course_slug': self.course.slug,
+                'topic_slug': self.slug,
+            },
+        )
+
+    def get_cms_down_url(self):
+        return reverse(
+            'CMS_TopicDown',
+            kwargs={
+                'course_slug': self.course.slug,
+                'topic_slug': self.slug,
+            },
+        )
+
+    def get_cms_is_published_url(self):
+        return reverse(
+            'CMS_TopicPublish',
+            kwargs={
+                'topic_slug': self.slug,
+            },
+        )
+
+    def get_cms_lessons_sort_url(self):
+        return reverse(
+            'CMS_LessonsSort',
+            kwargs={
+                'course_slug': self.course.slug,
                 'topic_slug': self.slug,
             },
         )

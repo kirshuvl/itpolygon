@@ -1,5 +1,4 @@
-{% extends 'cms/dashboard.html' %}
-{% block page_title %}{{ page_title }}{% endblock %}
+{% extends 'cms/courses/detail.html' %}
 {% block breadcrumb %}
 <li class="breadcrumb-item">
     <a href="{% url 'CMS_Dashboard' %}" class="text-decoration-none">CMS</a>
@@ -11,7 +10,7 @@
     <a href="{% url 'CMS_CourseDetail' course.slug %}" class="text-decoration-none">{{ course.title }}</a>
 </li>
 <li class="breadcrumb-item active">
-    {{ page_title }}
+    {{ page_title }}!
 </li>
 {% endblock %}
 {% block left_sidebar %}

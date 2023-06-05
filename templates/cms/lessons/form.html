@@ -1,38 +1,44 @@
-{% csrf_token %}
-<div class="input-group mb-2">
-    {{ form.title }}
-</div>
-{% for error in form.title.errors %}
-<div class="text-danger small mb-2">
-    {{ error }}
-</div>
-{% endfor %}
-<div class="input-group mb-2">
-    {{ form.slug }}
-</div>
-{% for error in form.slug.errors %}
-<div class="text-danger small mb-2">
-    {{ error }}
-</div>
-{% endfor %}
-<div class="input-group mb-2">
-    {{ form.description }}
-</div>
-{% for error in form.description.errors %}
-<div class="text-danger small mb-2">
-    {{ error }}
-</div>
-{% endfor %}
-<div class="input-group mb-2">
-    <div class="form-check form-switch">
-        {{ form.is_published }}</div>
-    <label class="form-check-label" for="id_is_published">Опубликовать</label>
-</div>
-<div class="input-group mb-2">
-    {{ form.type }}
-</div>
-{% for error in form.type.errors %}
-<div class="text-danger small mb-2">
-    {{ error }}
-</div>
-{% endfor %}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="input-group mb-2">
+        {{ form.title }}
+    </div>
+    {% for error in form.title.errors %}
+    <div class="text-danger small mb-2">
+        {{ error }}
+    </div>
+    {% endfor %}
+    <div class="input-group mb-2">
+        {{ form.slug }}
+    </div>
+    {% for error in form.slug.errors %}
+    <div class="text-danger small mb-2">
+        {{ error }}
+    </div>
+    {% endfor %}
+    <div class="input-group mb-2">
+        {{ form.description }}
+    </div>
+    {% for error in form.description.errors %}
+    <div class="text-danger small mb-2">
+        {{ error }}
+    </div>
+    {% endfor %}
+    <div class="input-group mb-2">
+        <div class="form-check form-switch">
+            {{ form.is_published }}</div>
+        <label class="form-check-label" for="id_is_published">Опубликовать</label>
+    </div>
+    <div class="input-group mb-2">
+        {{ form.type }}
+    </div>
+    {% for error in form.type.errors %}
+    <div class="text-danger small mb-2">
+        {{ error }}
+    </div>
+    {% endfor %}
+    <div class="btn-group col-12">
+        <a href="{% if lesson %}{{ lesson.topic.course.get_cms_detail_url }}{% elif topic %}{{ topic.course.get_cms_detail_url }}{% endif %}" class="btn btn-secondary col-12">Отмена</a>
+        <button type="submit" class="btn btn-primary col-12">{% if lesson %}Редактировать урок{% elif topic %}Создать урок{% endif %}</button>
+    </div>
+</form>
