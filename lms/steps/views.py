@@ -60,7 +60,7 @@ class LMS_QuestionChoiceStepDetail(BaseStepMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['attempts'] = UserAnswerForQuestionChoiceStep.objects.filter(
+        context['user_attempts'] = UserAnswerForQuestionChoiceStep.objects.filter(
             user=self.request.user, question=self.object)
         return context
 
@@ -79,3 +79,6 @@ class LMS_QuestionChoiceStepDetail(BaseStepMixin, CreateView):
         step_enroll.save()
 
         return super(LMS_QuestionChoiceStepDetail, self).form_valid(form)
+
+    def get_success_url(self):
+        return self.object.question.get_lms_url()

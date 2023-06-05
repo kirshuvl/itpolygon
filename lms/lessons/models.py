@@ -173,6 +173,15 @@ class Lesson(models.Model):
                 'lesson_slug': self.slug,
             }
         )
+    def get_lms_detail_url(self):
+        return reverse(
+            'LMS_LessonDetail',
+            kwargs={
+                'course_slug': self.topic.course.slug,
+                'topic_slug': self.topic.slug,
+                'lesson_slug': self.slug,
+            },
+        )
     
     def get_cms_up_url(self):
         return reverse(
@@ -209,18 +218,12 @@ class Lesson(models.Model):
                 'lesson_slug': self.slug,
             },
         )
+    
+    
     # OLD!
     '''
 
-    def get_lms_detail_url(self):
-        return reverse(
-            'LMS_LessonDetail',
-            kwargs={
-                'course_slug': self.topic.course.slug,
-                'topic_slug': self.topic.slug,
-                'lesson_slug': self.slug,
-            },
-        )
+    
 
     
 
