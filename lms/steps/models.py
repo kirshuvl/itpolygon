@@ -13,7 +13,10 @@ class StepManager(models.Manager):
 
 class DefaultStepManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset()
+        return super().get_queryset().select_related('step_ptr')
+    
+    
+    #.select_related('step_ptr__step__textstep', 'step_ptr__videostep', 'step_ptr__questionstep', 'step_ptr__questionchoicestep', 'step_ptr__assignmentstep', 'step_ptr__problemstep')
 
 
 class VideoStepMixin():
@@ -115,13 +118,87 @@ class Step(models.Model, StepsMixin):
     )
     objects = StepManager()
 
-    def __str__(self):
-        return self.title
-
     class Meta:
         verbose_name = 'Шаг урока'
         verbose_name_plural = 'Шаги уроков'
         ordering = ['title']
+
+    def __str__(self):
+        return self.title
+
+    
+
+    def get_cms_update_url(self):
+        lesson: Lesson = self.connections.first().lesson
+        if hasattr(self, 'textstep'):
+            url = 'CMS_TextStepUpdate'
+        elif hasattr(self, 'videostep'):
+            url = 'CMS_VideoStepUpdate'
+        elif hasattr(self, 'questionstep'):
+            url = 'CMS_QuestionStepUpdate'
+        elif hasattr(self, 'questionchoicestep'):
+            url = 'CMS_QuestionChoiceStepUpdate'
+        elif hasattr(self, 'problemstep'):
+            url = 'CMS_ProblemStepUpdate'
+        elif hasattr(self, 'assignmentstep'):
+            url = 'CMS_AssignmentStepUpdate'
+        else:
+            return '#'
+
+        return reverse(
+            url,
+            kwargs={
+                'course_slug': lesson.topic.course.slug,
+                'topic_slug': lesson.topic.slug,
+                'lesson_slug': lesson.slug,
+                'step_slug': self.slug,
+            },
+        )
+    
+    def get_cms_detail_url(self):
+        lesson: Lesson = self.connections.first().lesson
+        if hasattr(self, 'textstep'):
+            url = 'CMS_TextStepDetail'
+        elif hasattr(self, 'videostep'):
+            url = 'CMS_VideoStepDetail'
+        elif hasattr(self, 'questionstep'):
+            url = 'CMS_QuestionStepDetail'
+        elif hasattr(self, 'questionchoicestep'):
+            url = 'CMS_QuestionChoiceStepDetail'
+        elif hasattr(self, 'problemstep'):
+            url = 'CMS_ProblemStepDetail'
+        elif hasattr(self, 'assignmentstep'):
+            url = 'CMS_AssignmentStepDetail'
+        else:
+            return '#'
+
+        return reverse(
+            url,
+            kwargs={
+                'course_slug': lesson.topic.course.slug,
+                'topic_slug': lesson.topic.slug,
+                'lesson_slug': lesson.slug,
+                'step_slug': self.slug,
+            },
+        )
+
+    def get_cms_delete_url(self):
+        lesson: Lesson = self.connections.first().lesson
+        return reverse(
+            'CMS_StepDelete',
+            kwargs={
+                'course_slug': lesson.topic.course.slug,
+                'topic_slug': lesson.topic.slug,
+                'lesson_slug': lesson.slug,
+                'step_slug': self.slug,
+            },
+        )
+
+    def get_connect(self):
+        connect = self.connections.first()
+        return connect
+
+    # OLD
 
     def icon_class(self):
         if hasattr(self, 'textstep'):
@@ -209,17 +286,6 @@ class Step(models.Model, StepsMixin):
             },
         )
 
-    def cms_delete(self):
-        return reverse(
-            'CMS_StepDelete',
-            kwargs={
-                'course_slug': self.lesson.topic.course.slug,
-                'topic_slug': self.lesson.topic.slug,
-                'lesson_slug': self.lesson.slug,
-                'step_slug': self.slug,
-            },
-        )
-
 
 class LessonStepConnectionManager(models.Manager):
     def get_queryset(self):
@@ -269,31 +335,57 @@ class LessonStepConnection(models.Model):
         verbose_name = 'Шаг - Урок'
         verbose_name_plural = '0. Шаги - Уроки'
         ordering = ['lesson', 'step', 'number']
-        unique_together = ('lesson', 'step')
+        unique_together = ('lesson', 'step', 'number')
 
-    def connect_up(self):
+    def get_cms_up_url(self):
         return reverse(
-            'connect_up',
+            'CMS_ConnectUp',
             kwargs={
+                'course_slug': self.lesson.topic.course.slug,
+                'topic_slug': self.lesson.topic.slug,
                 'lesson_slug': self.lesson.slug,
-                'pk': self.pk,
-            }
+                'step_slug': self.step.slug,
+            },
         )
 
-    def connect_down(self):
+    def get_cms_down_url(self):
+
         return reverse(
-            'connect_down',
+            'CMS_ConnectDown',
             kwargs={
+                'course_slug': self.lesson.topic.course.slug,
+                'topic_slug': self.lesson.topic.slug,
                 'lesson_slug': self.lesson.slug,
-                'pk': self.pk,
-            }
+                'step_slug': self.step.slug,
+            },
+        )
+
+    def get_cms_is_published_url(self):
+
+        return reverse(
+            'CMS_ConnectPublish',
+            kwargs={
+                'course_slug': self.lesson.topic.course.slug,
+                'topic_slug': self.lesson.topic.slug,
+                'lesson_slug': self.lesson.slug,
+                'step_slug': self.step.slug,
+            },
+        )
+
+    def get_cms_connect_delete_url(self):
+
+        return reverse(
+            'CMS_ConnectDelete',
+            kwargs={
+                'course_slug': self.lesson.topic.course.slug,
+                'topic_slug': self.lesson.topic.slug,
+                'lesson_slug': self.lesson.slug,
+                'step_slug': self.step.slug,
+            },
         )
 
 
 class TextStep(Step):
-    # text = models.TextField(
-    #    verbose_name='Текст'
-    # )
     objects = DefaultStepManager()
 
     class Meta:
@@ -301,10 +393,11 @@ class TextStep(Step):
         verbose_name_plural = '1. Текстовые шаги'
         ordering = ['pk']
 
-    def get_lms_url(self, **kwargs):
+    def get_cms_detail_url(self):
         lesson: Lesson = self.connections.first().lesson
+
         return reverse(
-            'LMS_ProblemStepDetail',
+            'CMS_TextStepDetail',
             kwargs={
                 'course_slug': lesson.topic.course.slug,
                 'topic_slug': lesson.topic.slug,
@@ -313,35 +406,27 @@ class TextStep(Step):
             },
         )
 
-    def get_absolute_url(self):
-        return reverse(
-            'TextStepDetail',
-            kwargs={
-                'course_slug': self.lesson.topic.course.slug,
-                'topic_slug': self.lesson.topic.slug,
-                'lesson_slug': self.lesson.slug,
-                'step_slug': self.slug,
-            },
-        )
+    def get_cms_update_url(self):
+        lesson: Lesson = self.connections.first().lesson
 
-    def get_cms_url(self):
-        return reverse(
-            'CMS_TextStepDetail',
-            kwargs={
-                'course_slug': self.lesson.topic.course.slug,
-                'topic_slug': self.lesson.topic.slug,
-                'lesson_slug': self.lesson.slug,
-                'step_slug': self.slug,
-            },
-        )
-
-    def cms_update(self):
         return reverse(
             'CMS_TextStepUpdate',
             kwargs={
-                'course_slug': self.lesson.topic.course.slug,
-                'topic_slug': self.lesson.topic.slug,
-                'lesson_slug': self.lesson.slug,
+                'course_slug': lesson.topic.course.slug,
+                'topic_slug': lesson.topic.slug,
+                'lesson_slug': lesson.slug,
+                'step_slug': self.slug,
+            },
+        )
+
+    def get_cms_delete_url(self):
+        lesson: Lesson = self.connections.first().lesson
+        return reverse(
+            'CMS_StepDelete',
+            kwargs={
+                'course_slug': lesson.topic.course.slug,
+                'topic_slug': lesson.topic.slug,
+                'lesson_slug': lesson.slug,
                 'step_slug': self.slug,
             },
         )
@@ -359,35 +444,28 @@ class VideoStep(Step):
         verbose_name_plural = '2. Видео шаги'
         ordering = ['title']
 
-    def get_absolute_url(self):
-        return reverse(
-            'VideoStepDetail',
-            kwargs={
-                'course_slug': self.lesson.topic.course.slug,
-                'topic_slug': self.lesson.topic.slug,
-                'lesson_slug': self.lesson.slug,
-                'step_slug': self.slug,
-            },
-        )
-
-    def get_cms_url(self):
+    def get_cms_detail_url(self):
+        lesson: Lesson = self.connections.first().lesson
+        
         return reverse(
             'CMS_VideoStepDetail',
             kwargs={
-                'course_slug': self.lesson.topic.course.slug,
-                'topic_slug': self.lesson.topic.slug,
-                'lesson_slug': self.lesson.slug,
+                'course_slug': lesson.topic.course.slug,
+                'topic_slug': lesson.topic.slug,
+                'lesson_slug': lesson.slug,
                 'step_slug': self.slug,
             },
         )
 
-    def cms_update(self):
+    def get_cms_update_url(self):
+        lesson: Lesson = self.connections.first().lesson
+
         return reverse(
             'CMS_VideoStepUpdate',
             kwargs={
-                'course_slug': self.lesson.topic.course.slug,
-                'topic_slug': self.lesson.topic.slug,
-                'lesson_slug': self.lesson.slug,
+                'course_slug': lesson.topic.course.slug,
+                'topic_slug': lesson.topic.slug,
+                'lesson_slug': lesson.slug,
                 'step_slug': self.slug,
             },
         )
@@ -405,14 +483,15 @@ class QuestionStep(Step):
     objects = DefaultStepManager()
 
     class Meta:
-        verbose_name = 'Вопрос'
-        verbose_name_plural = '3. Вопросы'
+        verbose_name = 'Вопрос с вводом ответа'
+        verbose_name_plural = '3. Вопросы c вводом ответа'
         ordering = ['title']
 
-    def get_lms_url(self, **kwargs):
+    def get_cms_detail_url(self):
         lesson: Lesson = self.connections.first().lesson
+        
         return reverse(
-            'LMS_QuestionStepDetail',
+            'CMS_QuestionStepDetail',
             kwargs={
                 'course_slug': lesson.topic.course.slug,
                 'topic_slug': lesson.topic.slug,
@@ -421,33 +500,18 @@ class QuestionStep(Step):
             },
         )
 
-    def get_cms_url(self):
-        return reverse(
-            'CMS_QuestionStepDetail',
-            kwargs={
-                'course_slug': self.lesson.topic.course.slug,
-                'topic_slug': self.lesson.topic.slug,
-                'lesson_slug': self.lesson.slug,
-                'step_slug': self.slug,
-            },
-        )
+    def get_cms_update_url(self):
+        lesson: Lesson = self.connections.first().lesson
 
-    def cms_update(self):
         return reverse(
             'CMS_QuestionStepUpdate',
             kwargs={
-                'course_slug': self.lesson.topic.course.slug,
-                'topic_slug': self.lesson.topic.slug,
-                'lesson_slug': self.lesson.slug,
+                'course_slug': lesson.topic.course.slug,
+                'topic_slug': lesson.topic.slug,
+                'lesson_slug': lesson.slug,
                 'step_slug': self.slug,
             },
         )
-
-    def type(self):
-        return 'question'
-
-    def get_type(self):
-        return 'videostep'
 
 
 class UserAnswerForQuestionStep(models.Model):
@@ -476,7 +540,7 @@ class UserAnswerForQuestionStep(models.Model):
 
     class Meta:
         verbose_name = 'Ответ пользователя'
-        verbose_name_plural = 'Ответы пользователя'
+        verbose_name_plural = '3.1 Ответы пользователей'
         ordering = ['pk']
 
     def get_absolute_url(self):
@@ -497,19 +561,36 @@ class QuestionChoiceStep(Step):
         verbose_name='Количество попыток',
         default=-1,
     )
+    objects = DefaultStepManager()
 
     class Meta:
         verbose_name = 'Вопрос с выбором ответа'
-        verbose_name_plural = 'Вопросы с выбором ответа'
+        verbose_name_plural = '4. Вопросы с выбором ответа'
         ordering = ['title']
+    
 
-    def get_absolute_url(self):
+    def get_cms_detail_url(self):
+        lesson: Lesson = self.connections.first().lesson
+        
         return reverse(
-            'QuestionChoiceStepDetail',
+            'CMS_QuestionChoiceStepDetail',
             kwargs={
-                'course_slug': self.lesson.topic.course.slug,
-                'topic_slug': self.lesson.topic.slug,
-                'lesson_slug': self.lesson.slug,
+                'course_slug': lesson.topic.course.slug,
+                'topic_slug': lesson.topic.slug,
+                'lesson_slug': lesson.slug,
+                'step_slug': self.slug,
+            },
+        )
+
+    def get_cms_update_url(self):
+        lesson: Lesson = self.connections.first().lesson
+
+        return reverse(
+            'CMS_QuestionChoiceStepUpdate',
+            kwargs={
+                'course_slug': lesson.topic.course.slug,
+                'topic_slug': lesson.topic.slug,
+                'lesson_slug': lesson.slug,
                 'step_slug': self.slug,
             },
         )
@@ -532,11 +613,11 @@ class TestForQuestionChoiceStep(models.Model):
 
     class Meta:
         verbose_name = 'Вариант ответа'
-        verbose_name_plural = 'Варианты ответа'
+        verbose_name_plural = '4.1 Варианты ответа'
         ordering = ['pk']
 
     def __str__(self) -> str:
-        return self.title
+        return self.answer
 
 
 class UserAnswerForQuestionChoiceStep(models.Model):
@@ -544,7 +625,7 @@ class UserAnswerForQuestionChoiceStep(models.Model):
         TestForQuestionChoiceStep,
         related_name='answers',
         verbose_name='Ответ пользователя',
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
     )
     is_correct = models.BooleanField(
         default=False,
@@ -553,7 +634,7 @@ class UserAnswerForQuestionChoiceStep(models.Model):
         CustomUser,
         related_name='question_choice_answers',
         verbose_name='Пользователь',
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
     )
     question = models.ForeignKey(
         QuestionChoiceStep,
@@ -564,6 +645,11 @@ class UserAnswerForQuestionChoiceStep(models.Model):
     date_create = models.DateTimeField(
         auto_now=True,
     )
+
+    class Meta:
+        verbose_name = 'Ответ пользователя'
+        verbose_name_plural = '4.2 Ответы пользователей'
+        ordering = ['pk']
 
     def get_absolute_url(self):
         return reverse(

@@ -72,16 +72,6 @@ class Lesson(models.Model):
     def __str__(self):
         return self.title
 
-    def get_lms_detail_url(self):
-        return reverse(
-            'LMS_LessonDetail',
-            kwargs={
-                'course_slug': self.topic.course.slug,
-                'topic_slug': self.topic.slug,
-                'lesson_slug': self.slug,
-            },
-        )
-
     def get_cms_detail_url(self):
         return reverse(
             'CMS_LessonDetail',
@@ -109,56 +99,11 @@ class Lesson(models.Model):
                 'course_slug': self.topic.course.slug,
                 'topic_slug': self.topic.slug,
                 'lesson_slug': self.slug,
-            }
-        )
-
-    def get_stat_url(self):
-        return reverse(
-            'LessonStatistics',
-            kwargs={
-                'lesson_slug': self.slug,
             },
         )
 
-    def get_course_lms_url(self):
-        return self.topic.course.get_lms_url()
-    
-    def down(self):
-        return reverse(
-            'CMS_LessonDown',
-            kwargs={
-                'course_slug': self.topic.course.slug,
-                'topic_slug': self.topic.slug,
-                'lesson_slug': self.slug,
-            },
-        )
+    # Создать шаги
 
-    def up(self):
-        return reverse(
-            'CMS_LessonUp',
-            kwargs={
-                'course_slug': self.topic.course.slug,
-                'topic_slug': self.topic.slug,
-                'lesson_slug': self.slug,
-            },
-        )
-    
-    def set_is_published(self):
-        return reverse(
-            'lesson_check_publish',
-            kwargs={
-                'lesson_slug': self.slug,
-            },
-        )
-    
-    def steps_sort(self):
-        return reverse(
-            'steps_sort',
-            kwargs={
-                'lesson_slug': self.slug,
-            },
-        )
-    
     def get_cms_create_text_step_url(self):
         return reverse(
             'CMS_TextStepCreate',
@@ -168,7 +113,7 @@ class Lesson(models.Model):
                 'lesson_slug': self.slug
             },
         )
-    
+
     def get_cms_create_video_step_url(self):
         return reverse(
             'CMS_VideoStepCreate',
@@ -178,7 +123,7 @@ class Lesson(models.Model):
                 'lesson_slug': self.slug
             },
         )
-    
+
     def get_cms_create_question_step_url(self):
         return reverse(
             'CMS_QuestionStepCreate',
@@ -189,6 +134,15 @@ class Lesson(models.Model):
             },
         )
 
+    def get_cms_create_question_choice_step_url(self):
+        return reverse(
+            'CMS_QuestionChoiceStepCreate',
+            kwargs={
+                'course_slug': self.topic.course.slug,
+                'topic_slug': self.topic.slug,
+                'lesson_slug': self.slug
+            },
+        )
 
     def get_cms_create_problem_step_url(self):
         return reverse(
@@ -210,7 +164,88 @@ class Lesson(models.Model):
             },
         )
 
+    def get_cms_text_step_from_library_url(self):
+        return reverse(
+            'CMS_TextStepFromLibrary',
+            kwargs={
+                'course_slug': self.topic.course.slug,
+                'topic_slug': self.topic.slug,
+                'lesson_slug': self.slug,
+            }
+        )
+    
+    def get_cms_up_url(self):
+        return reverse(
+            'CMS_LessonUp',
+            kwargs={
+                'course_slug': self.topic.course.slug,
+                'topic_slug': self.topic.slug,
+                'lesson_slug': self.slug,
+            },
+        )
+
+    def get_cms_down_url(self):
+        return reverse(
+            'CMS_LessonDown',
+            kwargs={
+                'course_slug': self.topic.course.slug,
+                'topic_slug': self.topic.slug,
+                'lesson_slug': self.slug,
+            },
+        )
+
+    def get_cms_is_published_url(self):
+        return reverse(
+            'CMS_LessonPublish',
+            kwargs={
+                'lesson_slug': self.slug,
+            },
+        )
+
+    def get_cms_steps_sort_url(self):
+        return reverse(
+            'CMS_StepsSort',
+            kwargs={
+                'lesson_slug': self.slug,
+            },
+        )
+    # OLD!
     '''
+
+    def get_lms_detail_url(self):
+        return reverse(
+            'LMS_LessonDetail',
+            kwargs={
+                'course_slug': self.topic.course.slug,
+                'topic_slug': self.topic.slug,
+                'lesson_slug': self.slug,
+            },
+        )
+
+    
+
+    def get_stat_url(self):
+        return reverse(
+            'LessonStatistics',
+            kwargs={
+                'lesson_slug': self.slug,
+            },
+        )
+
+    def get_course_lms_url(self):
+        return self.topic.course.get_lms_url()
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 
     def get_statistics(self):
         return reverse(

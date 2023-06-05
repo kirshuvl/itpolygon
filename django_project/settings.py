@@ -25,7 +25,7 @@ INSTALLED_APPS = [
     'lms.assignment.apps.AssignmentConfig',
     'crm.lead.apps.LeadConfig',
     'cms.other.apps.OtherConfig',
-    'cms.course_builder.apps.CourseBuilderConfig',
+    'cms.constructor.apps.ConstructorConfig',
     #'cms.feedback.apps.FeedbackConfig',
     'django_cleanup.apps.CleanupConfig',
 ]

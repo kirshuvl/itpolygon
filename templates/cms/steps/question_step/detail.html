@@ -1,10 +1,9 @@
 {% extends 'cms/steps/detail.html' %}
-{% block page_title %}{{ step.title }}{% endblock %}
 {% block step_body %}
 <div class="card-body">
     <div class="card mb-2">
         <div class="card-header bg-transparent px-3">
-            Доступно попыток: {{ step.num_attempts }}
+            Доступно попыток: {{ step.get_num_attempts }} {{ step.num_attempts }}
         </div>
         <div class="card-body pb-0">
             {{ step.description|safe }}

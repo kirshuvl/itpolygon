@@ -1,0 +1,24 @@
+{% extends 'cms/steps/detail.html' %}
+{% block step_body %}
+<div class="card-body">
+    <div class="card mb-2">
+        <div class="card-header bg-transparent px-3">
+            Доступно попыток: {{ step.get_num_attempts }} {{ step.num_attempts }}
+        </div>
+        <div class="card-body pb-0">
+            {{ step.description|safe }}
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            Правильный ответ: {{ step.answer }}
+        </div>
+    </div>
+
+    <div class="card">
+        {% for test in step.tests.all %}
+        <li>{{ test }} | {{ test.is_correct }}</li>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

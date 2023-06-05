@@ -23,14 +23,8 @@
                     <div class="col-2 col-md-1 border-end pe-2">
                         <span class="badge bg-secondary opacity-50 p-2 col-12"><i class="bi bi-card-image"></i></span>
                     </div>
-                    <div class="col-7 col-xl-6 border-end">
+                    <div class="col-7 col-md-8 col-xxl-9 border-end">
                         Название курса
-                    </div>
-                    <div class="d-none d-xl-block col-xl-2 border-end text-center">
-                        Дата создания
-                    </div>
-                    <div class="d-none d-md-block col-md-1 border-end text-center">
-                        <span class="badge bg-secondary p-2 rounded opacity-50"><i class="bi bi-question-square"></i></span>
                     </div>
                 </div>
             </div>
@@ -42,26 +36,14 @@
                     <div class="col-2 col-md-1 border-end pe-2">
                         <img src="{{ course.icon.url }}" class="rounded p-0 img-fluid bg-light" alt="{{ course.title }}">
                     </div>
-                    <div class="col-7 col-xl-6 border-end">
+                    <div class="col-7 col-md-8 col-xxl-9 border-end">
                         {{ course.title }}
                     </div>
-                    <div class="d-none d-xl-block col-xl-2 border-end text-center">
-                        {{ course.date_create|date:'d.m.Y' }}
-                    </div>
-                    <div class="d-none d-md-block col-md-1 border-end text-center">
-                        <a href="{{ course.set_is_published }}">
-                            {% if course.is_published %}
-                            <span class="badge bg-success p-2 rounded opacity-50"><i class="bi bi-check-square"></i></span>
-                            {% else %}
-                            <span class="badge bg-danger p-2 rounded opacity-50"><i class="bi bi-x-square"></i></span>
-                            {% endif %}
-                        </a>
-                    </div>
-                    <div class="col-3 col-xl-2 ps-2">
+                    <div class="col-3 col-xxl-2 ps-2">
                         <a href="{{ course.get_cms_detail_url }}">
                             <span class="badge btn btn-primary p-2 col-12 opacity-50">
                                 <i class="bi bi-pencil m-sm-1"></i>
-                                <span class="d-none d-xxl-inline-block">Редактировать</span>
+                                <span class="d-none d-md-inline-block">Редактировать</span>
                             </span>
                         </a>
                     </div>

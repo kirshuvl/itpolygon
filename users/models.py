@@ -82,6 +82,10 @@ class CustomUser(AbstractUser, PermissionsMixin):
         verbose_name='Родитель',
         blank=True
     )
+    is_active = models.BooleanField(
+        verbose_name='Активен',
+        default=True,
+    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

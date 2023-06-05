@@ -1,34 +1,26 @@
 {% with request.resolver_match.url_name as url_name %}
-<ul class="nav flex-column nav-pills ">
-    <li class="nav-item">
-        <a href="{{ lesson.get_cms_create_text_step_url }}" class="nav-link {% if url_name == 'CMS_TextStepCreate' %}active{% endif %}"><i class="bi bi-plus-square me-2"></i>Текст</a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ lesson.get_cms_create_video_step_url }}" class="nav-link {% if url_name == 'CMS_VideoStepCreate' %}active{% endif %}"><i class="bi bi-plus-square me-2"></i>Видео</a>
-    </li>
-    <li>
-        <hr class="my-2">
-    </li>
-    <li class="nav-item">
-        <a href="{{ lesson.get_cms_create_question_step_url }}" class="nav-link {% if url_name == 'CMS_QuestionStepCreate' %}active{% endif %}"><i class="bi bi-plus-square me-2"></i>Вопрос</a>
-    </li>
-    <li class="nav-item">
-        <a href="#" class="nav-link {% if url_name == '' %}active{% endif %}"><i class="bi bi-plus-square me-2"></i>Вопрос с выбором ответа</a>
-    </li>
-    <li>
-        <hr class="my-2">
-    </li>
-    <li class="nav-item">
-        <a href="{{ lesson.get_cms_create_problem_step_url }}" class="nav-link {% if url_name == 'CMS_ProblemStepCreate' %}active{% endif %}"><i class="bi bi-plus-square me-2"></i>Программирование</a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ lesson.get_cms_create_assignment_step_url }}" class="nav-link {% if url_name == 'CMS_AssignmentStepCreate' %}active{% endif %}"><i class="bi bi-plus-square me-2"></i>Задание</a>
-    </li>
-    <li>
-        <hr class="my-2">
-    </li>
-    <li class="nav-item">
-        <a href="" class="nav-link {% if url_name == '' %}active{% endif %}"><i class="bi bi-plus-square me-2"></i>Выбрать из библиотеки</a>
-    </li>
-</ul>
+<div class="btn-group col-12 mb-2">
+    <a href="{{ lesson.get_cms_create_text_step_url }}" class="btn {% if url_name == 'CMS_TextStepCreate' %}btn-primary{% else %}btn-outline-primary{% endif %} col-10 text-start"><i class="bi bi-plus-square me-2"></i>Текст</a>
+    <a href="{{ lesson.get_cms_text_step_from_library_url }}" class="btn {% if url_name == 'CMS_TextStepFromLibrary' %}btn-primary{% else %}btn-outline-primary{% endif %} col-2"><i class="bi bi-collection"></i></a>
+</div>
+<div class="btn-group col-12 mb-2">
+    <a href="{{ lesson.get_cms_create_video_step_url }}" class="btn {% if url_name == 'CMS_VideoStepCreate' %}btn-primary{% else %}btn-outline-primary{% endif %} col-10 text-start"><i class="bi bi-plus-square me-2"></i>Видео</a>
+    <a href="{{ lesson.get_cms_create_video_step_url }}" class="btn {% if url_name == '' %}btn-primary{% else %}btn-outline-primary{% endif %} col-2"><i class="bi bi-collection"></i></a>
+</div>
+<div class="btn-group col-12 mb-2">
+    <a href="{{ lesson.get_cms_create_question_step_url }}" class="btn {% if url_name == 'CMS_QuestionStepCreate' %}btn-primary{% else %}btn-outline-primary{% endif %} col-10 text-start"><i class="bi bi-plus-square me-2"></i>Вопрос</a>
+    <a href="{{ lesson.get_cms_create_question_step_url }}" class="btn {% if url_name == '' %}btn-primary{% else %}btn-outline-primary{% endif %} col-2"><i class="bi bi-collection"></i></a>
+</div>
+<div class="btn-group col-12 mb-2">
+    <a href="{{ lesson.get_cms_create_question_choice_step_url }}" class="btn {% if url_name == 'CMS_QuestionChoiceStepCreate' %}btn-primary{% else %}btn-outline-primary{% endif %} col-10 text-start"><i class="bi bi-plus-square me-2"></i>Вопрос с выбором</a>
+    <a href="{{ lesson.get_cms_create_question_choice_step_url }}" class="btn {% if url_name == '' %}btn-primary{% else %}btn-outline-primary{% endif %} col-2"><i class="bi bi-collection"></i></a>
+</div>
+<div class="btn-group col-12 mb-2">
+    <a href="{{ lesson.get_cms_create_problem_step_url }}" class="btn {% if url_name == 'CMS_ProblemStepCreate' %}btn-primary{% else %}btn-outline-primary{% endif %} col-10 text-start"><i class="bi bi-plus-square me-2"></i>Задача</a>
+    <a href="{{ lesson.get_cms_create_problem_step_url }}" class="btn {% if url_name == '' %}btn-primary{% else %}btn-outline-primary{% endif %} col-2"><i class="bi bi-collection"></i></a>
+</div>
+<div class="btn-group col-12">
+    <a href="{{ lesson.get_cms_create_assignment_step_url }}" class="btn {% if url_name == 'CMS_AssignmentStepCreate' %}btn-primary{% else %}btn-outline-primary{% endif %} col-10 text-start"><i class="bi bi-plus-square me-2"></i>Задание</a>
+    <a href="{{ lesson.get_cms_create_assignment_step_url }}" class="btn {% if url_name == '' %}btn-primary{% else %}btn-outline-primary{% endif %} col-2"><i class="bi bi-collection"></i></a>
+</div>
 {% endwith %}

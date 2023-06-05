@@ -95,11 +95,18 @@ class Course(models.Model):
 
     class Meta:
         verbose_name = 'Курс'
-        verbose_name_plural = 'Курсы'
+        verbose_name_plural = '1. Курсы'
         ordering = ['pk']
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        image = Image.open(self.icon.path)
+        if image.width != 500 or image.height != 500:
+            image = image.resize((500, 500), Image.ANTIALIAS)
+            image.save(self.icon.path)
 
     def get_cms_detail_url(self):  # Проверить, обновить
         return reverse(
@@ -133,56 +140,21 @@ class Course(models.Model):
             },
         )
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        image = Image.open(self.icon.path)
-        if image.width != 500 or image.height != 500:
-            image = image.resize((500, 500), Image.ANTIALIAS)
-            image.save(self.icon.path)
-
-    def get_lms_url(self):  # Проверить, обновить
+    def get_lms_detail_url(self):
         return reverse(
             'LMS_CourseDetail',
             kwargs={
                 'course_slug': self.slug,
             },
         )
-
-    '''
-
-    def get_stat_url(self): # Проверить, обновить
+    
+    def get_cms_topics_sort_url(self):
         return reverse(
-            'CMS_CourseStatistics',
+            'CMS_TopicsSort',
             kwargs={
                 'course_slug': self.slug,
             },
         )
-
-    def set_is_published(self): # Проверить, обновить
-        return reverse(
-            'course_check_publish',
-            kwargs={
-                'course_slug': self.slug,
-            },
-        )
-
-    def create_topic(self): # Проверить, обновить
-        return reverse(
-            'CMS_TopicCreate',
-            kwargs={
-                'course_slug': self.slug,
-            },
-        )
-
-
-
-    def get_delete_url(self): # Проверить, обновить
-        return reverse(
-            'CMS_CourseDelete',
-            kwargs={
-                'course_slug': self.slug,
-            },
-        )'''
 
 
 class CourseEnroll(models.Model):
@@ -217,6 +189,9 @@ class CourseEnroll(models.Model):
 
     class Meta:
         verbose_name = 'Зачисление на курс'
-        verbose_name_plural = 'Зачисления на курсы'
+        verbose_name_plural = '2. Зачисления на курсы'
         ordering = ['pk']
         unique_together = ('course', 'user')
+
+    def __str__(self) -> str:
+        return f'Зачисление на курс № {self.pk}'

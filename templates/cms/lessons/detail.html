@@ -54,11 +54,8 @@
 <div class="card shadow">
     <div class="card-header bg-transparent p-3">
         <div class="d-flex justify-content-between">
-            <h4 class="m-0 text-truncate"><i class="bi bi-ui-checks-grid me-2"></i>{{ lesson.title }}</h4>
-            <div>
-                <a href="#"><span class="badge bg-secondary p-2 opacity-50 text-white"><i class="bi bi-eye"></i></span></a>
-                <a href="{{ lesson.topic.course.get_cms_detail_url }}"><span class="badge bg-secondary p-2 opacity-50 text-white"><i class="bi bi-arrow-bar-left"></i></span></a>
-            </div>
+            <h4 class="m-0 text-truncate me-1"><i class="bi bi-ui-checks-grid me-2"></i>{{ lesson.title }}</h4>
+
         </div>
     </div>
     <div class="card-body pb-2">
@@ -66,26 +63,25 @@
             <div class="card-body p-2">
                 <div class="row align-items-center">
                     <div class="col-8 col-md-10 text-truncate">
-                        <a href="{{ lesson.set_is_published }}">
-                            <span class="badge {% if topic.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50 me-2"># {{ lesson.number }}</span></a>{{ lesson.title }}
+                        <a href="{{ lesson.get_cms_is_published_url }}"><span class="badge {% if lesson.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50 me-2"># {{ lesson.number }}</span></a>{{ lesson.title }}
                     </div>
                     <div class="col-4 col-md-2 text-end">
                         <div class="btn-group dropstart">
                             <button type="button" class="badge btn btn-outline-secondary dropdown-toggle dropdown-toggle-split text-secondary" data-bs-toggle="dropdown" aria-expanded="false">
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="">Редактировать</a></li>
-                                <li><a class="dropdown-item" href="">Удалить</a></li>
-                                <li><a class="dropdown-item" href="{{ lesson.set_is_published }}">{% if lesson.is_published %}Снять с публикации{% else %}Опубликовать{% endif %}</a></li>
+                                <li><a class="dropdown-item" href="{{ lesson.get_cms_update_url }}">Редактировать</a></li>
+                                <li><a class="dropdown-item" href="{{ lesson.get_cms_delete_url }}">Удалить</a></li>
+                                <li><a class="dropdown-item" href="{{ lesson.get_cms_is_published_url }}">{% if lesson.is_published %}Снять с публикации{% else %}Опубликовать{% endif %}</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item" href="{{ lesson.steps_sort }}">Отсортировать шаги</a></li>
+                                <li><a class="dropdown-item" href="#">Отсортировать шаги</a></li>
                             </ul>
-                            <a href="{{ lesson.down }}" class="badge btn btn-outline-secondary text-danger p-1">
+                            <a href="{{ lesson.get_cms_down_url }}" class="badge btn btn-outline-secondary text-danger p-1">
                                 <i class="bi bi-arrow-down"></i>
                             </a>
-                            <a href="{{ lesson.up }}" class="badge btn btn-outline-secondary text-danger p-1">
+                            <a href="{{ lesson.get_cms_up_url }}" class="badge btn btn-outline-secondary text-danger p-1">
                                 <i class="bi bi-arrow-up"></i>
                             </a>
                         </div>
@@ -93,48 +89,45 @@
                 </div>
             </div>
         </div>
-        {% for connect in connections %}
-        <div class="card offset-1 mb-2">
+        {% for step in steps %}
+        <div class="card mb-2 offset-1">
             <div class="card-body p-2">
                 <div class="row align-items-center">
                     <div class="col-8 col-md-10 text-truncate">
-                        <div class="d-flex align-items-center">
-                            <a href="">
-                                <span class="badge {% if connect.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50 me-2"># {{ connect.number }}</span>
-                            </a>
-                            <a href="#" class="text-decoration-none">{{ connect.step.title }} | {{ connect.date_create }} | {{ connect.step.date_create }}
-                            </a>
-                        </div>
+                        <a href="{{ step.get_connect.get_cms_is_published_url }}"><span class="badge {% if step.get_connect.is_published %}bg-success{% else %}bg-danger{% endif %} p-2 opacity-50 me-2"># {{ step.get_connect.number }}</span></a><a href="{{ step.get_cms_detail_url }}" class="text-decoration-none">{{ step.title }}</a>
                     </div>
                     <div class="col-4 col-md-2 text-end">
                         <div class="btn-group dropstart">
                             <button type="button" class="badge btn btn-outline-secondary dropdown-toggle dropdown-toggle-split text-secondary" data-bs-toggle="dropdown" aria-expanded="false">
                             </button>
                             <ul class="dropdown-menu">
-                                {% if user == connect.step.author %}
-                                <li><a class="dropdown-item" href="#">Редактировать шаг</a></li>
-                                <li><a class="dropdown-item" href="#">Удалить шаг</a></li>
+                                {% if user == step.author %}
+                                <li><a class="dropdown-item" href="{{ step.get_cms_update_url }}">Редактировать шаг</a></li>
+                                <li><a class="dropdown-item" href="{{ step.get_cms_delete_url }}">Удалить шаг</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
                                 {% endif %}
-                                {% if user == connect.author %}
-                                <li><a class="dropdown-item" href="#">Отвязать шаг</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
+                                {% if user == step.get_connect.author %}
+                                <li><a class="dropdown-item" href="{{ step.get_connect.get_cms_connect_delete_url }}">Отвязать шаг</a></li>
+                                <li><a class="dropdown-item" href="{{ step.get_connect.get_cms_is_published_url }}">{% if step.get_connect.is_published %}Снять с публикации{% else %}Опубликовать{% endif %}</a></li>
                                 {% endif %}
-                                <li><a class="dropdown-item" href="#">{% if connect.is_published %}Снять с публикации{% else %}Опубликовать{% endif %}</a></li>
                             </ul>
-                            <a href="{{ connect.connect_down }}" class="badge btn btn-outline-secondary text-primary p-1">
+                            <a href="{{ step.get_connect.get_cms_down_url }}" class="badge btn btn-outline-secondary text-primary p-1">
                                 <i class="bi bi-arrow-down"></i>
                             </a>
-                            <a href="{{ connect.connect_up }}" class="badge btn btn-outline-secondary text-primary p-1">
+                            <a href="{{ step.get_connect.get_cms_up_url }}" class="badge btn btn-outline-secondary text-primary p-1">
                                 <i class="bi bi-arrow-up"></i>
                             </a>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="card mb-2 offset-1">
+            <div class="card-body text-center text-danger">
+                Вы еще не создали ни одного шага в этом уроке :( Добавьте собственные шаги или выберите из библиотеки
             </div>
         </div>
         {% endfor %}
