@@ -117,3 +117,25 @@ class Topic(models.Model):
                 'topic_slug': self.slug,
             },
         )
+
+    def get_steps_cnt(self):
+        cnt = 0
+        for lesson in self.lessons.all():
+            cnt += lesson.get_steps_cnt()
+
+        return cnt
+
+    def get_user_end_steps(self):
+
+        cnt = 0
+
+        for lesson in self.lessons.all():
+            cnt += lesson.get_user_end_steps()
+
+        return cnt
+
+    def get_user_percentage(self):
+        if self.get_steps_cnt() == 0:
+            return 0
+
+        return int(self.get_user_end_steps() / self.get_steps_cnt() * 100)
