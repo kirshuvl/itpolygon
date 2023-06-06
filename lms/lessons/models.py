@@ -173,6 +173,7 @@ class Lesson(models.Model):
                 'lesson_slug': self.slug,
             }
         )
+
     def get_lms_detail_url(self):
         return reverse(
             'LMS_LessonDetail',
@@ -182,7 +183,7 @@ class Lesson(models.Model):
                 'lesson_slug': self.slug,
             },
         )
-    
+
     def get_cms_up_url(self):
         return reverse(
             'CMS_LessonUp',
@@ -218,43 +219,27 @@ class Lesson(models.Model):
                 'lesson_slug': self.slug,
             },
         )
-    
-    
-    # OLD!
-    '''
 
-    
+    def get_steps_cnt(self):
 
-    
+        return self.connections.count()
 
-    def get_stat_url(self):
-        return reverse(
-            'LessonStatistics',
-            kwargs={
-                'lesson_slug': self.slug,
-            },
-        )
+    def get_user_end_steps(self):
 
-    def get_course_lms_url(self):
-        return self.topic.course.get_lms_url()
+        cnt = 0
 
-    
+        for connect in self.connections.all():
+            enrolls = connect.step.steps_enrolls.all()
+            if enrolls.count() > 1:
+                return 'Error'
+            enroll = connect.step.steps_enrolls.first()
+            if enroll is not None and enroll.status == 'OK':
+                cnt += 1
 
-    
+        return cnt
 
-    
+    def get_user_percentage(self):
+        if self.get_steps_cnt() == 0:
+            return 0
 
-    
-
-    
-
-    
-
-    def get_statistics(self):
-        return reverse(
-            'LessonStatistics',
-            kwargs={
-                'lesson_slug': self.slug,
-            },
-        )
-    '''
+        return int(self.get_user_end_steps() / self.get_steps_cnt() * 100)

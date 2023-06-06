@@ -99,3 +99,7 @@ def is_problem_correct(attempts):
 def point(time):
     return str(time).replace(',', '.')
 
+
+# Еще новее. Точно последнее
+
+

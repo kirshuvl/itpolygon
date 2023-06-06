@@ -1,5 +1,4 @@
 {% extends 'lms/dashboard.html' %}{% load static %}{% load courses_tags %}
-{% block page_title %}{{ page_title }}{% endblock %}
 {% block breadcrumb %}
 <li class="breadcrumb-item">
     <a href="{% url 'UserProfile' %}" class="text-decoration-none">Аккаунт</a>
@@ -10,61 +9,57 @@
 <li class="breadcrumb-item active">
     {{ course.title }}
 </li>
-{% endblock %}
+{% endblock breadcrumb %}
 {% block sidebar %}
 <div class="card shadow d-none d-lg-block mb-2">
     <div class="card-body">
         <img src="{{ course.icon.url }}" class="col-12 rounded bg-light" alt="">
     </div>
 </div>
-<div class="card shadow d-none d-lg-block">
-    <div class="card-body">
+<div class="card shadow">
+    <div class="card-body d-none d-lg-block">
         {% include 'lms/courses/_nav.html' %}
     </div>
+    <div class="card-body d-block d-lg-none">
+        <nav class="navbar p-0">
+            <h4 class="m-0"><i class="bi bi-menu-button-wide me-2"></i>Меню</h4>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#menu" aria-controls="menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end border-0 rounded-start " tabindex="-1" id="menu">
+                <div class="offcanvas-header border-bottom p-2">
+                    <a class="navbar-brand p-0 m-0" href="/">
+                        <img src="{% static 'picture/logo_500x500.png' %}" alt="" width="60" height="60" class="d-inline-block">
+                    </a>
+                    <h2 class="offcanvas-title">ИТ Полигон</h2>
+                    <button type="button" class="btn-close ms-auto me-2" data-bs-dismiss="offcanvas"></button>
+                </div>
+                <div class="offcanvas-body">
+                    {% include 'lms/courses/_nav.html' %}
+                </div>
+            </div>
+        </nav>
+    </div>
 </div>
-{% endblock %}
+{% endblock sidebar %}
 {% block content %}
+
 <div class="card shadow">
     <div class="card-header bg-transparent p-3">
-        <div class="d-flex justify-content-between align-items-center">
-            <h4 class="m-0 text-truncate"><i class="bi bi-ui-checks-grid me-2"></i>{{ course.title }}</h4>
-            <nav class="navbar bg-white p-0 d-lg-none">
-                <div class="container-fluid p-0">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#course_menu" aria-controls="course_menu">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="offcanvas offcanvas-end border-0 w-75 rounded" tabindex="-1" id="course_menu" aria-labelledby="course_menuLabel">
-                        <div class="offcanvas-header border-bottom p-2">
-                            <a class="navbar-brand p-0 m-0" href="/">
-                                <img src="{% static 'picture/logo_500x500.png' %}" alt="" width="60" height="60" class="d-inline-block">
-                            </a>
-                            <h2 class="offcanvas-title">ИТ Полигон</h2>
-                            <button type="button" class="btn-close ms-auto me-2" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                        </div>
-                        <div class="offcanvas-body">
-                            {% include 'lms/_nav.html' %}
-                            <hr class="mb-3">
-                            <h4 class="m-0 mb-2">{{ course.title }}</h4>
-                            <hr class="my-3">
-                            {% include 'lms/courses/_nav.html' %}
-                        </div>
-                    </div>
-                </div>
-            </nav>
-        </div>
+        <h4 class="m-0 text-truncate"><i class="bi bi-ui-checks-grid me-2"></i>{{ course.title }}</h4>
     </div>
     <div class="card-body pb-2">
         {% for topic in course.topics.all %}
         <div class="row gx-2 mb-2">
             <div class="col-12 col-sm-9">
-                <div class="card {% if topic_progress_percent == '100' %}collapsed{% endif %}" data-bs-toggle="collapse" href="#collapse{{ topic.slug }}" role="button" aria-expanded="{% if topic_progress_percent == '100' %}false{% else %}true{% endif %}" aria-controls="collapse{{ topic.slug }}">
+                <div class="card {% if topic.get_user_percentage == '100' %}collapsed{% endif %}" data-bs-toggle="collapse" href="#collapse{{ topic.slug }}" role="button" aria-expanded="{% if topic.get_user_percentage == '100' %}false{% else %}true{% endif %}" aria-controls="collapse{{ topic.slug }}">
                     <div class="card-body p-2">
                         <div class="row align-items-center">
                             <div class="col-8 text-truncate">
                                 <span class="badge bg-secondary p-2 opacity-50 me-2"># {{ forloop.counter }}</span>{{ topic.title }}
                             </div>
                             <div class="col-4 text-end">
-                                <span class="small text-secondary">XXX / XXX</span>
+                                <span class="small text-secondary">{{ topic.get_user_end_steps }} / {{ topic.get_steps_cnt }}</span>
                             </div>
                         </div>
                     </div>
@@ -74,7 +69,7 @@
                 <div class="card h-100">
                     <div class="card-body p-2">
                         <div class="progress h-100">
-                            <div class="progress-bar{% if topic_progress_percent == '100' %} bg-success{% endif %}" role="progressbar" style="width: 50%;" aria-valuenow="{{ topic_progress }}" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar {% if topic.get_user_percentage == 100 %}bg-success{% endif %}" role="progressbar" style="width: {{ topic.get_user_percentage }}%;" aria-valuenow="{{ topic.get_user_percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
                 </div>
@@ -88,17 +83,10 @@
                         <div class="card-body p-2">
                             <div class="row align-items-center">
                                 <div class="col-8 text-truncate">
-                                    <div class="d-flex align-items-center">
-                                        <a href="">
-                                            <span class="badge bg-secondary p-2 opacity-50 me-2"># {{ lesson.number }}</span>
-                                        </a>
-                                        <a href="{{ lesson.get_lms_detail_url }}" class="text-decoration-none">{{ lesson.title }}
-                                        </a>
-
-                                    </div>
+                                    <span class="badge bg-secondary p-2 opacity-50 me-2"># {{ forloop.counter }}</span><a href="{{ lesson.get_lms_detail_url }}" class="text-decoration-none">{{ lesson.title }}</a>
                                 </div>
                                 <div class="col-4 text-end">
-                                    <span class="small text-secondary">XXX / {{ lesson.connections.count }}</span>
+                                    <span class="small text-secondary">{{ lesson.get_user_end_steps }} / {{ lesson.get_steps_cnt }}</span>
                                 </div>
                             </div>
                         </div>
@@ -108,7 +96,7 @@
                     <div class="card h-100">
                         <div class="card-body p-2">
                             <div class="progress h-100">
-                                <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar {% if lesson.get_user_percentage == 100 %}bg-success{% endif %}" role="progressbar" style="width: {{ lesson.get_user_percentage }}%;" aria-valuenow="{{ lesson.get_user_percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
                     </div>
@@ -123,4 +111,4 @@
         {% endfor %}
     </div>
 </div>
-{% endblock %}
+{% endblock content %}
