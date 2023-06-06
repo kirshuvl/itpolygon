@@ -52,7 +52,7 @@
         {% for topic in course.topics.all %}
         <div class="row gx-2 mb-2">
             <div class="col-12 col-sm-9">
-                <div class="card {% if topic.get_user_percentage == '100' %}collapsed{% endif %}" data-bs-toggle="collapse" href="#collapse{{ topic.slug }}" role="button" aria-expanded="{% if topic.get_user_percentage == '100' %}false{% else %}true{% endif %}" aria-controls="collapse{{ topic.slug }}">
+                <div class="card {% if topic.get_user_percentage == 100 %}collapsed{% endif %}" data-bs-toggle="collapse" href="#collapse{{ topic.slug }}" role="button" aria-expanded="{% if topic.get_user_percentage == 100 %}false{% else %}true{% endif %}" aria-controls="collapse{{ topic.slug }}">
                     <div class="card-body p-2">
                         <div class="row align-items-center">
                             <div class="col-8 text-truncate">
@@ -75,7 +75,7 @@
                 </div>
             </div>
         </div>
-        <div class="collapse {% if topic_progress_percent != '100' %}show{% endif %}" id="collapse{{ topic.slug }}">
+        <div class="collapse {% if topic.get_user_percentage != 100 %}show{% endif %}" id="collapse{{ topic.slug }}">
             {% for lesson in topic.lessons.all %}
             <div class="row gx-2 mb-2">
                 <div class="col-11 col-sm-8 offset-1">
