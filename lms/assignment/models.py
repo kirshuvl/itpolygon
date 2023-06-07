@@ -57,7 +57,7 @@ class UserAnswerForAssignmentStep(models.Model):
         CustomUser,
         related_name='assignment_answers',
         verbose_name='Пользователь',
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
     )
     assignment = models.ForeignKey(
         AssignmentStep,

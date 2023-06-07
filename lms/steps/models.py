@@ -76,7 +76,24 @@ class ProblemStepMixin:
         return None
 
 
-class StepsMixin(VideoStepMixin, QuestionStepMixin, ProblemStepMixin):
+class AssignmentStepMixin():
+    def get_file(self):
+        if hasattr(self, 'assignmentstep'):
+            return self.assignmentstep.file
+        return None
+
+    def get_file_name(self):
+        if hasattr(self, 'assignmentstep'):
+            return self.assignmentstep.file.name.split('/')[-1].split('.')[0]
+        return None
+
+    def get_file_format(self):
+        if hasattr(self, 'assignmentstep'):
+            return self.assignmentstep.file.name.split('/')[-1].split('.')[-1]
+        return None
+
+
+class StepsMixin(VideoStepMixin, QuestionStepMixin, ProblemStepMixin, AssignmentStepMixin):
     def get_num_attempts(self):
         return self.connections.first().num_attempts
 

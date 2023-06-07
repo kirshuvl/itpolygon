@@ -25,6 +25,11 @@
             <button type="submit" class="btn btn-outline-secondary p-2">Отправить</button>
         </div>
     </form>
+    {% for error in form.user_answer.errors %}
+    <div class="text-danger small mb-2">
+        {{ error }}
+    </div>
+    {% endfor %}
     {% else %}
     <div class="card">
         <div class="card-body text-center text-danger">

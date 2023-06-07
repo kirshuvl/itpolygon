@@ -48,24 +48,24 @@
         </div>
         {% endfor %}
     </div>
-
     {% if step.get_num_attempts == -1 or step.get_num_attempts > user_attempts.count %}
-
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="input-group">
-            <div class="input-group">
-                {{ form.code }}
-                <button type="submit" class="btn btn-outline-secondary">Отправить</button>
-            </div>
+            {{ form.code }}
+            <button type="submit" class="btn btn-outline-secondary">Отправить</button>
         </div>
     </form>
+    {% for error in form.code.errors %}
+    <div class="text-danger small mb-2">
+        {{ error }}
+    </div>
+    {% endfor %}
     {% for error in form.user_code.errors %}
     <div class="text-danger small mb-2">
         {{ error }}
     </div>
     {% endfor %}
-
     {% elif correct %}
     <div class="card">
         <div class="card-body text-center text-success">
@@ -79,8 +79,6 @@
         </div>
     </div>
     {% endif %}
-
-
 </div>
 {% endblock %}
 {% block under_content %}

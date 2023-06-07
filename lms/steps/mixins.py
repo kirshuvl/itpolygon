@@ -53,3 +53,9 @@ class BaseStepMixin(ListView):
             step_enroll.status = 'OK'
             step_enroll.save()
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+    def form_invalid(self, form):
+        self.object_list = list(self.get_queryset())
+        self.object = self.get_object()
+        context = self.get_context_data()
+        return self.render_to_response(self.get_context_data())

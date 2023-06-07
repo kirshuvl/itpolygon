@@ -38,7 +38,7 @@ class LMS_QuestionStepDetail(BaseStepMixin, CreateView):
             step_enroll.status = 'WA'
         step_enroll.save()
 
-        return super(LMS_QuestionStepDetail, self).form_valid(form)
+        return super().form_valid(form)
 
     def get_success_url(self):
         return self.object.question.get_lms_detail_url()
