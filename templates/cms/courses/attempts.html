@@ -42,10 +42,10 @@
                 {{ attempt.date_create|date:'d.m.Y H:i:s' }}
             </div>
             <div class="col-3 col-xl-2 text-center border-end text-truncate d-none d-md-block">
-                <a href="" class="text-decoration-none">{{ attempt.problem }}</a>
+                <a href="#" class="text-decoration-none">{{ attempt.problem }}</a>
             </div>
             <div class="col-5 col-md-3 col-xl-2 text-center border-end text-truncate">
-                <a href="{% url 'UserStatistics' attempt.user.nickname %}" class="text-decoration-none">{{ attempt.user }}</a>
+                <a href="#" class="text-decoration-none">{{ attempt.user }}</a>
             </div>
             <div class="col-2 col-lg-1 text-center border-end {% if attempt.verdict == 'OK' %}text-success{% elif attempt.verdict == 'PR' %}{% else %}text-danger{% endif %}">
                 {% if attempt.verdict == 'PR' %}-{% else %}{{ attempt.verdict }}{% endif %}
@@ -62,8 +62,8 @@
             <div class="col-3 col-md-2 col-lg-1 pe-2">
                 <a data-bs-toggle="dropdown" aria-expanded="false"><span class="badge btn btn-primary p-2 dropdown-toggle col-12 opacity-50"><i class="bi bi-eye me-1"></i></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="{{ attempt.get_detail }}" class="dropdown-item" href="">Смотреть</a></li>
-                    <li><a href="{% url 'rerun_submissions' attempt.pk %}" class="dropdown-item" href="">Перетестировать</a></li>
+                    <li><a href="{{ attempt.get_lms_detail_url }}" class="dropdown-item" href="">Смотреть</a></li>
+                    <li><a href="{{ attempt.get_retest_url }}" class="dropdown-item" href="">Перетестировать</a></li>
                 </ul>
             </div>
         </div>

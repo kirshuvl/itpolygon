@@ -1,6 +1,6 @@
 from django.urls import path
 from lms.steps.views import LMS_QuestionChoiceStepDetail, LMS_TextStepDetail, LMS_VideoStepDetail, LMS_QuestionStepDetail
-from lms.problems.views import LMS_ProblemStepDetail, UserCodeDetail
+from lms.problems.views import LMS_ProblemStepDetail
 from lms.assignment.views import LMS_AssignmentStepDetail
 
 urlpatterns = [

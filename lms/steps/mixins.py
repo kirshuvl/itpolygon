@@ -22,7 +22,7 @@ class BaseStepMixin(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['step'] = self.object
-        context['attempts'] = None
+        context['page_title'] = self.object.title
         return context
 
     def get_queryset(self):
@@ -53,3 +53,9 @@ class BaseStepMixin(ListView):
             step_enroll.status = 'OK'
             step_enroll.save()
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+    def form_invalid(self, form):
+        self.object_list = list(self.get_queryset())
+        self.object = self.get_object()
+        context = self.get_context_data()
+        return self.render_to_response(self.get_context_data())

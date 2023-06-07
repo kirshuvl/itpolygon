@@ -33,7 +33,17 @@ class LMS_UserCoursesList(LoginRequiredMixin, ListView):
         return context
 
     def get_queryset(self):
-        return Course.objects.filter(courses_enrolls__user=self.request.user, is_published=True)
+        return Course.objects.filter(courses_enrolls__user=self.request.user, is_published=True).prefetch_related(
+                Prefetch('topics', queryset=Topic.objects.filter(
+                    is_published=True).order_by('number')),
+                Prefetch('topics__lessons', queryset=Lesson.objects.filter(
+                    is_published=True).order_by('number')),
+                Prefetch('topics__lessons__connections', queryset=LessonStepConnection.objects.filter(
+                    is_published=True).select_related('step').prefetch_related(
+                    Prefetch('step__steps_enrolls', queryset=StepEnroll.objects.filter(
+                        user=self.request.user))
+                ).order_by('number')),
+            )
 
 
 class LMS_CourseDetail(LoginRequiredMixin, DetailView):  # Проверить, обновить

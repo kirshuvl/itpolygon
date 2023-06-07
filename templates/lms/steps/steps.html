@@ -1,10 +1,5 @@
-{% if user.is_superuser %}
-<a href="" class="text-decoration-none" target="_blank">
-    <span class="badge bg-secondary p-2 rounded me-1 opacity-50"><i class="bi bi-calendar"></i></span>
-</a>
-{% endif %}
 {% for step_ in steps %}
-<a href="{{ step_.get_lms_url }}" class="text-decoration-none">
+<a href="{{ step_.get_lms_detail_url }}" class="text-decoration-none">
     <span class="badge bg-{{ step_.enroll_color }} p-2 rounded{% if not forloop.last %} me-1{% endif %} {% if step_ != step %}opacity-50{% endif%}"><i class="bi {{ step_.icon_class }}"></i></span>
 </a>
 {% endfor %}

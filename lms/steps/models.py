@@ -14,9 +14,8 @@ class StepManager(models.Manager):
 class DefaultStepManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().select_related('step_ptr')
-    
-    
-    #.select_related('step_ptr__step__textstep', 'step_ptr__videostep', 'step_ptr__questionstep', 'step_ptr__questionchoicestep', 'step_ptr__assignmentstep', 'step_ptr__problemstep')
+
+    # .select_related('step_ptr__step__textstep', 'step_ptr__videostep', 'step_ptr__questionstep', 'step_ptr__questionchoicestep', 'step_ptr__assignmentstep', 'step_ptr__problemstep')
 
 
 class VideoStepMixin():
@@ -77,12 +76,59 @@ class ProblemStepMixin:
         return None
 
 
-class StepsMixin(VideoStepMixin, QuestionStepMixin, ProblemStepMixin):
+class AssignmentStepMixin():
+    def get_file(self):
+        if hasattr(self, 'assignmentstep'):
+            return self.assignmentstep.file
+        return None
+
+    def get_file_name(self):
+        if hasattr(self, 'assignmentstep'):
+            return self.assignmentstep.file.name.split('/')[-1].split('.')[0]
+        return None
+
+    def get_file_format(self):
+        if hasattr(self, 'assignmentstep'):
+            return self.assignmentstep.file.name.split('/')[-1].split('.')[-1]
+        return None
+
+
+class StepsMixin(VideoStepMixin, QuestionStepMixin, ProblemStepMixin, AssignmentStepMixin):
     def get_num_attempts(self):
         return self.connections.first().num_attempts
 
 
-class Step(models.Model, StepsMixin):
+class FrontMixin():
+    def icon_class(self):
+        if hasattr(self, 'textstep'):
+            return 'bi-card-text'
+        elif hasattr(self, 'videostep'):
+            return 'bi-play-btn'
+        elif hasattr(self, 'questionstep'):
+            return 'bi-question-square'
+        elif hasattr(self, 'questionchoicestep'):
+            return 'bi-question-square'
+        elif hasattr(self, 'assignmentstep'):
+            return 'bi-clipboard-plus'
+        elif hasattr(self, 'problemstep'):
+            return 'bi-code-square'
+
+    def enroll_color(self):
+        enroll = self.steps_enrolls.first()
+        if enroll is None:
+            return 'secondary'
+        if enroll.status == 'OK':
+            return 'success'
+        if enroll.status == 'PR':
+            return 'primary'
+        elif enroll.status == 'RP':
+            return 'warning'
+        elif enroll.status == 'WA':
+            return 'danger'
+        return 'secondary'
+
+
+class Step(models.Model, StepsMixin, FrontMixin):
     title = models.CharField(
         verbose_name='Название шага',
         max_length=50,
@@ -126,8 +172,6 @@ class Step(models.Model, StepsMixin):
     def __str__(self):
         return self.title
 
-    
-
     def get_cms_update_url(self):
         lesson: Lesson = self.connections.first().lesson
         if hasattr(self, 'textstep'):
@@ -154,7 +198,7 @@ class Step(models.Model, StepsMixin):
                 'step_slug': self.slug,
             },
         )
-    
+
     def get_cms_detail_url(self):
         lesson: Lesson = self.connections.first().lesson
         if hasattr(self, 'textstep'):
@@ -200,35 +244,7 @@ class Step(models.Model, StepsMixin):
 
     # OLD
 
-    def icon_class(self):
-        if hasattr(self, 'textstep'):
-            return 'bi-card-text'
-        elif hasattr(self, 'videostep'):
-            return 'bi-play-btn'
-        elif hasattr(self, 'questionstep'):
-            return 'bi-question-square'
-        elif hasattr(self, 'questionchoicestep'):
-            return 'bi-question-square'
-        elif hasattr(self, 'assignmentstep'):
-            return 'bi-clipboard-plus'
-        elif hasattr(self, 'problemstep'):
-            return 'bi-code-square'
-
-    def enroll_color(self):
-        enroll = self.steps_enrolls.first()
-        if enroll is None:
-            return 'secondary'
-        if enroll.status == 'OK':
-            return 'success'
-        if enroll.status == 'PR':
-            return 'primary'
-        elif enroll.status == 'RP':
-            return 'warning'
-        elif enroll.status == 'WA':
-            return 'danger'
-        return 'secondary'
-
-    def get_lms_url(self):
+    def get_lms_detail_url(self):
         lesson: Lesson = self.connections.first().lesson
         if hasattr(self, 'textstep'):
             url = 'LMS_TextStepDetail'
@@ -446,7 +462,7 @@ class VideoStep(Step):
 
     def get_cms_detail_url(self):
         lesson: Lesson = self.connections.first().lesson
-        
+
         return reverse(
             'CMS_VideoStepDetail',
             kwargs={
@@ -489,7 +505,7 @@ class QuestionStep(Step):
 
     def get_cms_detail_url(self):
         lesson: Lesson = self.connections.first().lesson
-        
+
         return reverse(
             'CMS_QuestionStepDetail',
             kwargs={
@@ -543,7 +559,7 @@ class UserAnswerForQuestionStep(models.Model):
         verbose_name_plural = '3.1 Ответы пользователей'
         ordering = ['pk']
 
-    def get_absolute_url(self):
+    '''def get_absolute_url(self):
         lesson: Lesson = self.connections.first().lesson
         return reverse(
             'LMS_QuestionStepDetail',
@@ -553,7 +569,7 @@ class UserAnswerForQuestionStep(models.Model):
                 'lesson_slug': lesson.slug,
                 'step_slug': self.question.slug,
             },
-        )
+        )'''
 
 
 class QuestionChoiceStep(Step):
@@ -567,11 +583,10 @@ class QuestionChoiceStep(Step):
         verbose_name = 'Вопрос с выбором ответа'
         verbose_name_plural = '4. Вопросы с выбором ответа'
         ordering = ['title']
-    
 
     def get_cms_detail_url(self):
         lesson: Lesson = self.connections.first().lesson
-        
+
         return reverse(
             'CMS_QuestionChoiceStepDetail',
             kwargs={

@@ -18,13 +18,6 @@ class LMS_ProblemStepDetail(BaseStepMixin, CreateView):
         context['user_attempts'] = self.get_user_attempts()
         context['all_attempts'] = self.get_all_attempts()
 
-        '''if self.request.user.is_superuser:
-            context['users_attempts'] = UserAnswerForProblemStep.objects.select_related( 'user').filter(
-                problem=self.object)
-            context['attempts'] = context['users_attempts'].filter(user=self.request.user)
-        else:
-            context['attempts'] = UserAnswerForProblemStep.objects.select_related('problem__lesson__topic__course', 'user').filter(
-                problem=self.object, user=self.request.user)'''
         return context
 
     def form_valid(self, form):
@@ -32,7 +25,7 @@ class LMS_ProblemStepDetail(BaseStepMixin, CreateView):
         form.instance.problem = ProblemStep.objects.get(
             slug=self.kwargs['step_slug'])
 
-        return super(LMS_ProblemStepDetail, self).form_valid(form)
+        return super().form_valid(form)
 
     def get_tests(self):
         queryset = TestForProblemStep.objects.filter(number__lte=self.object.get_last_sample(),
@@ -52,10 +45,10 @@ class LMS_ProblemStepDetail(BaseStepMixin, CreateView):
         return UserAnswerForProblemStep.objects.filter(user=self.request.user, problem=self.object.get_problem()).select_related('user', 'problem')
 
     def get_success_url(self):
-        return self.object.problem.get_lms_url()
+        return self.object.problem.get_lms_detail_url()
 
 
-class UserCodeDetail(DetailView):
+class LMS_UserCodeDetail(DetailView):
     model = UserAnswerForProblemStep
     template_name = 'lms/problems/user_answer_detail.html'
     pk_url_kwarg = 'user_answer_pk'

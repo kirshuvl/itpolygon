@@ -1,0 +1,27 @@
+<div class="d-block d-lg-none">{% load static %}
+    <nav class="navbar p-0">
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#menu" aria-controls="menu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="offcanvas offcanvas-end border-0 w-75 rounded-start " tabindex="-1" id="menu">
+            <div class="offcanvas-header border-bottom p-2">
+                <a class="navbar-brand p-0 m-0" href="/">
+                    <img src="{% static 'picture/logo_500x500.png' %}" alt="" width="60" height="60" class="d-inline-block">
+                </a>
+                <h2 class="offcanvas-title">ИТ Полигон</h2>
+                <button type="button" class="btn-close ms-auto me-2" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body">
+                {% for step_ in steps %}
+                <div class="card mb-1">
+                    <div class="card-body p-2  text-truncate">
+                        <a href="{{ step_.get_lms_detail_url }}" class="text-decoration-none">
+                            <span class="badge bg-{{ step_.enroll_color }} p-2 rounded me-2 {% if step_ != step %}opacity-50{% endif%}"><i class="bi {{ step_.icon_class }}"></i></span>{{ step_.title }}
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </nav>
+</div>

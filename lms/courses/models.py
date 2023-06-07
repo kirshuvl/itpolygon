@@ -147,7 +147,7 @@ class Course(models.Model):
                 'course_slug': self.slug,
             },
         )
-    
+
     def get_cms_topics_sort_url(self):
         return reverse(
             'CMS_TopicsSort',
@@ -155,6 +155,28 @@ class Course(models.Model):
                 'course_slug': self.slug,
             },
         )
+
+    def get_steps_cnt(self):
+        cnt = 0
+        for topic in self.topics.all():
+            cnt += topic.get_steps_cnt()
+
+        return cnt
+
+    def get_user_end_steps(self):
+
+        cnt = 0
+
+        for topic in self.topics.all():
+            cnt += topic.get_user_end_steps()
+
+        return cnt
+
+    def get_user_percentage(self):
+        if self.get_steps_cnt() == 0:
+            return 0
+
+        return int(self.get_user_end_steps() / self.get_steps_cnt() * 100)
 
 
 class CourseEnroll(models.Model):

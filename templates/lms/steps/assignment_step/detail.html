@@ -1,0 +1,144 @@
+{% extends 'lms/steps/detail.html' %}
+{% block step_body %}
+<div class="card-body pb-0">
+    {{ step.description|safe }}
+</div>
+{% if step.get_file %}
+<div class="card-footer bg-transparent p-2">
+    <div class="card col-3">
+        <div class="card-body p-2">
+            <div class="row">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <a href="{{ step.get_file.url }}" class="text-decoration-none stretched-link" target="_blank">Скачать файл</a>
+                    </div>
+                    <div>
+                        <i class="bi bi-file-earmark-{{ step.get_file_format}}"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock step_body %}
+{% block under_content %}
+<div class="card shadow mb-2">
+    <div class="card-header bg-transparent p-3">
+        <h4 class="m-0">Ваш ответ</h4>
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="input-group mb-2">
+                {{ form.user_answer }}
+            </div>
+            {% for error in form.user_answer.errors %}
+            <div class="text-danger small mb-2">
+                {{ error }}
+            </div>
+            {% endfor %}
+            <div class="input-group">
+                {{ form.file }}
+                <button type="submit" class="btn btn-outline-secondary">Отправить</button>
+            </div>
+            {% for error in form.file.errors %}
+            <div class="text-danger small">
+                {{ error }}
+            </div>
+            {% endfor %}
+        </form>
+    </div>
+</div>
+<div class="card shadow mb-2">
+    <div class="card-header bg-transparent p-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h4 class="m-0 text-truncate"><i class="bi bi-ui-checks-grid me-2"></i>Ваши ответы</h4>
+        </div>
+    </div>
+    <div class="card-body">
+        {% for attempt in user_attempts %}
+        <div class="card mb-2">
+            <div class="card-body border-bottom">
+                <div class="row align-items-center">
+                    <div class="col-8">
+                        <div class="row align-items-center">
+                            <div class="col-1 border-end pe-2">
+                                <img src="{{ user.icon.url }}" class="rounded p-0 col-12 bg-light" alt="">
+                            </div>
+                            <div class="col-6">
+                                {{ attempt.user.first_name }} {{ attempt.user.last_name }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 text-end">
+                        <span class="badge bg-secondary p-2 rounded opacity-50 me-2">{{ attempt.get_status_display }}</span>{{ attempt.date_create|date:'d.m.Y H:i:s' }}
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                {{ attempt.user_answer }}
+            </div>
+            <div class="card-footer bg-transparent p-3">
+                <div class="card col-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <a href="{{ attempt.file.url }}" class="text-decoration-none stretched-link">{% get_file_name attempt.file.name %}</a>
+                                </div>
+                                <div>
+                                    <i class="bi bi-file-earmark-{% get_file_format attempt.file.name %}"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% for review in attempt.reviews.all %}
+        <div class="card mb-2 offset-1">
+            <div class="card-body border-bottom">
+                <div class="row align-items-center">
+                    <div class="col-8">
+                        <div class="row align-items-center">
+                            <div class="col-1 border-end pe-2">
+                                <img src="{{ review.user.icon.url }}" class="rounded p-0 col-12 bg-light" alt="">
+                            </div>
+                            <div class="col-6">
+                                {{ review.user.first_name }} {{ review.user.last_name }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 text-end">
+                        <span class="badge bg-secondary p-2 rounded opacity-50 me-2">{{ attempt.get_status_display }}</span>{{ review.date_create|date:'d.m.Y H:i:s' }}
+                    </div>
+                </div>
+            </div>
+            <div class="card-body pb-0">
+                {{ review.text|safe }}
+            </div>
+            {% if review.file %}
+            <div class="card-footer bg-transparent p-3">
+                <div class="card col-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <a href="{{ review.file.url }}" class="text-decoration-none stretched-link">{% get_file_name review.file.name %}</a>
+                                </div>
+                                <div>
+                                    <i class="bi bi-file-earmark-{% get_file_format review.file.name %}"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock under_content %}
