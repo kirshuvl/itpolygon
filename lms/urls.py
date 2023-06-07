@@ -3,7 +3,7 @@ from lms.achievements.views import UserAchievements
 
 from lms.homeworks.views import UserHomeworkList, UserHomeworkDetail
 from lms.steps.mixins import BaseStepMixin
-from lms.problems.views import  UserCodeDetail
+from lms.problems.views import  LMS_UserCodeDetail
 
 
 urlpatterns = [
@@ -17,7 +17,7 @@ urlpatterns = [
 
     path('achievements/my', UserAchievements.as_view(), name='UserAchievementsList'),
 
-    path('submissions/<int:user_answer_pk>/', UserCodeDetail.as_view(), name='UserCodeDetail'),
+    path('submissions/<int:user_answer_pk>/', LMS_UserCodeDetail.as_view(), name='LMS_UserCodeDetail'),
     path('courses/<str:course_slug>/<str:topic_slug>/<str:lesson_slug>/<str:step_slug>/pass',
          BaseStepMixin.user_end_step, name='UserEndStep'),
     path('homeworks/my', UserHomeworkList.as_view(), name='UserHomeworkList'),

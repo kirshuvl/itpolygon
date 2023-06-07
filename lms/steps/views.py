@@ -41,7 +41,7 @@ class LMS_QuestionStepDetail(BaseStepMixin, CreateView):
         return super(LMS_QuestionStepDetail, self).form_valid(form)
 
     def get_success_url(self):
-        return self.object.question.get_lms_url()
+        return self.object.question.get_lms_detail_url()
 
     def get_all_attempts(self):
         if self.request.user == self.object.author:
@@ -60,8 +60,8 @@ class LMS_QuestionChoiceStepDetail(BaseStepMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['user_attempts'] = UserAnswerForQuestionChoiceStep.objects.filter(
-            user=self.request.user, question=self.object)
+        context['user_attempts'] = self.get_user_attempts()
+        context['all_attempts'] = self.get_all_attempts()
         return context
 
     def form_valid(self, form):
@@ -70,7 +70,7 @@ class LMS_QuestionChoiceStepDetail(BaseStepMixin, CreateView):
             slug=self.kwargs['step_slug'])
         step_enroll = StepEnroll.objects.get(
             user=self.request.user, step=form.instance.question)
-        if form.instance.user_answer.is_correct and step_enroll.status != 'OK':
+        if form.instance.user_answer.is_correct:
             form.instance.is_correct = True
             step_enroll.status = 'OK'
         elif not form.instance.user_answer.is_correct and step_enroll.status != 'OK':
@@ -80,5 +80,19 @@ class LMS_QuestionChoiceStepDetail(BaseStepMixin, CreateView):
 
         return super(LMS_QuestionChoiceStepDetail, self).form_valid(form)
 
+    def get_all_attempts(self):
+        if self.request.user == self.object.author:
+            return UserAnswerForQuestionChoiceStep.objects.filter(question=self.object).select_related('user', 'question').prefetch_related(
+                'user_answer'
+            )
+
+        return None
+
+    def get_user_attempts(self):
+
+        return UserAnswerForQuestionChoiceStep.objects.filter(user=self.request.user, question=self.object).select_related('user', 'question').prefetch_related(
+            'user_answer'
+        )
+
     def get_success_url(self):
-        return self.object.question.get_lms_url()
+        return self.object.question.get_lms_detail_url()

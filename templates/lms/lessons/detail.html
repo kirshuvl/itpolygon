@@ -21,7 +21,7 @@
     {% block step_header %}
     <div class="card-header bg-transparent p-3">
         <div class="d-flex justify-content-between align-items-center">
-            <h4 class="m-0 text-truncate"><i class="bi bi-ui-checks-grid me-2"></i>{{ object.title }}</h4>
+            <h4 class="m-0 text-truncate"><i class="bi bi-ui-checks-grid me-2"></i>{% if lesson %}{{ lesson.title }}{% elif step %}{{ step.title }}{% endif %}</h4>
             {% include 'lms/lessons/_nav.html' %}
             <div class="d-none d-lg-flex">
                 {% include 'lms/steps/steps.html' %}

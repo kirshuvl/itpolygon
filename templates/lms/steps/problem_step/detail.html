@@ -85,7 +85,7 @@
 {% endblock %}
 {% block under_content %}
 {% if user_attempts %}
-<div class="card shadow">
+<div class="card shadow mb-2">
     <div class="card-header bg-transparent p-3">
         <div class="d-flex justify-content-between align-items-center">
             <h4 class="m-0 text-truncate"><i class="bi bi-ui-checks-grid me-2"></i>Ваши попытки</h4>
@@ -159,20 +159,90 @@
                 </div>
             </div>
         </div>
-
         {% endfor %}
     </div>
 </div>
 {% endif %}
 {% if all_attempts %}
-<div class="card shadow mt-2">
+<div class="card shadow">
     <div class="card-header bg-transparent p-3">
         <div class="d-flex justify-content-between align-items-center">
-            <h4 class="m-0 text-truncate"><i class="bi bi-ui-checks-grid me-2"></i>Попытки учеников</h4>
+            <h4 class="m-0 text-truncate"><i class="bi bi-ui-checks-grid me-2"></i>Ваши попытки</h4>
         </div>
     </div>
     <div class="card-body">
-        {% include 'cms/courses/attempts.html' %}
+        <div class="card mb-1">
+            <div class="card-body">
+                <div class="row align-items-center small">
+                    <div class="col-2 col-lg-1 text-center border-end text-truncate">
+                        ID
+                    </div>
+                    <div class="col-lg-3 col-xl-2 text-center border-end d-none d-lg-block">
+                        Дата
+                    </div>
+                    <div class="col-3 col-xl-2 text-center border-end text-truncate d-none d-md-block">
+                        Задача
+                    </div>
+                    <div class="col-5 col-md-3 col-xl-2 text-center border-end text-truncate">
+                        Участник
+                    </div>
+                    <div class="col-2 col-lg-1 text-center border-end text-truncate">
+                        Вердикт
+                    </div>
+                    <div class="col-xl-1 text-center border-end d-none d-xl-block">
+                        Время
+                    </div>
+                    <div class="col-xl-1 text-center border-end d-none d-xl-block">
+                        Тест
+                    </div>
+                    <div class="col-xl-1 text-center border-end d-none d-xl-block">
+                        Язык
+                    </div>
+                    <div class="col-3 col-md-2 col-lg-1 pe-2">
+                        <span class="badge btn btn-secondary p-2 col-12 opacity-50"><i class="bi bi-eye"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% for attempt in all_attempts %}
+        <div class="card {% if not forloop.last %}mb-1{% endif %}">
+            <div class="card-body">
+                <div class="row align-items-center small">
+                    <div class="col-2 col-lg-1 text-center border-end text-truncate">
+                        {{ attempt.pk }}
+                    </div>
+                    <div class="col-lg-3 col-xl-2 text-center border-end d-none d-lg-block">
+                        {{ attempt.date_create|date:'d.m.Y H:i:s' }}
+                    </div>
+                    <div class="col-3 col-xl-2 text-center border-end text-truncate d-none d-md-block">
+                        <a href="#" class="text-decoration-none">{{ attempt.problem }}</a>
+                    </div>
+                    <div class="col-5 col-md-3 col-xl-2 text-center border-end text-truncate">
+                        <a href="#" class="text-decoration-none">{{ attempt.user }}</a>
+                    </div>
+                    <div class="col-2 col-lg-1 text-center border-end {% if attempt.verdict == 'OK' %}text-success{% elif attempt.verdict == 'PR' %}{% else %}text-danger{% endif %}">
+                        {% if attempt.verdict == 'PR' %}-{% else %}{{ attempt.verdict }}{% endif %}
+                    </div>
+                    <div class="col-xl-1 text-center border-end d-none d-xl-block">
+                        {% if attempt.verdict == 'PR' %}-{% else %}{{ attempt.cputime|point }}{% endif %}
+                    </div>
+                    <div class="col-xl-1 text-center border-end d-none d-xl-block {% if attempt.first_fail_test != 0 %}text-danger{% endif %}">
+                        {% if attempt.first_fail_test == 0 %}-{% else %}{{ attempt.first_fail_test }}{% endif %}
+                    </div>
+                    <div class="col-xl-1 text-center border-end d-none d-xl-block">
+                        Python
+                    </div>
+                    <div class="col-3 col-md-2 col-lg-1 pe-2">
+                        <a data-bs-toggle="dropdown" aria-expanded="false"><span class="badge btn btn-primary p-2 dropdown-toggle col-12 opacity-50"><i class="bi bi-eye me-1"></i></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ attempt.get_lms_detail_url }}" class="dropdown-item" href="">Смотреть</a></li>
+                            <li><a href="{{ attempt.get_retest_url }}" class="dropdown-item" href="">Перетестировать</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
 {% endif %}

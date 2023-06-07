@@ -22,7 +22,7 @@ class BaseStepMixin(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['step'] = self.object
-        context['attempts'] = None
+        context['page_title'] = self.object.title
         return context
 
     def get_queryset(self):

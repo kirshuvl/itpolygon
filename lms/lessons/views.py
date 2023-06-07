@@ -4,8 +4,6 @@ from lms.steps.models import Step, StepEnroll, LessonStepConnection
 from django.shortcuts import get_object_or_404
 from django.db.models import Prefetch
 
-from users.models import CustomUser
-
 
 class LMS_LessonDetail(DetailView):
     model = Lesson

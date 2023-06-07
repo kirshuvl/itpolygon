@@ -131,21 +131,26 @@ def user_end_step(current_step: Step):
             return button(current_step.end_step(), 'success', 'Материал повторен!')
     return mark_safe('')
 
+
 @register.simple_tag
 def get_step(steps, step_slug):
     for step in steps:
         if step.slug == step_slug:
             return step
             return 'test_case'
-        
+
+
 '''@register.simple_tag
 def questionstep(step):
 
     return step.questionstep'''
 # New
+
+
 @register.simple_tag
-def user_has_right_answer(user_attempts):
-    for attempt in user_attempts:
+def user_has_right_answer(attempts):
+    for attempt in attempts:
         if attempt.is_correct:
             return True
+
     return False

@@ -184,23 +184,21 @@ class UserAnswerForProblemStep(models.Model):
         verbose_name_plural = '3. Попытки пользователей'
         ordering = ['pk']
 
-    def get_absolute_url(self):
-        return reverse(
-            'ProblemStepDetail',
-            kwargs={
-                'course_slug': self.problem.lesson.topic.course.slug,
-                'topic_slug': self.problem.lesson.topic.slug,
-                'lesson_slug': self.problem.lesson.slug,
-                'step_slug': self.problem.slug,
-            },
-        )
 
-    def get_detail(self):
+    def get_lms_detail_url(self):
         return reverse(
-            'UserCodeDetail',
+            'LMS_UserCodeDetail',
             kwargs={
                 'user_answer_pk': self.pk,
             },
+        )
+    
+    def get_retest_url(self):
+        return reverse(
+            'rerun_submissions',
+            kwargs={
+                'user_answer_pk': self.pk,
+            }
         )
 
 

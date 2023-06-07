@@ -542,7 +542,7 @@ class UserAnswerForQuestionStep(models.Model):
         verbose_name_plural = '3.1 Ответы пользователей'
         ordering = ['pk']
 
-    def get_absolute_url(self):
+    '''def get_absolute_url(self):
         lesson: Lesson = self.connections.first().lesson
         return reverse(
             'LMS_QuestionStepDetail',
@@ -552,7 +552,7 @@ class UserAnswerForQuestionStep(models.Model):
                 'lesson_slug': lesson.slug,
                 'step_slug': self.question.slug,
             },
-        )
+        )'''
 
 
 class QuestionChoiceStep(Step):
