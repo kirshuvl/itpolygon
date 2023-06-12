@@ -1,11 +1,10 @@
 {% extends 'cms/dashboard.html' %}
-{% block page_title %}{{ course.title }} - Редактирование курса{% endblock %}
 {% block breadcrumb %}
 <li class="breadcrumb-item">
     <a href="{% url 'CMS_Dashboard' %}" class="text-decoration-none">CMS</a>
 </li>
 <li class="breadcrumb-item">
-    <a href="{% url 'CMS_CoursesList' %}" class="text-decoration-none">Мои курсы</a>
+    <a href="{% url 'CMS_CoursesList' %}" class="text-decoration-none">Курсы</a>
 </li>
 <li class="breadcrumb-item">
     <a href="{% url 'CMS_CourseDetail' course.slug %}" class="text-decoration-none">{{ course.title }}</a>
@@ -13,8 +12,8 @@
 <li class="breadcrumb-item active">
     Решения задач на программирование
 </li>
-{% endblock %}
-{% block main_content %}
+{% endblock %}{% block user_info %}{% endblock user_info %}
+{% block row %}
 <div class="card shadow mb-2">
     <div class="card-header bg-transparent p-3">
         <div class="row">
@@ -44,4 +43,4 @@
         {% endif %}
     </div>
 </div>
-{% endblock %}
+{% endblock row %}
