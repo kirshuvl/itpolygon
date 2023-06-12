@@ -447,6 +447,9 @@ class TextStep(Step):
             },
         )
 
+    def icon_class(self):
+        return 'bi-card-text'
+
 
 class VideoStep(Step):
     video_url = models.URLField(
@@ -485,6 +488,9 @@ class VideoStep(Step):
                 'step_slug': self.slug,
             },
         )
+
+    def icon_class(self):
+        return 'bi-play-btn'
 
 
 class QuestionStep(Step):
@@ -528,6 +534,9 @@ class QuestionStep(Step):
                 'step_slug': self.slug,
             },
         )
+
+    def icon_class(self):
+        return 'bi-question-square'
 
 
 class UserAnswerForQuestionStep(models.Model):
@@ -609,6 +618,9 @@ class QuestionChoiceStep(Step):
                 'step_slug': self.slug,
             },
         )
+
+    def icon_class(self):
+        return 'bi-question-square'
 
 
 class TestForQuestionChoiceStep(models.Model):

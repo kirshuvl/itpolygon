@@ -84,6 +84,9 @@ class ProblemStep(Step):
             },
         )
 
+    def icon_class(self):
+        return 'bi-code-square'
+
 
 class TestForProblemStep(models.Model):
     input = models.TextField(
@@ -184,7 +187,6 @@ class UserAnswerForProblemStep(models.Model):
         verbose_name_plural = '3. Попытки пользователей'
         ordering = ['pk']
 
-
     def get_lms_detail_url(self):
         return reverse(
             'LMS_UserCodeDetail',
@@ -192,7 +194,7 @@ class UserAnswerForProblemStep(models.Model):
                 'user_answer_pk': self.pk,
             },
         )
-    
+
     def get_retest_url(self):
         return reverse(
             'rerun_submissions',
