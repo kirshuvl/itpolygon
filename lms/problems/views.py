@@ -5,7 +5,7 @@ from lms.steps.mixins import BaseStepMixin
 from lms.problems.forms import ProblemUpload
 from django.shortcuts import get_object_or_404
 from lms.steps.models import Step
-
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 class LMS_ProblemStepDetail(BaseStepMixin, CreateView):
     template_name = 'lms/steps/problem_step/detail.html'
@@ -48,7 +48,7 @@ class LMS_ProblemStepDetail(BaseStepMixin, CreateView):
         return self.object.problem.get_lms_detail_url()
 
 
-class LMS_UserCodeDetail(DetailView):
+class LMS_UserCodeDetail(LoginRequiredMixin, DetailView):
     model = UserAnswerForProblemStep
     template_name = 'lms/problems/user_answer_detail.html'
     pk_url_kwarg = 'user_answer_pk'

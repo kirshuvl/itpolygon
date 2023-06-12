@@ -66,17 +66,20 @@ class CMS_CourseStatistics(LoginRequiredMixin, DetailView):
 class CMS_CourseSubmissions(LoginRequiredMixin, ListView):
     model = UserAnswerForProblemStep
     template_name = 'cms/courses/problems.html'
-    context_object_name = 'users_attempts'
+    context_object_name = 'all_attempts'
     paginate_by = 20
 
     def get_context_data(self, **kwargs):
-        context = super(CMS_CourseSubmissions, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['course'] = Course.objects.get(slug=self.kwargs['course_slug'])
-
+        context['page_title'] = 'Все посылки курса'
         return context
 
     def get_queryset(self):
-        return UserAnswerForProblemStep.objects.select_related('problem__lesson__topic__course', 'user').filter(problem__lesson__topic__course__slug=self.kwargs['course_slug'])
+        return UserAnswerForProblemStep.objects.select_related('problem', 'user').\
+            prefetch_related().\
+            filter(
+                problem__connections__lesson__topic__course__slug=self.kwargs['course_slug']).order_by('pk')
 
 
 def rerun_submission(request, user_answer_pk):

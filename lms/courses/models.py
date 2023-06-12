@@ -156,6 +156,22 @@ class Course(models.Model):
             },
         )
 
+    def get_cms_stat_url(self):
+        return reverse(
+            'CMS_CourseStatistics',
+            kwargs={
+                'course_slug': self.slug,
+            },
+        )
+
+    def get_cms_submissions_url(self):
+        return reverse(
+            'CMS_CourseSubmissions',
+            kwargs={
+                'course_slug': self.slug,
+            },
+        )
+
     def get_steps_cnt(self):
         cnt = 0
         for topic in self.topics.all():
