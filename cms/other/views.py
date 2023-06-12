@@ -6,7 +6,7 @@ from django.views.generic import CreateView, DetailView, UpdateView, DeleteView,
 from lms.courses.models import Course
 from lms.topics.models import Topic
 from lms.lessons.models import Lesson
-from lms.steps.models import Step, StepEnroll, TextStep, VideoStep, QuestionStep
+from lms.steps.models import Step, StepEnroll, TextStep, VideoStep, QuestionStep, LessonStepConnection
 from lms.problems.models import ProblemStep, TestForProblemStep, TestUserAnswer, UserAnswerForProblemStep
 from lms.assignment.models import AssignmentStep, UserAnswerForAssignmentStep
 from users.models import CustomUser
@@ -15,6 +15,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 
 
 from cms.constructor.text_step.forms import TextStepCreateForm
+
 
 class CMS_Dashboard(LoginRequiredMixin, TemplateView):
     '''Главная страница CMS'''
@@ -27,7 +28,7 @@ class CMS_Dashboard(LoginRequiredMixin, TemplateView):
         return context
 
 
-class CMS_CourseStatistics(DetailView):
+class CMS_CourseStatistics(LoginRequiredMixin, DetailView):
     model = Course
     template_name = 'cms/courses/statistics.html'
     context_object_name = 'course'
@@ -42,23 +43,27 @@ class CMS_CourseStatistics(DetailView):
         return context
 
     def get_object(self):
+        users = CustomUser.objects.filter(
+            courses_enrolls__course__slug=self.kwargs['course_slug'])
 
-        return get_object_or_404(
-            Course.objects.prefetch_related(
-                Prefetch('topics', queryset=Topic.objects.filter(
-                    is_published=True).order_by('number')),
-                Prefetch('topics__lessons', queryset=Lesson.objects.filter(
-                    is_published=True).order_by('number')),
-                Prefetch('topics__lessons__steps', queryset=Step.objects.filter(
-                    is_published=True).order_by('number')),
-                Prefetch('topics__lessons__steps__steps_enrolls',
-                         queryset=StepEnroll.objects.select_related('user')),
-            ),
-            slug=self.kwargs['course_slug']
-        )
+        return get_object_or_404(Course.objects.prefetch_related(
+            Prefetch('topics', queryset=Topic.objects.filter(
+                is_published=True).order_by('number')),
+            Prefetch('topics__lessons', queryset=Lesson.objects.filter(
+                is_published=True).order_by('number')),
+            Prefetch('topics__lessons__connections', queryset=LessonStepConnection.objects.filter(is_published=True).prefetch_related(
+                Prefetch('step', queryset=Step.objects.prefetch_related(
+                    Prefetch('connections', queryset=LessonStepConnection.objects.filter(
+                        lesson__topic__course__slug=self.kwargs['course_slug']))
+                )),
+                Prefetch('step__steps_enrolls',
+                         queryset=StepEnroll.objects.filter(user__in=users).select_related('user',))
+            ).select_related('lesson').order_by('number'))
+        ),
+            slug=self.kwargs['course_slug'])
 
 
-class CMS_CourseSubmissions(ListView):
+class CMS_CourseSubmissions(LoginRequiredMixin, ListView):
     model = UserAnswerForProblemStep
     template_name = 'cms/courses/problems.html'
     context_object_name = 'users_attempts'
@@ -72,21 +77,6 @@ class CMS_CourseSubmissions(ListView):
 
     def get_queryset(self):
         return UserAnswerForProblemStep.objects.select_related('problem__lesson__topic__course', 'user').filter(problem__lesson__topic__course__slug=self.kwargs['course_slug'])
-
-
-
-
-def step_check_publish(request, step_slug):
-    step = Step.objects.get(slug=step_slug)
-    if step.is_published:
-        step.is_published = False
-    else:
-        step.is_published = True
-    step.save()
-
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
-
-
 
 
 def rerun_submission(request, user_answer_pk):

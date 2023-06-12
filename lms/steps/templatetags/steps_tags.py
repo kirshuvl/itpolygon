@@ -154,3 +154,17 @@ def user_has_right_answer(attempts):
             return True
 
     return False
+
+@register.simple_tag
+def step_color(step, user):
+    for enroll in step.steps_enrolls.all():
+        if enroll.user == user:
+            if enroll.status == 'OK':
+                return 'success'
+            if enroll.status == 'PR':
+                return 'primary'
+            elif enroll.status == 'RP':
+                return 'warning'
+            elif enroll.status == 'WA':
+                return 'danger'
+    return 'secondary'

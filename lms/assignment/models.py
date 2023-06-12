@@ -20,7 +20,7 @@ class AssignmentStep(Step):
 
     def get_cms_detail_url(self):
         lesson: Lesson = self.connections.first().lesson
-        
+
         return reverse(
             'CMS_AssignmentStepDetail',
             kwargs={
@@ -43,6 +43,9 @@ class AssignmentStep(Step):
                 'step_slug': self.slug,
             },
         )
+
+    def icon_class(self):
+        return 'bi-clipboard-plus'
 
 
 class UserAnswerForAssignmentStep(models.Model):

@@ -25,19 +25,6 @@ def lesson_next_step(lesson):
     return mark_safe(button(first_step.get_absolute_url(), 'secondary', text))
 
 
-@register.simple_tag
-def step_colors(step, user):
-    for enroll in step.steps_enrolls.all():
-        if enroll.user == user:
-            if enroll.status == 'OK':
-                return 'success'
-            if enroll.status == 'PR':
-                return 'primary'
-            elif enroll.status == 'RP':
-                return 'warning'
-            elif enroll.status == 'WA':
-                return 'danger'
-    return 'secondary'
 
 
 @register.simple_tag

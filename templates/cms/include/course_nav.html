@@ -4,7 +4,7 @@
         <a href="{% if course %}{{ course.get_cms_detail_url }}{% elif topic %}{{ topic.course.get_cms_detail_url }}{% elif lesson %}{{ lesson.topic.course.get_cms_detail_url }}{% endif %}" class="nav-link {% if url_name == 'CMS_CourseDetail' %}active{% endif %}"><i class="bi bi-ui-checks-grid me-2"></i>Контент</a>
     </li>
     <li class="nav-item">
-        <a href="" class="nav-link text-secondary"><i class="bi bi-device-ssd me-2"></i>Статистика</a>
+        <a href="{% url 'CMS_CourseStatistics' course.slug %}" class="nav-link text-secondary"><i class="bi bi-device-ssd me-2"></i>Статистика</a>
     </li>
     <li class="nav-item disable">
         <a href="#" class="nav-link text-secondary"><i class="bi bi-question-square me-2"></i>Все посылки</a>

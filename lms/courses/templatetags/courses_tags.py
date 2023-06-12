@@ -73,17 +73,11 @@ def end_steps_count_for_topic(topic, user):
     return f'{cnt} / {cnt_2}'
 
 
-@register.simple_tag
-def get_width_col(lesson):
-    cnt = lesson.steps.count()
-
-    return 28 * cnt + 4 * (cnt - 1)
 
 
 
 
 # Новейшее'''
-
 
 
 @register.simple_tag
@@ -94,7 +88,6 @@ def is_problem_correct(attempts):
     return False
 
 
-
 @register.filter
 def point(time):
     return str(time).replace(',', '.')
@@ -102,4 +95,8 @@ def point(time):
 
 # Еще новее. Точно последнее
 
+@register.simple_tag
+def get_width_col(lesson):
+    cnt = lesson.connections.count()
 
+    return 28 * cnt + 4 * (cnt - 1)

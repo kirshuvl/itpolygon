@@ -1,43 +1,37 @@
-{% extends 'cms/dashboard.html' %}
-{% block page_title %}{{ page_title }}{% endblock %}
+{% extends 'cms/dashboard.html' %}{% load static %}
 {% block breadcrumb %}
 <li class="breadcrumb-item">
     <a href="{% url 'CMS_Dashboard' %}" class="text-decoration-none">CMS</a>
 </li>
 <li class="breadcrumb-item">
-    <a href="{% url 'CMS_CoursesList' %}" class="text-decoration-none">Мои курсы</a>
+    <a href="{% url 'CMS_CoursesList' %}" class="text-decoration-none">Курсы</a>
+</li>
+<li class="breadcrumb-item">
+    <a href="{{ course.get_cms_detail_url }}" class="text-decoration-none">{{ course.title }}</a>
 </li>
 <li class="breadcrumb-item active">
-    {{ course.title }}
+    Статистика
 </li>
-<li class="breadcrumb-item active">
-    Статистика курса
-</li>
-{% endblock %}
-{% block main_content %}
-<div class="card shadow mb-2">
+{% endblock breadcrumb %}
+{% block user_info %}{% endblock user_info %}
+{% block row %}
+<div class="card shadow">
     <div class="card-header bg-transparent p-3">
-        <div class="row">
-            <div class="d-flex justify-content-between">
-                <div>
-                    <h4 class="m-0"><i class="bi bi-ui-checks-grid me-3"></i>Статистика курса: {{ course.title }}</h4>
-                </div>
-            </div>
-        </div>
+        <h4 class="m-0 text-truncate"><i class="bi bi-ui-checks-grid me-2"></i>Статистика курса</h4>
     </div>
     <div class="card-body">
         <div class="row gx-2">
             <div class="col-6 col-md-4">
                 <div class="card">
-                    <div class="card-body d-flex p-1 border-bottom">
-                        Тема урока ->>
+                    <div class="card-body d-flex p-2 border-bottom">
+                        Тема урока
                     </div>
                     <div class="card-body border-bottom p-1">
-                        <span class="badge bg-secondary p-2 rounded me-2">--></span>Фамилия Имя
+                        <span class="badge bg-secondary p-2 rounded me-2 opacity-50"><i class="bi bi-person"></i></span>Фамилия Имя
                     </div>
                     {% for user in users %}
-                    <div class="card-body {% if not forloop.last %}border-bottom{% endif %} p-1">
-                        <span class="badge bg-secondary p-2 rounded me-2"><i class="bi bi-person"></i></span><a href="{% url 'UserStatistics' user.nickname %}" class="text-decoration-none">{{ user.last_name }} {{ user.first_name }}</a>
+                    <div class="card-body {% if not forloop.last %}border-bottom{% endif %} p-1 text-truncate">
+                        <span class="badge bg-secondary p-2 rounded me-2 opacity-50"><i class="bi bi-person"></i></span><a href="{% url 'UserStatistics' user.nickname %}" class="text-decoration-none">{{ user.last_name }} {{ user.first_name }}</a>
                     </div>
                     {% endfor %}
                 </div>
@@ -61,93 +55,30 @@
                             {% for topic in course.topics.all %}
                             {% for lesson in topic.lessons.all %}
                             <div class="col border-end">
-                                <div class="card-body d-flex p-1 border-bottom">
+                                <div class="card-body d-flex p-1 py-2 border-bottom">
                                     <div class="text-truncate" style="max-width: {% get_width_col lesson %}px;"><a href="{{ lesson.get_absolute_url }}" class="text-decoration-none">{{ lesson.title }}</a></div>
                                 </div>
                                 <div class="card-body d-flex p-1 border-bottom">
-                                    {% for step in lesson.steps.all %}
-                                    <span class="col badge bg-secondary p-2 rounded {% if not forloop.last %}me-1{% endif %} opacity-50"><i class="bi {{ step.step_icon_class }}"></i></span>
+                                    {% for connect in lesson.connections.all %}
+                                    <a href="{{ connect.step.get_lms_detail_url }}"><span class="col badge bg-secondary p-2 rounded {% if not forloop.last %}me-1{% endif %} opacity-50"><i class="bi {{ connect.step.icon_class }}"></i></span></a>
                                     {% endfor %}
                                 </div>
                                 {% for user in users %}
                                 <div class="card-body d-flex p-1 {% if not forloop.last %}border-bottom{% endif %} pe-0">
-                                    {% for step in lesson.steps.all %}
-                                    <span class="badge bg-{% step_colors step user %} p-2 rounded me-1 opacity-50"><i class="bi {{ step.step_icon_class }}"></i></span>
+                                    {% for connect in lesson.connections.all %}
+                                    <a href="{{ connect.step.get_lms_detail_url }}"><span class="badge bg-{% step_color connect.step user %} p-2 rounded {% if not forloop.last %}me-1{% endif %} opacity-50"><i class="bi {{ connect.step.icon_class }}"></i></span></a>
                                     {% endfor %}
                                 </div>
                                 {% endfor %}
                             </div>
                             {% endfor %}
                             {% endfor %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% comment %}
-            <div class="col-3">
-                <div class="card">
-                    <div class="card-body border-bottom p-2">
-                        <div class="border-bottom mb-2 pb-1">Урок -></div>
-                        <span class="badge bg-secondary p-2 rounded me-2"><i class="bi bi-person"></i></span>Фамилия Имя!
-                    </div>
-                    {% for user in users %}
-                    <div class="card-body {% if not forloop.last %}border-bottom{% endif %} p-2">
-                        <span class="badge bg-secondary p-2 rounded me-2"><i class="bi bi-person"></i></span><a href="{% url 'UserStatistics' user.nickname %}" class="text-decoration-none">{{ user.first_name }} {{ user.last_name }}</a>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="col-9">
-                <style>
-                    .scroll {
-                        overflow: auto;
-                        -ms-overflow-style: none;
-                        scrollbar-width: none;
-                    }
 
-                    .scroll::-webkit-scrollbar {
-                        width: 0;
-                        height: 0;
-                    }
-                </style>
-                <div class="card overflow-auto scroll">
-                    {% for user in users %}
-                    {% if forloop.first %}
-                    <div class="card-body p-0 d-flex">
-                        <div class="d-flex p-2 border-bottom pe-1">
-                            {% for topic in course.topics.all %}
-                            {% for lesson in topic.lessons.all %}
-                            <div class="col {% if not forloop.parentloop.last or not forloop.last %}border-end me-1{% endif %}">
-                                <div class="border-bottom mb-2 text-truncate pb-1" style="max-width: {% get_width_col lesson %}px;"><a href="{{ lesson.get_absolute_url }}" class="text-decoration-none">{{ lesson.title }}</a></div>
-                                <div class="d-flex">
-                                    {% for step in lesson.steps.all %}
-                                    <a href="{{ step.get_absolute_url }}"><span class="badge bg-secondary p-2 rounded me-1"><i class="bi {{ step.step_icon_class }}"></i></span></a>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                            {% endfor %}
-                            {% endfor %}
                         </div>
                     </div>
-                    {% endif %}
-                    <div class="card-body p-0 d-flex">
-                        <div class="d-flex p-2 {% if not forloop.last %}border-bottom{% endif %} pe-1">
-                            {% for topic in course.topics.all %}
-                            {% for lesson in topic.lessons.all %}
-                            <div class="col d-flex {% if not forloop.parentloop.last or not forloop.last %}border-end me-1{% endif %}">
-                                {% for step in lesson.steps.all %}
-                                <span class="badge bg-{% step_colors step user %} p-2 rounded me-1 opacity-50"><i class="bi {{ step.step_icon_class }}"></i></span>
-                                {% endfor %}
-                            </div>
-                            {% endfor %}
-                            {% endfor %}
-                        </div>
-                    </div>
-                    {% endfor %}
                 </div>
             </div>
-            {% endcomment %}
         </div>
     </div>
 </div>
-{% endblock %}
+{% endblock row %}
