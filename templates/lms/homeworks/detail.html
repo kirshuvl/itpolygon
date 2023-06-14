@@ -1,0 +1,49 @@
+{% extends 'lms/dashboard.html' %}
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+    <a href="{% url 'LMS_UserProfile' %}" class="text-decoration-none">Аккаунт</a>
+</li>
+<li class="breadcrumb-item">
+    <a href="{% url 'LMS_UserHomeworkList' %}" class="text-decoration-none">Домашние задания</a>
+</li>
+<li class="breadcrumb-item">
+    <a href="{{ homework.course.get_lms_detail_url }}" class="text-decoration-none">{{ homework.course }}</a>
+</li>
+<li class="breadcrumb-item active">
+    На: {{ homework.date_to|date:'d.m.Y H:i:s' }}
+</li>
+{% endblock %}
+{% block content %}
+<div class="card shadow">
+    <div class="card-header bg-transparent p-3">
+        <div class="d-flex justify-content-between">
+            <h4 class="m-0 text-truncate"><i class="bi bi-house me-2"></i>Задание</h4>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="card mb-2">
+            <div class="card-header bg-transparent px-3">
+                Дата сдачи: {{ homework.date_to|date:'d.m.Y H:i:s' }}
+            </div>
+            <div class="card-body pb-0">
+                {{ homework.description|safe }}
+            </div>
+        </div>
+        
+        <hr>
+        {% for step in steps %}
+        <div class="card mb-1">
+            <div class="card-body p-2 text-truncate">
+                <div class="d-flex justify-content-between">
+                    <a href="{{ step.get_lms_detail_url }}" class="text-decoration-none text-truncate">
+                        <span class="badge bg-{{ step.enroll_color }} p-2 rounded me-2 opacity-50"><i class="bi {{ step.icon_class }}"></i></span>{{ step.title }}
+                    </a>
+                    <span class="badge bg-secondary p-2 opacity-50"># {{ forloop.counter }}</span>
+                </div>
+                
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

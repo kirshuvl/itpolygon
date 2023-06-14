@@ -38,8 +38,7 @@
                         </a>
                         {% if user.is_superuser %}<a href="{% url 'CRMDashboard' %}" class="btn btn-outline-danger">CRM</a>
                         <a href="{% url 'CMS_Dashboard' %}" class="btn btn-outline-primary">CMS</a>{% endif %}
-                        <a href="{% url 'UserHomeworkList' %}" class="btn btn-outline-primary">Домашние задания</a>
-                        <a href="{% url 'UserProfile' %}" class="btn btn-outline-primary">Аккаунт</a>
+                        <a href="{% url 'LMS_UserProfile' %}" class="btn btn-outline-primary">Аккаунт</a>
                         <a href="{% url 'UserLogout' %}" class="btn btn-outline-primary">Выйти</a>
                         {% else %}
                         <a href="{% url 'UserLogin' %}" class="btn btn-outline-primary">Войти</a>

@@ -1,7 +1,7 @@
 {% extends 'lms/dashboard.html' %}
 {% block breadcrumb %}
 <li class="breadcrumb-item">
-    <a href="{% url 'UserProfile' %}" class="text-decoration-none">Аккаунт</a>
+    <a href="{% url 'LMS_UserProfile' %}" class="text-decoration-none">Аккаунт</a>
 </li>
 <li class="breadcrumb-item active">
     Мои курсы
@@ -45,7 +45,7 @@
                         {{ course.get_user_percentage }}
                     </div>
                     <div class="col-3 col-xl-2 ps-2">
-                        <a href="{{ course.get_lms_detail_url }}"><span class="badge btn btn-primary p-2 col-12"><i class="bi bi-play-circle m-sm-2"></i><span class="d-none d-md-inline-block">Продолжить</span></span></a>
+                        <a href="{{ course.get_lms_detail_url }}" class="stretched-link"><span class="badge btn btn-primary p-2 col-12"><i class="bi bi-play-circle m-sm-2"></i><span class="d-none d-md-inline-block">Продолжить</span></span></a>
                     </div>
                 </div>
             </div>
