@@ -16,6 +16,7 @@ class CoursesList(ListView):  # Проверить, обновить
     def get_context_data(self, **kwargs):
         context = super(CoursesList, self).get_context_data(**kwargs)
         context['page_title'] = 'Список всех курсов - ИТ Полигон'
+        print(context)
         return context
 
     def get_queryset(self):
