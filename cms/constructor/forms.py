@@ -52,7 +52,7 @@ class MixinForm(forms.ModelForm):
 
         return description
 
-    def clean_input_format(self):
+    '''def clean_input_format(self):
         input_format = self.cleaned_data.get('input_format')
 
         if input_format == '':
@@ -66,7 +66,7 @@ class MixinForm(forms.ModelForm):
         if output_format == '':
             return self.add_error('output_format', 'Не указан формат вывода')
 
-        return output_format
+        return output_format'''
 
     def clean_full_description(self):
         full_description = self.cleaned_data.get('full_description')

@@ -1,14 +1,14 @@
 {% with request.resolver_match.url_name as url_name %}
 <ul class="nav nav-pills flex-column">
     <li class="nav-item">
-        <a href="{% url 'UserProfile' %}" class="nav-link {% if url_name == 'UserProfile' or url_name == 'UserProfileUpdate' %}active{% endif %}"><i class="bi bi-person me-2"></i>Мой профиль</a>
-    </li>
-    <li class="nav-item">
         <a href="{% url 'LMS_UserCoursesList' %}" class="nav-link {% if url_name == 'LMS_UserCoursesList'%}active{% endif %}"><i class="bi bi-ui-checks-grid me-2"></i>Мои курсы</a>
-    </li>{% comment %}
-    <li class="nav-item">
-        <a href="{% url 'UserHomeworkList' %}" class="nav-link {% if url_name == 'UserHomeworkList' or url_name == 'UserHomeworkDetail' %}active{% endif %}"><i class="bi bi-house me-2"></i>Домашние задания</a>
     </li>
+    <li class="nav-item">
+        <a href="{% url 'LMS_UserProfile' %}" class="nav-link {% if url_name == 'LMS_UserProfile' or url_name == 'UserProfileUpdate' %}active{% endif %}"><i class="bi bi-person me-2"></i>Мой профиль</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'LMS_UserHomeworkList' %}" class="nav-link {% if url_name == 'LMS_UserHomeworkList' or url_name == 'LMS_UserHomeworkDetail' %}active{% endif %}"><i class="bi bi-house me-2"></i>Домашние задания</a>
+    </li>{% comment %}
     <li class="nav-item">
         <a href="{% url 'UserAchievementsList' %}" class="nav-link {% if url_name == 'UserAchievementsList'%}active{% endif %}"><i class="bi bi-gem me-2"></i>Достижения</a>
     </li>{% endcomment %}

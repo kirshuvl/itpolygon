@@ -63,7 +63,7 @@ class UserLogin(TemplateView):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-            return redirect('UserProfile')
+            return redirect('LMS_UserProfile')
         return render(request, self.template_name, context={'form': form})
 
 
@@ -77,7 +77,7 @@ class UserRegistration(CreateView):
             user = form.save(commit=False)
             user.save()
             login(request, user)
-            return redirect('UserProfile')
+            return redirect('LMS_UserProfile')
         else:
             messages.error(request, 'Ошибка регистрации')
             return render(request, self.template_name, {'form': form})

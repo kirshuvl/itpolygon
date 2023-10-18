@@ -315,7 +315,7 @@ class LessonStepConnection(models.Model):
     )
     author = models.ForeignKey(
         CustomUser,
-        related_name='author',
+        related_name='connections',
         verbose_name='Автор шага',
         on_delete=models.CASCADE,
     )
@@ -650,7 +650,7 @@ class TestForQuestionChoiceStep(models.Model):
 class UserAnswerForQuestionChoiceStep(models.Model):
     user_answer = models.ForeignKey(
         TestForQuestionChoiceStep,
-        related_name='answers',
+        related_name='question_choice_answers',
         verbose_name='Ответ пользователя',
         on_delete=models.CASCADE,
     )
@@ -665,7 +665,7 @@ class UserAnswerForQuestionChoiceStep(models.Model):
     )
     question = models.ForeignKey(
         QuestionChoiceStep,
-        related_name='answers',
+        related_name='question_choice_answers',
         verbose_name='Вопрос',
         on_delete=models.CASCADE,
     )
