@@ -8,12 +8,12 @@ from lms.topics.models import Topic
 from lms.lessons.models import Lesson
 from lms.steps.models import Step, LessonStepConnection
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-
+from cms.other.views import PermissonMixin
 
 from cms.constructor.topics.forms import TopicCreateForm
 
 
-class CMS_TopicCreate(LoginRequiredMixin, CreateView):
+class CMS_TopicCreate(LoginRequiredMixin, PermissonMixin, CreateView):
     model = Topic
     form_class = TopicCreateForm
     template_name = 'cms/topics/create.html'
@@ -37,14 +37,14 @@ class CMS_TopicCreate(LoginRequiredMixin, CreateView):
         return self.object.course.get_cms_detail_url()
 
 
-class CMS_TopicDetail(LoginRequiredMixin, DetailView):
+class CMS_TopicDetail(LoginRequiredMixin, PermissonMixin, DetailView):
     model = Topic
     template_name = 'cms/topics/detail.html'
     slug_url_kwarg = 'topic_slug'
     context_object_name = 'topic'
 
 
-class CMS_TopicUpdate(LoginRequiredMixin, UpdateView):
+class CMS_TopicUpdate(LoginRequiredMixin, PermissonMixin, UpdateView):
     model = Topic
     form_class = TopicCreateForm
     template_name = 'cms/topics/update.html'
@@ -53,7 +53,7 @@ class CMS_TopicUpdate(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
+
         return context
 
     def get_object(self):
@@ -65,7 +65,7 @@ class CMS_TopicUpdate(LoginRequiredMixin, UpdateView):
         return self.object.course.get_cms_detail_url()
 
 
-class CMS_TopicDelete(LoginRequiredMixin, DeleteView):
+class CMS_TopicDelete(LoginRequiredMixin, PermissonMixin, DeleteView):
     model = Topic
     template_name = 'cms/topics/delete.html'
     context_object_name = 'topic'
@@ -116,7 +116,6 @@ def topics_sort(request, course_slug):
         topic.save()
 
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
-
 
 
 def topic_check_publish(request, topic_slug):

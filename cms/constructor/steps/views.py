@@ -7,9 +7,10 @@ from lms.steps.models import Step, LessonStepConnection
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from lms.lessons.models import Lesson
 from django.db.models import Prefetch
+from cms.other.views import PermissonMixin
 
 
-class CMS_StepCreate(CreateView):  # Запросов: 3
+class CMS_StepCreate(LoginRequiredMixin, PermissonMixin, CreateView):  # Запросов: 3
     template_name = 'cms/steps/create.html'
 
     def get_context_data(self, **kwargs):
@@ -47,7 +48,7 @@ class CMS_StepCreate(CreateView):  # Запросов: 3
         )
 
 
-class CMS_StepDetail(DetailView):
+class CMS_StepDetail(LoginRequiredMixin, PermissonMixin, DetailView):
     model = Step
     context_object_name = 'step'
     slug_url_kwarg = 'step_slug'
@@ -57,7 +58,7 @@ class CMS_StepDetail(DetailView):
         context['lesson'] = Lesson.objects.select_related(
             'topic__course').get(slug=self.kwargs['lesson_slug'])
         return context
-    
+
     def get_queryset(self):
         queryset = self.model.objects.prefetch_related(Prefetch('connections', queryset=LessonStepConnection.objects.filter(
             lesson__slug=self.kwargs['lesson_slug'])))
@@ -65,7 +66,7 @@ class CMS_StepDetail(DetailView):
         return queryset
 
 
-class CMS_StepUpdate(UpdateView):
+class CMS_StepUpdate(LoginRequiredMixin, PermissonMixin, UpdateView):
     model = Step
     context_object_name = 'step'
     slug_url_kwarg = 'step_slug'
@@ -75,7 +76,7 @@ class CMS_StepUpdate(UpdateView):
         context['lesson'] = Lesson.objects.select_related(
             'topic__course').get(slug=self.kwargs['lesson_slug'])
         return context
-    
+
     def get_queryset(self):
         queryset = self.model.objects.prefetch_related(Prefetch('connections', queryset=LessonStepConnection.objects.filter(
             lesson__slug=self.kwargs['lesson_slug'])))
@@ -86,7 +87,7 @@ class CMS_StepUpdate(UpdateView):
         return self.object.get_cms_detail_url()
 
 
-class CMS_StepDelete(DeleteView):
+class CMS_StepDelete(LoginRequiredMixin, PermissonMixin, DeleteView):
     model = Step
     template_name = 'cms/steps/delete.html'
     context_object_name = 'step'
@@ -97,7 +98,7 @@ class CMS_StepDelete(DeleteView):
         context['lesson'] = Lesson.objects.select_related(
             'topic__course').get(slug=self.kwargs['lesson_slug'])
         return context
-    
+
     def get_queryset(self):
         queryset = self.model.objects.prefetch_related(Prefetch('connections', queryset=LessonStepConnection.objects.filter(
             lesson__slug=self.kwargs['lesson_slug'])))
@@ -116,7 +117,7 @@ class CMS_StepDelete(DeleteView):
         )
 
 
-class CMS_StepFromLibrary(ListView):
+class CMS_StepFromLibrary(LoginRequiredMixin, PermissonMixin, ListView):
     model = Step
     context_object_name = 'steps'
     template_name = 'cms/steps/library.html'
