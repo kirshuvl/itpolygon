@@ -17,7 +17,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from cms.constructor.text_step.forms import TextStepCreateForm
 
 
-class CMS_Dashboard(LoginRequiredMixin, TemplateView):
+class PermissonMixin(PermissionRequiredMixin):
+    def get_permission_required(self):
+
+        return self.request.user.is_superuser,
+
+
+class CMS_Dashboard(LoginRequiredMixin, PermissonMixin, TemplateView):
     '''Главная страница CMS'''
     template_name = 'cms/dashboard.html'
 
@@ -28,7 +34,7 @@ class CMS_Dashboard(LoginRequiredMixin, TemplateView):
         return context
 
 
-class CMS_CourseStatistics(LoginRequiredMixin, DetailView):
+class CMS_CourseStatistics(LoginRequiredMixin, PermissonMixin, DetailView):
     model = Course
     template_name = 'cms/courses/statistics.html'
     context_object_name = 'course'
@@ -63,7 +69,7 @@ class CMS_CourseStatistics(LoginRequiredMixin, DetailView):
             slug=self.kwargs['course_slug'])
 
 
-class CMS_CourseSubmissions(LoginRequiredMixin, ListView):
+class CMS_CourseSubmissions(LoginRequiredMixin, PermissonMixin, ListView):
     model = UserAnswerForProblemStep
     template_name = 'cms/courses/problems.html'
     context_object_name = 'all_attempts'
@@ -95,7 +101,7 @@ def rerun_submission(request, user_answer_pk):
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-class CMS_UserAssignmentsList(ListView):
+class CMS_UserAssignmentsList(LoginRequiredMixin, PermissonMixin, ListView):
     model = UserAnswerForAssignmentStep
     template_name = 'cms/steps/assignment_step/list.html'
     context_object_name = 'assignments'

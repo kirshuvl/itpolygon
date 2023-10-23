@@ -9,12 +9,12 @@ from lms.topics.models import Topic
 from lms.lessons.models import Lesson
 from lms.steps.models import Step, LessonStepConnection
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-
+from cms.other.views import PermissonMixin
 
 from cms.constructor.lessons.forms import LessonCreateForm
 
 
-class CMS_LessonCreate(LoginRequiredMixin, CreateView):  # Запросов: 3
+class CMS_LessonCreate(LoginRequiredMixin, PermissonMixin, CreateView):  # Запросов: 3
     model = Lesson
     form_class = LessonCreateForm
     template_name = 'cms/lessons/create.html'
@@ -43,7 +43,7 @@ class CMS_LessonCreate(LoginRequiredMixin, CreateView):  # Запросов: 3
         )
 
 
-class CMS_LessonDetail(LoginRequiredMixin, DetailView):  # Запросов: 8
+class CMS_LessonDetail(LoginRequiredMixin, PermissonMixin, DetailView):  # Запросов: 8
     model = Lesson
     template_name = 'cms/lessons/detail.html'
     slug_url_kwarg = 'lesson_slug'
@@ -53,12 +53,12 @@ class CMS_LessonDetail(LoginRequiredMixin, DetailView):  # Запросов: 8
         context = super().get_context_data(**kwargs)
         context['steps'] = self.get_queryset()
         return context
-    
+
     def get_queryset(self):
         queryset = Step.objects.select_related('author').\
-        prefetch_related(
-                Prefetch('connections', queryset=LessonStepConnection.objects.filter(
-                    lesson__slug=self.kwargs['lesson_slug']).select_related('author'))).filter(connections__lesson__slug=self.kwargs['lesson_slug']).order_by('connections__number')
+            prefetch_related(
+            Prefetch('connections', queryset=LessonStepConnection.objects.filter(
+                lesson__slug=self.kwargs['lesson_slug']).select_related('author'))).filter(connections__lesson__slug=self.kwargs['lesson_slug']).order_by('connections__number')
         return queryset
 
     '''def get_queryset2(self):
@@ -76,7 +76,7 @@ class CMS_LessonDetail(LoginRequiredMixin, DetailView):  # Запросов: 8
         return get_object_or_404(Lesson.objects.select_related('topic__course',), slug=self.kwargs['lesson_slug'])
 
 
-class CMS_LessonUpdate(LoginRequiredMixin, UpdateView):
+class CMS_LessonUpdate(LoginRequiredMixin, PermissonMixin, UpdateView):
     model = Lesson
     form_class = LessonCreateForm
     template_name = 'cms/lessons/update.html'
@@ -91,7 +91,7 @@ class CMS_LessonUpdate(LoginRequiredMixin, UpdateView):
         )
 
 
-class CMS_LessonDelete(LoginRequiredMixin, DeleteView):
+class CMS_LessonDelete(LoginRequiredMixin, PermissonMixin, DeleteView):
     model = Lesson
     template_name = 'cms/lessons/delete.html'
     context_object_name = 'lesson'

@@ -8,13 +8,13 @@ from lms.topics.models import Topic
 from lms.lessons.models import Lesson
 from lms.steps.models import Step, LessonStepConnection
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-
+from cms.other.views import PermissonMixin
 
 
 from cms.constructor.courses.forms import CourseCreateForm
 
 
-class CMS_CourseCreate(LoginRequiredMixin, CreateView):
+class CMS_CourseCreate(LoginRequiredMixin, PermissonMixin, CreateView):
     model = Course
     form_class = CourseCreateForm
     template_name = 'cms/courses/create.html'
@@ -33,7 +33,7 @@ class CMS_CourseCreate(LoginRequiredMixin, CreateView):
         return reverse('CMS_CoursesList')
 
 
-class CMS_CourseDetail(LoginRequiredMixin, DetailView):
+class CMS_CourseDetail(LoginRequiredMixin, PermissonMixin, DetailView):
     model = Course
     template_name = 'cms/courses/detail.html'
     slug_url_kwarg = 'course_slug'
@@ -58,7 +58,7 @@ class CMS_CourseDetail(LoginRequiredMixin, DetailView):
         )
 
 
-class CMS_CourseUpdate(LoginRequiredMixin, UpdateView):
+class CMS_CourseUpdate(LoginRequiredMixin, PermissonMixin, UpdateView):
     model = Course
     form_class = CourseCreateForm
     template_name = 'cms/courses/update.html'
@@ -74,7 +74,7 @@ class CMS_CourseUpdate(LoginRequiredMixin, UpdateView):
         return self.get_object().get_cms_detail_url()
 
 
-class CMS_CourseDelete(LoginRequiredMixin, DeleteView):
+class CMS_CourseDelete(LoginRequiredMixin, PermissonMixin, DeleteView):
     model = Course
     template_name = 'cms/courses/delete.html'
     slug_url_kwarg = 'course_slug'
@@ -90,7 +90,7 @@ class CMS_CourseDelete(LoginRequiredMixin, DeleteView):
         return reverse('CMS_CoursesList')
 
 
-class CMS_CoursesList(LoginRequiredMixin, ListView):
+class CMS_CoursesList(LoginRequiredMixin, PermissonMixin, ListView):
     model = Course
     template_name = 'cms/courses/list.html'
     context_object_name = 'courses'
