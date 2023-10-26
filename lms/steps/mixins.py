@@ -5,9 +5,9 @@ from lms.steps.models import Step, StepEnroll, LessonStepConnection
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.db.models import Prefetch
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-
-class BaseStepMixin(ListView):
+class BaseStepMixin(LoginRequiredMixin, ListView):
     model = Step
     context_object_name = 'steps'
     slug_url_kwarg = 'step_slug'
