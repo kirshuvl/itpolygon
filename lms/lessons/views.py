@@ -3,9 +3,9 @@ from lms.lessons.models import Lesson
 from lms.steps.models import Step, StepEnroll, LessonStepConnection
 from django.shortcuts import get_object_or_404
 from django.db.models import Prefetch
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-
-class LMS_LessonDetail(DetailView):
+class LMS_LessonDetail(LoginRequiredMixin, DetailView):
     model = Lesson
     template_name = 'lms/lessons/detail.html'
     slug_url_kwarg = 'lesson_slug'
