@@ -82,6 +82,8 @@ class CustomUser(AbstractUser, PermissionsMixin):
         verbose_name='Родитель',
         blank=True
     )
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(
         verbose_name='Активен',
         default=True,
