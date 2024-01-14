@@ -126,7 +126,7 @@ class UserProfileUpdate(LoginRequiredMixin, UpdateView):
         return get_object_or_404(CustomUser, id=self.request.user.id)
 
     def get_success_url(self):
-        return reverse_lazy('UserProfile')
+        return reverse_lazy('LMS_UserProfile')
 
 
 class ShuvalovView(TemplateView):
