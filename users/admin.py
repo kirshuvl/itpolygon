@@ -8,9 +8,9 @@ class CustomUserAdmin(UserAdmin):
     add_form = UserRegistrationForm
     form = UserProfileUpdateForm
     model = CustomUser
-    list_display = ('pk', 'email', 'is_staff', 'is_active', 'first_name', 'phone')
-    list_filter = ('email', 'is_staff', 'is_active', 'first_name', 'phone')
-    list_display_links = ('pk', 'email', 'is_staff', 'is_active', 'first_name', 'phone')
+    list_display = ('id', 'email', 'is_staff', 'is_active', 'first_name', 'phone')
+    list_filter = ('id', 'email', 'is_staff', 'is_active', 'first_name', 'phone')
+    list_display_links = ('id', 'email', 'is_staff', 'is_active', 'first_name', 'phone')
     fieldsets = (
         (None, {'fields': (
             'nickname', 'email', 'password', 'school', 'first_name', 'middle_name', 'last_name', 'status', 'bio',
