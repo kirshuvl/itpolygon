@@ -112,8 +112,8 @@ def get_verdict(test, result):
         return 'ML'
     elif result['stderr'] != b'':
         return 'CE'
-    elif [line.strip() for line in test.output.split('\n')] != res.split('\n'):
+    elif [line.strip() for line in test.output.split('\n')] != [line.strip() for line in res.split('\n')]:
         return 'WA'
-    elif [line.strip() for line in test.output.split('\n')] == res.split('\n'):
+    elif [line.strip() for line in test.output.split('\n')] == [line.strip() for line in res.split('\n')]:
         return 'OK'
     return 'UN'
